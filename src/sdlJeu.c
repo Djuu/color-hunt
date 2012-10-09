@@ -25,7 +25,7 @@ void sdlInitialisation(sdlJeu *pSdlJeu)
 	pSdlJeu ->surfaceEcran = SDL_SetVideoMode(dimx,dimy,32, SDL_HWSURFACE|SDL_DOUBLEBUF); /*|SDL_FULLSCREEN*/	
 	SDL_WM_SetCaption( "ColorHunt", NULL );
 	
-	pSdlJeu -> surfaceHero = SDL_load_image("data/sp.bmp");
+	pSdlJeu -> surfaceHero = SDL_load_image("data/mario1.bmp");
 	if (pSdlJeu->surfaceHero==NULL)
 		pSdlJeu->surfaceHero = SDL_load_image("../data/mario1.bmp");
 	assert( pSdlJeu->surfaceHero!=NULL);
@@ -57,8 +57,8 @@ void sdlAffiche(sdlJeu *pSdlJeu)
 	
 	
 		
-		SDL_BlitSurface(pSdlJeu -> surfaceHero, &(pSdlJeu->rcSprite), pSdlJeu->surfaceEcran, &(pSdlJeu->rcSprite));
-	/*SDL_apply_surface(pSdlJeu->surfaceHero, pSdlJeu->surfaceEcran, getPosiX(pHero)*TAILLE_SPRITE,  getPosiY(pHero)*TAILLE_SPRITE);*/
+		/*SDL_BlitSurface(pSdlJeu -> surfaceHero, &(pSdlJeu->rcSprite), pSdlJeu->surfaceEcran, &(pSdlJeu->rcSprite));*/
+	SDL_apply_surface(pSdlJeu->surfaceHero, pSdlJeu->surfaceEcran, getPosiX(pHero)*TAILLE_SPRITE,  getPosiY(pHero)*TAILLE_SPRITE);
 }
 
 void sdlBoucle(sdlJeu *pSdlJeu)
@@ -77,8 +77,8 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 	while(continueBoucle==1)
 	{
 		gravitation(&(pSdlJeu->jeu.perso), &(pSdlJeu->jeu.gMap));
-		pSdlJeu->rcSprite.x=getPosiX(&(pSdlJeu->jeu.perso));
-		pSdlJeu->rcSprite.y=getPosiY(&(pSdlJeu->jeu.perso));
+		/*pSdlJeu->rcSprite.x=getPosiX(&(pSdlJeu->jeu.perso));
+		pSdlJeu->rcSprite.y=getPosiY(&(pSdlJeu->jeu.perso));*/
 		/*Position du sprite*/
 		
 		
@@ -90,10 +90,10 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 					switch (event.key.keysym.sym)
 					{
 						case SDLK_LEFT:
-							if ( pSdlJeu->rcSprite.x == 192 )
+							/*if ( pSdlJeu->rcSprite.x == 192 )
 								pSdlJeu->rcSprite.x = 224;
 							else
-								pSdlJeu->rcSprite.x = 192;
+								pSdlJeu->rcSprite.x = 192;*/
 							pSdlJeu->rcSprite.x -= 5;
 							
 							tempGauche=1; 
