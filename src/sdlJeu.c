@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <time.h>
 #include "sdlJeu.h"
-const int TAILLE_SPRITE=32;
+const int TAILLE_SPRITE=20;
 
 SDL_Surface *SDL_load_image(const char* filename );
 void SDL_apply_surface( SDL_Surface* source, SDL_Surface* destination, int x, int y );
@@ -25,14 +25,14 @@ void sdlInitialisation(sdlJeu *pSdlJeu)
 	pSdlJeu ->surfaceEcran = SDL_SetVideoMode(dimx,dimy,32, SDL_HWSURFACE|SDL_DOUBLEBUF); /*|SDL_FULLSCREEN*/	
 	SDL_WM_SetCaption( "ColorHunt", NULL );
 	
-	pSdlJeu -> surfaceHero = SDL_load_image("data/mario1.bmp");
+	pSdlJeu -> surfaceHero = SDL_load_image("data/mario2.bmp");
 	if (pSdlJeu->surfaceHero==NULL)
-		pSdlJeu->surfaceHero = SDL_load_image("../data/mario1.bmp");
+		pSdlJeu->surfaceHero = SDL_load_image("../data/mario2.bmp");
 	assert( pSdlJeu->surfaceHero!=NULL);
 	
-	pSdlJeu -> surfaceMap = SDL_load_image("data/grass.bmp");
+	pSdlJeu -> surfaceMap = SDL_load_image("data/grasss.bmp");
 	if (pSdlJeu->surfaceMap==NULL)	
-		pSdlJeu->surfaceMap = SDL_load_image("../data/grass.bmp");
+		pSdlJeu->surfaceMap = SDL_load_image("../data/grasss.bmp");
 	assert( pSdlJeu->surfaceMap!=NULL);
 }
 
