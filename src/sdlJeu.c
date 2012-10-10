@@ -132,7 +132,6 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 						case SDLK_UP:
 							pSdlJeu->jeu.perso.saut = 1;
 							break;	
-							
 						case SDLK_ESCAPE:
 							continueBoucle = 0;
 							break;
@@ -177,7 +176,7 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 		{
 			control(&(pSdlJeu->jeu), 'd');
 		}
-		if(pSdlJeu->jeu.perso.sol == 1 && pSdlJeu->jeu.perso.saut >=1)  /*ATTENTION : dépendance SDL*/
+		if(pSdlJeu->jeu.perso.sol == 1 && pSdlJeu->jeu.perso.saut >=1) 
 		{
 			control(&(pSdlJeu->jeu), 's');
 		}
