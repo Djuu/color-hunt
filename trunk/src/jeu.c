@@ -12,7 +12,7 @@ void control(Jeu *jeu, const char touche)
 			droite (&(jeu->perso), &(jeu->gMap));
 			break;
 		case 's':
-			sautPerso(&(jeu->perso));
+			sautPerso(&(jeu->perso), &(jeu->gMap));
 			break;
 	}
 }

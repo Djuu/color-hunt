@@ -7,17 +7,19 @@ const int sautHauteur = 5;
 void heroInit(hero *perso)
 {
 	perso->x=1;
-	perso->y=1;
+	perso->y=25;
 	perso->sol=0;
 	perso->saut=0;
 }
 void gauche (hero *perso,  map *hmap)
 {
-	perso->x--;
+	if(hmap->tab[perso->y][perso->x-1]!='#')
+		perso->x--;
 	
 }
 void droite (hero *perso,  map *hmap)
 {
+if(hmap->tab[perso->y][perso->x+1]!='#')
 	perso->x++;
 	
 }
@@ -31,10 +33,7 @@ int getPosiY (const hero *perso)
 }
 void gravitation(hero *perso, map *hmap)
 {
-	if (perso->sol==0)
-	{
-		
-		if(hmap->tab[perso->y+1][perso->x]!='#')
+		if(hmap->tab[perso->y+1][perso->x]!='#' && perso -> sol == 0)
 		{
 			perso->y++;
 		
@@ -52,7 +51,7 @@ void gravitation(hero *perso, map *hmap)
 		}
 		
 		/*mapAffiche(hmap);*/
-	}
+	
 }
 
 void positionHero(hero *perso, map *hmap)
@@ -61,17 +60,15 @@ void positionHero(hero *perso, map *hmap)
 	
 }
 
-void sautPerso(hero *perso)
+void sautPerso(hero *perso, map *hmap)
 {
-	if (perso ->sol == 1)
-	{
-		if(perso->saut >= 1)
+		if(perso->saut >= 1 && hmap->tab[perso->y-1][perso->x]!= '#')
 		{
 		
 			if(perso->saut<sautHauteur)
 			{
 				perso->y--;
-				usleep(30000);
+				usleep(300);
 				perso->saut++;
 			}
 			else
@@ -81,8 +78,12 @@ void sautPerso(hero *perso)
 			
 		
 		}
-		
-	}
+		if(hmap->tab[perso->y-1][perso->x]== '#')
+		{
+			perso->sol=0;
+			perso->saut = sautHauteur;
+		}
+	
 }
 
 

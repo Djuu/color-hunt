@@ -177,7 +177,7 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 		{
 			control(&(pSdlJeu->jeu), 'd');
 		}
-		if(pSdlJeu->jeu.perso.saut >= 1)  /*ATTENTION : dépendance SDL*/
+		if(pSdlJeu->jeu.perso.sol == 1 && pSdlJeu->jeu.perso.saut >=1)  /*ATTENTION : dépendance SDL*/
 		{
 			control(&(pSdlJeu->jeu), 's');
 		}
