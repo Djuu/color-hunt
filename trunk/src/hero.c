@@ -74,6 +74,7 @@ void sautPerso(hero *perso, map *hmap)
 			else
 			{
 				perso->sol=0;
+				perso->saut=0;
 			}	
 			
 		
@@ -83,6 +84,7 @@ void sautPerso(hero *perso, map *hmap)
 			perso->sol=0;
 			perso->saut = sautHauteur;
 		}
+
 	
 }
 
