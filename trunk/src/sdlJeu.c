@@ -67,6 +67,22 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 	int continueBoucle=1;
 	int rafraichissement=1;
 	
+	/* Horloges (en secondes) */
+	float horloge_courante, horloge_precedente;
+
+	/* Intervalle de temps (en secondes) entre deux évolutions du jeu */
+	/* Changer la valeur pour ralentir ou accélérer le déplacement des fantomes */
+	float intervalle_horloge = 0.01f;
+	
+	/* Récupère l'horloge actuelle et la convertit en secondes */
+    /* clock() retourne le nombre de tops horloge depuis le lancement du programme */
+    horloge_precedente = (float)clock()/(float)CLOCKS_PER_SEC;
+    
+    
+    
+    
+    
+    
 	
 	int tempGauche=0;
 	int tempDroite=0;
@@ -76,11 +92,23 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 	
 	while(continueBoucle==1)
 	{
-		gravitation(&(pSdlJeu->jeu.perso), &(pSdlJeu->jeu.gMap));
+		
 		/*pSdlJeu->rcSprite.x=getPosiX(&(pSdlJeu->jeu.perso));
 		pSdlJeu->rcSprite.y=getPosiY(&(pSdlJeu->jeu.perso));*/
 		/*Position du sprite*/
 		
+		
+		
+		
+		
+		 /* Récupère l'horloge actuelle et la convertit en secondes */
+        horloge_courante = (float)clock()/(float)CLOCKS_PER_SEC;
+
+       
+
+
+
+
 		
 		while (SDL_PollEvent(&event))
 		{
@@ -93,8 +121,8 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 							/*if ( pSdlJeu->rcSprite.x == 192 )
 								pSdlJeu->rcSprite.x = 224;
 							else
-								pSdlJeu->rcSprite.x = 192;*/
-							pSdlJeu->rcSprite.x -= 5;
+								pSdlJeu->rcSprite.x = 192;
+							pSdlJeu->rcSprite.x -= 5;*/
 							
 							tempGauche=1; 
 							break;
@@ -133,6 +161,14 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 			}
 			
 		}
+		 /* Si suffisamment de temps s'est écoulé depuis la dernière prise d'horloge */
+        if (horloge_courante-horloge_precedente>=intervalle_horloge)
+        {
+                gravitation(&(pSdlJeu->jeu.perso), &(pSdlJeu->jeu.gMap));
+                rafraichissement = 1;
+                horloge_precedente = horloge_courante;
+        
+
 		if(tempGauche==1)
 		{
 			control(&(pSdlJeu->jeu), 'g');
@@ -147,7 +183,7 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 		}
 		
 		
-		
+	}	
 		if (rafraichissement==1)
 		{
 			
@@ -157,6 +193,7 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 		    /* on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle) */
 		    SDL_Flip( pSdlJeu->surfaceEcran);
 		}
+		
 	}
 }
 
