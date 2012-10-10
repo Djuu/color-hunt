@@ -18,6 +18,6 @@ int getPosiX (const hero *perso);
 int getPosiY (const hero *perso);
 void gravitation(hero *perso, map *hmap);
 void positionHero(hero *perso, map *hmap);
-void sautPerso(hero *perso);
+void sautPerso(hero *perso, map *hmap);
 void heroInit(hero *perso);
 #endif
