@@ -7,7 +7,7 @@ typedef struct
 {
 	int x,y;
 	int sol;
-	int saut;
+	int saut,air;
 }hero;
 
 
