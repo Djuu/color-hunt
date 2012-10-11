@@ -163,6 +163,7 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 		 /* Si suffisamment de temps s'est écoulé depuis la dernière prise d'horloge */
         if (horloge_courante-horloge_precedente>=intervalle_horloge)
         {
+        	
                 gravitation(&(pSdlJeu->jeu.perso), &(pSdlJeu->jeu.gMap));
                 rafraichissement = 1;
                 horloge_precedente = horloge_courante;
@@ -176,7 +177,7 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 		{
 			control(&(pSdlJeu->jeu), 'd');
 		}
-		if(pSdlJeu->jeu.perso.sol == 1 && pSdlJeu->jeu.perso.saut >=1) 
+		if(pSdlJeu->jeu.perso.sol == 1 && pSdlJeu->jeu.perso.saut ==1) 
 		{
 			control(&(pSdlJeu->jeu), 's');
 		}
