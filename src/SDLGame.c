@@ -1,67 +1,67 @@
 #include <assert.h>
 #include <time.h>
-#include "sdlJeu.h"
+#include "SDLGame.h"
 const int TAILLE_SPRITE=20;
 
 SDL_Surface *SDL_load_image(const char* filename );
 void SDL_apply_surface( SDL_Surface* source, SDL_Surface* destination, int x, int y );
 
-void sdlInitialisation(sdlJeu *pSdlJeu)
+void initSDL(SdlGame *pSdlGame)
 {
 	
-	Jeu *pJeu;
-	
+	Game *pGame;
 	int dimx, dimy;
-	pJeu = &(pSdlJeu->jeu);
-	jeuInit(pJeu);
-	assert(getDimX(jeuGetMap(pJeu))!=0);
-	dimx=getDimX(jeuGetMap(pJeu));
-	dimy=getDimY(jeuGetMap(pJeu));
+	
+	pGame = &(pSdlGame -> pGame);
+	initGame(pGame);
+	assert(getDimX(getGameMap(pGame))!=0);
+	dimx=getDimX(getGameMap(pGame);
+	dimy=getDimY(getGameMap(pGame);
 	
 	dimx=dimx*TAILLE_SPRITE;
 	dimy=dimy*TAILLE_SPRITE;
 	
 	SDL_Init(SDL_INIT_VIDEO);
-	pSdlJeu ->surfaceEcran = SDL_SetVideoMode(dimx,dimy,32, SDL_HWSURFACE|SDL_DOUBLEBUF); /*|SDL_FULLSCREEN*/	
+	pSdlGame -> surfaceScreen = SDL_SetVideoMode(dimx,dimy,32, SDL_HWSURFACE|SDL_DOUBLEBUF); /*|SDL_FULLSCREEN*/	
 	SDL_WM_SetCaption( "ColorHunt", NULL );
 	
-	pSdlJeu -> surfaceHero = SDL_load_image("data/mario2.bmp");
-	if (pSdlJeu->surfaceHero==NULL)
-		pSdlJeu->surfaceHero = SDL_load_image("../data/mario2.bmp");
-	assert( pSdlJeu->surfaceHero!=NULL);
+	pSdlGame -> surfaceChar = SDL_load_image("data/mario2.bmp");
+	if (pSdlGame->surfaceChar ==NULL)
+		pSdlGame->surfaceChar = SDL_load_image("../data/mario2.bmp");
+	assert( pSdlGame->surfaceChar!=NULL);
 	
-	pSdlJeu -> surfaceMap = SDL_load_image("data/grasss.bmp");
-	if (pSdlJeu->surfaceMap==NULL)	
-		pSdlJeu->surfaceMap = SDL_load_image("../data/grasss.bmp");
-	assert( pSdlJeu->surfaceMap!=NULL);
+	pSdlGame -> surfaceMap = SDL_load_image("data/grasss.bmp");
+	if (pSdlGame->surfaceMap==NULL)	
+		pSdlGame->surfaceMap = SDL_load_image("../data/grasss.bmp");
+	assert( pSdlGame->surfaceMap!=NULL);
 }
 
-void sdlAffiche(sdlJeu *pSdlJeu)
+void sdlDisplay(SdlGame *pSdlGame)
 {
 	int x,y;
-	Jeu *pJeu = &(pSdlJeu->jeu);
-	hero *pHero= jeuGetHero(pJeu);
-	map *pMap=jeuGetMap(pJeu);
+	Game *pGame = &(pSdlGame->pGame);
+	Character *pChar= getGameChar(pGame);
+	Map *pMap=getGameMap(pGame);
 
 	/* Remplir l'écran de blanc */
-	SDL_FillRect( pSdlJeu->surfaceEcran, &pSdlJeu->surfaceEcran->clip_rect, SDL_MapRGB( pSdlJeu->surfaceEcran->format, 0xFF, 0xFF, 0xFF ));
+	SDL_FillRect( pSdlGame->surfaceScreen, &pSdlGame->surfaceScreen->clip_rect, SDL_MapRGB( pSdlGame->surfaceScreen->format, 0xFF, 0xFF, 0xFF ));
 
 	
 	assert(getDimX(pMap)!=0);
 	for (x=0;x<getDimX(pMap);++x)
 		for (y=0;y<getDimY(pMap);++y)
 			if (mapGetXY(pMap,x,y)=='#')
-				SDL_apply_surface(pSdlJeu-> surfaceMap, pSdlJeu->surfaceEcran, x*TAILLE_SPRITE,  y*TAILLE_SPRITE);
+				SDL_apply_surface(pSdlGame-> surfaceMap, pSdlGame->surfaceScreen, x*TAILLE_SPRITE,  y*TAILLE_SPRITE);
 	
 	
 	
 	
 		
-		/*SDL_BlitSurface(pSdlJeu -> surfaceHero, &(pSdlJeu->rcSprite), pSdlJeu->surfaceEcran, &(pSdlJeu->rcSprite));*/
-	SDL_apply_surface(pSdlJeu->surfaceHero, pSdlJeu->surfaceEcran, getPosiX(pHero)*TAILLE_SPRITE,  getPosiY(pHero)*TAILLE_SPRITE);
+		/*SDL_BlitSurface(pSdlGame -> surfaceChar, &(pSdlGame->rcSprite), pSdlGame->surfaceEcran, &(pSdlGame->rcSprite));*/
+	SDL_apply_surface(pSdlGame->surfaceChar, pSdlGame->surfaceScreen, getPosiChar(pChar)->x*TAILLE_SPRITE,  getPosiChar(pChar)->z*TAILLE_SPRITE);
 }
 
-void sdlBoucle(sdlJeu *pSdlJeu)
+void sdlBoucle(sdlJeu *pSdlGame)
 {
 	SDL_Event event;
 	int continueBoucle=1;
@@ -81,20 +81,20 @@ void sdlBoucle(sdlJeu *pSdlJeu)
     
     
     
-   
+    
     
 	
 	int tempGauche=0;
 	int tempDroite=0;
 	
-	animSpInit(pSdlJeu->rcSprite,128,0, TAILLE_SPRITE,TAILLE_SPRITE);
+	animSpInit(pSdlGame->rcSprite,128,0, TAILLE_SPRITE,TAILLE_SPRITE);
 	
 	
 	while(continueBoucle==1)
 	{
 		
-		/*pSdlJeu->rcSprite.x=getPosiX(&(pSdlJeu->jeu.perso));
-		pSdlJeu->rcSprite.y=getPosiY(&(pSdlJeu->jeu.perso));*/
+		/*pSdlGame->rcSprite.x=getPosiX(&(pSdlGame->jeu.perso));
+		pSdlGame->rcSprite.y=getPosiY(&(pSdlGame->jeu.perso));*/
 		/*Position du sprite*/
 		
 		
@@ -118,19 +118,13 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 					switch (event.key.keysym.sym)
 					{
 						case SDLK_LEFT:
-							/*if ( pSdlJeu->rcSprite.x == 192 )
-								pSdlJeu->rcSprite.x = 224;
-							else
-								pSdlJeu->rcSprite.x = 192;
-							pSdlJeu->rcSprite.x -= 5;*/
-							
 							tempGauche=1; 
 							break;
 						case SDLK_RIGHT:
 							tempDroite=1;
 							break;	
 						case SDLK_UP:
-							pSdlJeu->jeu.perso.saut = 1;
+							/*fonction saut : vitesse et paf */
 							break;	
 						case SDLK_ESCAPE:
 							continueBoucle = 0;
@@ -164,22 +158,22 @@ void sdlBoucle(sdlJeu *pSdlJeu)
         if (horloge_courante-horloge_precedente>=intervalle_horloge)
         {
         	
-                gravitation(&(pSdlJeu->jeu.perso), &(pSdlJeu->jeu.gMap));
+                gravitation(&(pSdlGame->jeu.perso), &(pSdlGame->jeu.gMap));
                 rafraichissement = 1;
                 horloge_precedente = horloge_courante;
         
 
 		if(tempGauche==1)
 		{
-			control(&(pSdlJeu->jeu), 'g');
+			controlKey(&(pSdlGame->jeu), 'g');
 		}
 		if(tempDroite==1)
 		{
-			control(&(pSdlJeu->jeu), 'd');
+			controlKey(&(pSdlGame->jeu), 'd');
 		}
-		if(pSdlJeu->jeu.perso.sol == 1 && pSdlJeu->jeu.perso.saut ==1) 
+		/*if(pSdlGame->jeu.perso.sol == 1 && pSdlGame->jeu.perso.saut ==1) 
 		{
-			control(&(pSdlJeu->jeu), 's');
+			controlKey(&(pSdlGame->jeu), 's');*/
 		}
 		
 		
@@ -188,10 +182,10 @@ void sdlBoucle(sdlJeu *pSdlJeu)
 		{
 			
 		    /* on affiche le jeu sur le buffer caché */
-		    sdlAffiche(pSdlJeu);
+		    sdlAffiche(pSdlGame);
 
 		    /* on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle) */
-		    SDL_Flip( pSdlJeu->surfaceEcran);
+		    SDL_Flip( pSdlGame->surfaceScreen);
 		}
 		
 	}

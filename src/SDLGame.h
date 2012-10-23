@@ -1,32 +1,32 @@
-#ifndef _SDLJEU_H
-#define _SDLJEU_H
+#ifndef _SDLGAME_H
+#define _SDLGAME_H
 
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL.h>
-#include "jeu.h"
-#include "anim.h"
+#include "Game.h"
 
 typedef struct
 {
-	Jeu jeu;
-	SDL_Surface *surfaceEcran;
-	SDL_Surface *surfaceHero;
+	Game pGame;
+	SDL_Surface *surfaceSceen;
+	SDL_Surface *surfaceChar;
 	SDL_Surface *surfaceMap;
+	SDL_Surface *surfaceEnemy;
 	SDL_Rect rcSprite;
 	SDL_Rect rcSpPosi;
-}sdlJeu;
+}SdlGame;
 
 
 /**
 Description : Initialisation des surfaces ecran, hero et map
 */
-void sdlInitialisation(sdlJeu*);
+void initSDL(SdlGame*);
 
 /**
 Description : Boucle principale de SDL
 Paramétre : sdlJeu :DR
 Variables locales : continueBoucle, rafraichissement,tempGauche,tempDroite : entier
 */
-void sdlBoucle(sdlJeu*);
+void loopSDL(SdlGame*);
 
 #endif
