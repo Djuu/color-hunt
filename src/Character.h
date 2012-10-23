@@ -29,7 +29,7 @@ Position getPosiChar (const Character *pChar);
 /**
 Changer la position du personnage
 */
-void setPosi (Character *pChar, const float x, const float y, const float z);
+void setPosiChar (Character *pChar, const float x, const float y, const float z);
 
 /**
 Récupère le nombre de vie

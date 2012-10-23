@@ -19,7 +19,7 @@ Position *getPosiChar (const Character *pChar)
 	return pChar -> pPosi;
 }
 
-void setPosi (Character *pChar, const float x, const float y, const float z)
+void setPosiChar (Character *pChar, const float x, const float y, const float z)
 {
 	assert(pChar != NULL);
 	pChar -> pPosi.x = x;

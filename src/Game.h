@@ -1,7 +1,9 @@
 #ifndef _GAME
 #define _GAME
 
-#include "Character.h"
+#include "Map.h"
+#include "Physics.h"
+#include "Enemy.h"
 
 typedef struct
 {
