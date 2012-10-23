@@ -1,19 +1,24 @@
-#ifndef _JEU
-#define _JEU
+#ifndef _GAME
+#define _GAME
 
-#include "hero.h"
+#include "Character.h"
 
 typedef struct
 {
-	hero perso;
-	map gMap;
-}Jeu;
+	Character gChar;
+	Map gMap;
+	Object *tabObj;
+	Enemy *tabEnemy;
+}Game;
 
-void control(Jeu *jeu, const char touche);
-map *jeuGetMap(Jeu *);
-hero *jeuGetHero(Jeu *);
-void jeuInit(Jeu *);
+/** Initialise le jeu */
+void initGame (Game *pGame);
 
+/** Appel la fonction correspondant a la touche appelée */
+void controlKey (Game *pGame, const char key);
+
+Map *getGameMap (Game *pGame);
+Character *getGameChar (Game* pGame);
 
 #endif
 

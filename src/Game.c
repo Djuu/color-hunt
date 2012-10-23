@@ -1,36 +1,82 @@
-#include "jeu.h"
+#include "Game.h"
 
 
-void control(Jeu *jeu, const char touche)
+void controlKey(Game *pGame, const char key)
 { 
-	switch(touche)
+	
+	switch(key)
 	{
 		case 'g':
-			gauche (&(jeu->perso), &(jeu->gMap));
+			left (getGameChar(pGame), getGameMap(pGame));
 			break;
 		case 'd':
-			droite (&(jeu->perso), &(jeu->gMap));
+			right (getGameChar(pGame), getGameMap(pGame));
 			break;
 		case 's':
-			sautPerso(&(jeu->perso), &(jeu->gMap));
-			break;
+			jump (getGameChar(pGame), getGameMap(pGame));
+			break;		
 	}
 }
 
-map *jeuGetMap(Jeu *pJeu)
+void left(Game *pGame)
 {
-	return &(pJeu->gMap);
+	Map *pMap = getGameMap(pGame);
+	Character *pChar = getGameChar(pGame);
+	if(pMap->tab[pChar->y][pChar->x-1]!='#')
+		pChar->x--;
 }
 
-hero *jeuGetHero(Jeu *pJeu)
+void right(Game *pGame)
 {
-	return &(pJeu->perso);
+	Map *pMap = getGameMap(pGame);
+	Character *pChar = getGameChar(pGame);
+	if(pMap->tab[pChar->y][pChar->x+1]!='#')
+		pChar->x++;
 }
 
-void jeuInit(Jeu * pJeu)
+void jump(Game *pGame)
 {
-	heroInit(&(pJeu->perso));
-	mapInit(&(pJeu->gMap));
+	/*	if(perso->saut == 1 && hmap->tab[perso->y-1][perso->x]!= '#')
+		{
+		
+			if(perso->air<sautHauteur)
+			{
+				perso->y--;
+				usleep(300);
+				perso->air++;
+			}
+			else
+			{
+				perso->sol=0;
+				perso->saut=0;
+				perso->air=0;
+			}	
+			
+		
+		}
+		if(hmap->tab[perso->y-1][perso->x]== '#')
+		{
+			perso->air=0;
+			perso->sol=0;
+			perso->saut = sautHauteur;
+		}
+*/
 	
-	
+}
+
+
+Map *getGameMap(Game *pGame)
+{
+	return &(pGame -> pMap);
+}
+
+Character *getGameChar(Game *pGame)
+{
+	return &(pGame -> pChar);
+}
+
+void initGame (Game *pGame)
+{
+	heroInit(&(pGame -> pChar));
+	mapInit(&(pGame -> pMap));	
 }
