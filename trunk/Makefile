@@ -11,21 +11,23 @@ all: $(endbin)main
 $(endobj)main.o: $(endsrc)main.c  
 	gcc $(options) -c $(endsrc)main.c $(ssdl) $(sttf) -o $(endobj)main.o
 
-$(endobj)Character.o: $(endsrc)Character.c $(endsrc)Character.h $(endsrc)Map.h
-	gcc $(options) -c $(endsrc)Character.c $(ssdl) $(sttf) -o $(endobj)Character.o
+$(endobj)hero.o: $(endsrc)hero.c $(endsrc)hero.h $(endsrc)map.h
+	gcc $(options) -c $(endsrc)hero.c $(ssdl) $(sttf) -o $(endobj)hero.o
 	
-$(endobj)Game.o: $(endsrc)Game.c  $(endsrc)Character.h
-	gcc $(options) -c $(endsrc)Game.c $(ssdl) $(sttf) -o $(endobj)Game.o
+$(endobj)jeu.o: $(endsrc)jeu.c  $(endsrc)hero.h
+	gcc $(options) -c $(endsrc)jeu.c $(ssdl) $(sttf) -o $(endobj)jeu.o
 	
-$(endobj)Map.o: $(endsrc)Map.c $(endsrc)Map.h
-	gcc $(options) -c $(endsrc)Map.c $(ssdl) $(sttf) -o $(endobj)Map.o
+$(endobj)map.o: $(endsrc)map.c $(endsrc)map.h
+	gcc $(options) -c $(endsrc)map.c $(ssdl) $(sttf) -o $(endobj)map.o
 
-$(endobj)sdlGame.o: $(endsrc)sdlGame.c $(endsrc)sdlGame.h $(endsrc)Game.h $(endsrc)anim.h
-	gcc $(options) -c $(endsrc)sdlGame.c $(ssdl) $(sttf) -o $(endobj)sdlGame.o
+$(endobj)sdlJeu.o: $(endsrc)sdlJeu.c $(endsrc)sdlJeu.h $(endsrc)jeu.h $(endsrc)anim.h
+	gcc $(options) -c $(endsrc)sdlJeu.c $(ssdl) $(sttf) -o $(endobj)sdlJeu.o
 
-		 
-$(endbin)main: $(endobj)main.o $(endobj)Map.o $(endobj)Game.o $(endobj)Character.o $(endobj)sdlGame.o
-	gcc $(endobj)main.o  $(endobj)Map.o  $(endobj)sdlGame.o $(ssdl) $(sttf) -o $(endbin)main
+$(endobj)anim.o: $(endsrc)anim.c $(endsrc)anim.h $(endsrc)sdlJeu.h
+	gcc $(options) -c $(endsrc)anim.c $(ssdl) $(sttf) -o $(endobj)anim.o
+		
+$(endbin)main: $(endobj)main.o $(endobj)sdlJeu.o $(endobj)hero.o $(endobj)jeu.o $(endobj)map.o $(endobj)anim.o
+	gcc $(endobj)main.o $(endobj)sdlJeu.o $(endobj)hero.o $(endobj)jeu.o $(endobj)map.o $(endobj)anim.o $(ssdl) $(sttf) -o $(endbin)main
 	
 clean:
 	rm obj/* bin/*
