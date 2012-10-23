@@ -2,23 +2,15 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 
-#include "sdlJeu.h"
-
+#include "sdlGame.h"
 
 int main(int argc, char *argv[])
 {
 
 
-	sdlJeu pSdlJeu;
-
-	/*pMap = NULL;*/
-	/*mapInit(&pMap);*/
-	/*mapAffiche(&pMap);*/
-	 
-	
-	
+	/*sdlJeu pSdlJeu;	
 	sdlInitialisation(&pSdlJeu);
-	sdlBoucle(&pSdlJeu);
+	sdlBoucle(&pSdlJeu);*/
 
 	return 0;
 }
