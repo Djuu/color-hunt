@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "anim.h"
+#include "Animation.h"
 
 void animSpInit(SDL_Rect spAnim, int spDimX, int spDimY,int spDimL, int spDimH)
 {

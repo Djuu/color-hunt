@@ -3,12 +3,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "Position.h"
 
 typedef struct
 {
-	
 	Position cPosi; 
 	int floor;
 	int air;
@@ -39,7 +39,7 @@ int getLife (const Character *pChar);
 /**
 Modification de la valeur de la vie
 */
-void setLife (Character pChar, int nbLife);
+void setLife (Character *pChar, int nbLife);
 
 /**
 Récupère le nombre de mana

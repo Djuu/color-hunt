@@ -14,11 +14,9 @@ typedef struct
 }Game;
 
 /** Initialise le jeu */
-void initGame (Game *pGame);
-
+void initGame (Game *pGame);
 /** Appel la fonction correspondant a la touche appelée */
 void controlKey (Game *pGame, const char key);
-
 Map *getGameMap (Game *pGame);
 Character *getGameChar (Game* pGame);
 

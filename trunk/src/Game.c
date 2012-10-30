@@ -1,37 +1,21 @@
 #include "Game.h"
 
 
-void controlKey(Game *pGame, const char key)
-{ 
-	
-	switch(key)
-	{
-		case 'g':
-			left (getGameChar(pGame), getGameMap(pGame));
-			break;
-		case 'd':
-			right (getGameChar(pGame), getGameMap(pGame));
-			break;
-		case 's':
-			jump (getGameChar(pGame), getGameMap(pGame));
-			break;		
-	}
-}
 
 void left(Game *pGame)
 {
 	Map *pMap = getGameMap(pGame);
 	Character *pChar = getGameChar(pGame);
-	if(pMap->tab[pChar->y][pChar->x-1]!='#')
-		pChar->x--;
+	if(pMap->tab[(int)pChar->cPosi.y][(int)pChar->cPosi.x-1]!='#')
+		pChar->cPosi.x--;
 }
 
 void right(Game *pGame)
 {
 	Map *pMap = getGameMap(pGame);
 	Character *pChar = getGameChar(pGame);
-	if(pMap->tab[pChar->y][pChar->x+1]!='#')
-		pChar->x++;
+	if(pMap->tab[(int)pChar->cPosi.y][(int)pChar->cPosi.x+1]!='#')
+		pChar->cPosi.x++;
 }
 
 void jump(Game *pGame)
@@ -64,19 +48,35 @@ void jump(Game *pGame)
 	
 }
 
+void controlKey(Game *pGame, const char key)
+{ 
+	
+	switch(key)
+	{
+		case 'g':
+			left (pGame);
+			break;
+		case 'd':
+			right (pGame);
+			break;
+		case 's':
+			jump (pGame);
+			break;		
+	}
+}
 
 Map *getGameMap(Game *pGame)
 {
-	return &(pGame -> pMap);
+	return &(pGame -> gMap);
 }
 
 Character *getGameChar(Game *pGame)
 {
-	return &(pGame -> pChar);
+	return &(pGame -> gChar);
 }
 
-void initGame (Game *pGame)
+void initGame (Game *pGame)
 {
-	heroInit(&(pGame -> pChar));
-	mapInit(&(pGame -> pMap));	
+	initChar(&(pGame -> gChar));
+	mapInit(&(pGame -> gMap));	
 }

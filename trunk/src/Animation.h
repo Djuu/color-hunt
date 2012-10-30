@@ -1,9 +1,9 @@
-#ifndef _ANIM
-#define _ANIM
+#ifndef _ANIMATION
+#define _ANIMATION
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL.h>
-#include "map.h"
-#include "sdlJeu.h"
+
+#include "SDLGame.h"
 
 void animSpInit(SDL_Rect spAnim, int spDimX, int spDimY,int spDimL, int spDimH);
 

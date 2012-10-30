@@ -52,7 +52,7 @@ void mapInit(Map *pMap)
 
 
 
-const char mapGetXY(const Map *pMap, const int x, const int y)
+const char getMapXY(const Map *pMap, const int x, const int y)
 {
 	assert( x>=0) ;
 	assert( y>=0) ;

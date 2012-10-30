@@ -1,6 +1,8 @@
 #include <assert.h>
 #include <time.h>
+
 #include "SDLGame.h"
+
 const int TAILLE_SPRITE=20;
 
 SDL_Surface *SDL_load_image(const char* filename );
@@ -15,8 +17,8 @@ void initSDL(SdlGame *pSdlGame)
 	pGame = &(pSdlGame -> pGame);
 	initGame(pGame);
 	assert(getDimX(getGameMap(pGame))!=0);
-	dimx=getDimX(getGameMap(pGame);
-	dimy=getDimY(getGameMap(pGame);
+	dimx=getDimX(getGameMap(pGame));
+	dimy=getDimY(getGameMap(pGame));
 	
 	dimx=dimx*TAILLE_SPRITE;
 	dimy=dimy*TAILLE_SPRITE;
@@ -50,7 +52,7 @@ void sdlDisplay(SdlGame *pSdlGame)
 	assert(getDimX(pMap)!=0);
 	for (x=0;x<getDimX(pMap);++x)
 		for (y=0;y<getDimY(pMap);++y)
-			if (mapGetXY(pMap,x,y)=='#')
+			if (getMapXY(pMap,x,y)=='#')
 				SDL_apply_surface(pSdlGame-> surfaceMap, pSdlGame->surfaceScreen, x*TAILLE_SPRITE,  y*TAILLE_SPRITE);
 	
 	
@@ -58,10 +60,10 @@ void sdlDisplay(SdlGame *pSdlGame)
 	
 		
 		/*SDL_BlitSurface(pSdlGame -> surfaceChar, &(pSdlGame->rcSprite), pSdlGame->surfaceEcran, &(pSdlGame->rcSprite));*/
-	SDL_apply_surface(pSdlGame->surfaceChar, pSdlGame->surfaceScreen, getPosiChar(pChar)->x*TAILLE_SPRITE,  getPosiChar(pChar)->z*TAILLE_SPRITE);
+	SDL_apply_surface(pSdlGame->surfaceChar, pSdlGame->surfaceScreen, getPosiChar(pChar).x*TAILLE_SPRITE,  getPosiChar(pChar).z*TAILLE_SPRITE);
 }
 
-void sdlBoucle(sdlJeu *pSdlGame)
+void loopSDL(SdlGame *pSdlGame)
 {
 	SDL_Event event;
 	int continueBoucle=1;
@@ -70,13 +72,13 @@ void sdlBoucle(sdlJeu *pSdlGame)
 	/* Horloges (en secondes) */
 	float horloge_courante, horloge_precedente;
 
-	/* Intervalle de temps (en secondes) entre deux évolutions du jeu */
+	/* Intervalle de temps (en secondes) entre deux évolutions du Game */
 	/* Changer la valeur pour ralentir ou accélérer le déplacement des fantomes */
 	float intervalle_horloge = 0.01f;
 	
 	/* Récupère l'horloge actuelle et la convertit en secondes */
     /* clock() retourne le nombre de tops horloge depuis le lancement du programme */
-    horloge_precedente = (float)clock()/(float)CLOCKS_PER_SEC;
+	horloge_precedente = (float)clock()/(float)CLOCKS_PER_SEC;
     
     
     
@@ -87,14 +89,14 @@ void sdlBoucle(sdlJeu *pSdlGame)
 	int tempGauche=0;
 	int tempDroite=0;
 	
-	animSpInit(pSdlGame->rcSprite,128,0, TAILLE_SPRITE,TAILLE_SPRITE);
+/*	animSpInit(pSdlGame->rcSprite,128,0, TAILLE_SPRITE,TAILLE_SPRITE);*/
 	
 	
 	while(continueBoucle==1)
 	{
 		
-		/*pSdlGame->rcSprite.x=getPosiX(&(pSdlGame->jeu.perso));
-		pSdlGame->rcSprite.y=getPosiY(&(pSdlGame->jeu.perso));*/
+		/*pSdlGame->rcSprite.x=getPosiX(&(pSdlGame->Game.perso));
+		pSdlGame->rcSprite.y=getPosiY(&(pSdlGame->Game.perso));*/
 		/*Position du sprite*/
 		
 		
@@ -102,7 +104,7 @@ void sdlBoucle(sdlJeu *pSdlGame)
 		
 		
 		 /* Récupère l'horloge actuelle et la convertit en secondes */
-        horloge_courante = (float)clock()/(float)CLOCKS_PER_SEC;
+		horloge_courante = (float)clock()/(float)CLOCKS_PER_SEC;
 
        
 
@@ -155,34 +157,34 @@ void sdlBoucle(sdlJeu *pSdlGame)
 			
 		}
 		 /* Si suffisamment de temps s'est écoulé depuis la dernière prise d'horloge */
-        if (horloge_courante-horloge_precedente>=intervalle_horloge)
-        {
-        	
-                gravitation(&(pSdlGame->jeu.perso), &(pSdlGame->jeu.gMap));
-                rafraichissement = 1;
-                horloge_precedente = horloge_courante;
-        
+		if (horloge_courante-horloge_precedente>=intervalle_horloge)
+		{
+			
+	 /*               gravitation(&(pSdlGame->pGame).perso, &(pSdlGame->pGame).gMap);*/
+		        rafraichissement = 1;
+		        horloge_precedente = horloge_courante;
+		
 
-		if(tempGauche==1)
-		{
-			controlKey(&(pSdlGame->jeu), 'g');
-		}
-		if(tempDroite==1)
-		{
-			controlKey(&(pSdlGame->jeu), 'd');
-		}
-		/*if(pSdlGame->jeu.perso.sol == 1 && pSdlGame->jeu.perso.saut ==1) 
-		{
-			controlKey(&(pSdlGame->jeu), 's');*/
-		}
+			if(tempGauche==1)
+			{
+				controlKey(&(pSdlGame->pGame), 'g');
+			}
+			if(tempDroite==1)
+			{
+				controlKey(&(pSdlGame->pGame), 'd');
+			}
+			/*if(pSdlGame->Game.perso.sol == 1 && pSdlGame->Game.perso.saut ==1) 
+			{
+				controlKey(&(pSdlGame->Game), 's');
+			}*/
 		
 		
-	}	
+		}	
 		if (rafraichissement==1)
 		{
 			
-		    /* on affiche le jeu sur le buffer caché */
-		    sdlAffiche(pSdlGame);
+		    /* on affiche le Game sur le buffer caché */
+		    sdlDisplay(pSdlGame);
 
 		    /* on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle) */
 		    SDL_Flip( pSdlGame->surfaceScreen);
