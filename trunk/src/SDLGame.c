@@ -60,7 +60,7 @@ void sdlDisplay(SdlGame *pSdlGame)
 	
 		
 		/*SDL_BlitSurface(pSdlGame -> surfaceChar, &(pSdlGame->rcSprite), pSdlGame->surfaceEcran, &(pSdlGame->rcSprite));*/
-	SDL_apply_surface(pSdlGame->surfaceChar, pSdlGame->surfaceScreen, getPosiChar(pChar).x*TAILLE_SPRITE,  getPosiChar(pChar).z*TAILLE_SPRITE);
+	SDL_apply_surface(pSdlGame->surfaceChar, pSdlGame->surfaceScreen, getPosiChar(pChar).x*TAILLE_SPRITE,  getPosiChar(pChar).y*TAILLE_SPRITE);
 }
 
 void loopSDL(SdlGame *pSdlGame)
@@ -161,6 +161,7 @@ void loopSDL(SdlGame *pSdlGame)
 		{
 			
 	 /*               gravitation(&(pSdlGame->pGame).perso, &(pSdlGame->pGame).gMap);*/
+	 gravity (&(pSdlGame->pGame.gChar));
 		        rafraichissement = 1;
 		        horloge_precedente = horloge_courante;
 		
@@ -172,6 +173,7 @@ void loopSDL(SdlGame *pSdlGame)
 			if(tempDroite==1)
 			{
 				controlKey(&(pSdlGame->pGame), 'd');
+				
 			}
 			/*if(pSdlGame->Game.perso.sol == 1 && pSdlGame->Game.perso.saut ==1) 
 			{

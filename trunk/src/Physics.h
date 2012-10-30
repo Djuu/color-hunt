@@ -3,5 +3,5 @@
 
 #include "Character.h"
 #include "Object.h"
-
+void gravity (Character *pChar);
 #endif

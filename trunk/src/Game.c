@@ -6,16 +6,19 @@ void left(Game *pGame)
 {
 	Map *pMap = getGameMap(pGame);
 	Character *pChar = getGameChar(pGame);
-	if(pMap->tab[(int)pChar->cPosi.y][(int)pChar->cPosi.x-1]!='#')
-		pChar->cPosi.x--;
+	if(pMap->tab[(int)(pChar->cPosi.y)][(int)(pChar->cPosi.x)-1]!='#')
+		pChar->cPosi.x-=0.1;
+	
+	
 }
 
 void right(Game *pGame)
 {
 	Map *pMap = getGameMap(pGame);
 	Character *pChar = getGameChar(pGame);
-	if(pMap->tab[(int)pChar->cPosi.y][(int)pChar->cPosi.x+1]!='#')
-		pChar->cPosi.x++;
+	if(pMap->tab[(int)(pChar->cPosi.y)][(int)(pChar->cPosi.x)+1]!='#')
+		pChar->cPosi.x+=0.1;
+	
 }
 
 void jump(Game *pGame)
@@ -79,4 +82,8 @@ void initGame (Game *pGame)
 {
 	initChar(&(pGame -> gChar));
 	mapInit(&(pGame -> gMap));	
+	pGame->gChar.cPosi.v_x = 1.5;
+	pGame->gChar.cPosi.v_grav = 0.08;
+	pGame->gChar.cPosi.v_saut = -1;
+	pGame->gChar.cPosi.v_y =pGame->gChar.cPosi.v_saut;
 }
