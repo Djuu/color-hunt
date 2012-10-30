@@ -8,7 +8,7 @@ endsrc = src/
 all: $(endbin)main 
 
 
-$(endobj)main.o: $(endsrc)main.c  
+$(endobj)main.o: $(endsrc)main.c $(endsrc)SDLGame.h
 	gcc $(options) -c $(endsrc)main.c $(ssdl) $(sttf) -o $(endobj)main.o
 
 $(endobj)Enemy.o:$(endsrc)Enemy.c $(endsrc)Enemy.h $(endsrc)Character.h

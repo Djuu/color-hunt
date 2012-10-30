@@ -1,5 +1,5 @@
-#ifndef _ENEMY
-#define _ENEMY
+#ifndef _OBJECT
+#define _OBJECT
 
 typedef struct
 {

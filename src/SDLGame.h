@@ -1,5 +1,5 @@
-#ifndef _SDLGAME_H
-#define _SDLGAME_H
+#ifndef _SDLGAME
+#define _SDLGAME
 
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL.h>
@@ -8,7 +8,7 @@
 typedef struct
 {
 	Game pGame;
-	SDL_Surface *surfaceSceen;
+	SDL_Surface *surfaceScreen;
 	SDL_Surface *surfaceChar;
 	SDL_Surface *surfaceMap;
 	SDL_Surface *surfaceEnemy;
