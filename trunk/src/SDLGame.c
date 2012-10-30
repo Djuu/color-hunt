@@ -161,7 +161,7 @@ void loopSDL(SdlGame *pSdlGame)
 		{
 			
 	 /*               gravitation(&(pSdlGame->pGame).perso, &(pSdlGame->pGame).gMap);*/
-	 gravity (&(pSdlGame->pGame.gChar));
+	 gravity (&(pSdlGame->pGame.gChar), &(pSdlGame->pGame.gMap));
 		        rafraichissement = 1;
 		        horloge_precedente = horloge_courante;
 		

@@ -3,5 +3,6 @@
 
 #include "Character.h"
 #include "Object.h"
-void gravity (Character *pChar);
+#include "Map.h"
+void gravity (Character *pChar , Map *pMap);
 #endif
