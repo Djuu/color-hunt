@@ -1,11 +1,10 @@
 #include "Physics.h"
 
-void gravity (Character *pChar)
+void gravity (Character *pChar, Map *pMap)
 {
-	
-
-	pChar->cPosi.x += pChar->cPosi.v_x;
-	pChar->cPosi.y += pChar->cPosi.v_y;
-	pChar->cPosi.v_y += pChar->cPosi.v_grav;
-
+	if(pMap->tab[(int)(pChar->cPosi.y)+1][(int)(pChar->cPosi.x)]!='#') 
+	{
+		pChar->cPosi.y += pChar->cPosi.v_y;
+		pChar->cPosi.v_y += pChar->cPosi.v_grav;
+	}
 }
