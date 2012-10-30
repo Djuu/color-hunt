@@ -1,5 +1,6 @@
 #include "Position.h"
 
+
 float getPosiX (const Position *pPosi)
 {
 	assert(pPosi != NULL);

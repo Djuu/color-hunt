@@ -8,6 +8,10 @@
 typedef struct
 {
 	float x,y,z;
+	double v_x;
+	double v_grav;
+	double v_saut;
+	double v_y;
 
 }Position;
 
