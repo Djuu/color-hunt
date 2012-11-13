@@ -126,7 +126,7 @@ void loopSDL(SdlGame *pSdlGame)
 							tempDroite=1;
 							break;	
 						case SDLK_UP:
-							/*fonction saut : vitesse et paf */
+							controlKey(&(pSdlGame->pGame), 's');
 							break;	
 						case SDLK_ESCAPE:
 							continueBoucle = 0;
@@ -161,11 +161,11 @@ void loopSDL(SdlGame *pSdlGame)
 		{
 			
 	 /*               gravitation(&(pSdlGame->pGame).perso, &(pSdlGame->pGame).gMap);*/
-			collision (&(pSdlGame->pGame.gChar), &(pSdlGame->pGame.gMap));
+			
 
 			gravity (&(pSdlGame->pGame.gChar));
 
-	 
+	 collision (&(pSdlGame->pGame.gChar), &(pSdlGame->pGame.gMap));
 	
 	
 		        rafraichissement = 1;
@@ -180,6 +180,10 @@ void loopSDL(SdlGame *pSdlGame)
 			{
 				controlKey(&(pSdlGame->pGame), 'd');
 				
+			}
+			if(tempGauche==0 && tempDroite==0)
+			{
+				initSpeed(&(pSdlGame->pGame));
 			}
 			/*if(pSdlGame->Game.perso.sol == 1 && pSdlGame->Game.perso.saut ==1) 
 			{

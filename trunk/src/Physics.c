@@ -4,6 +4,7 @@ void gravity (Character *pChar)
 {
 	
 	pChar->cPosi.v_y += pChar->cPosi.v_grav;
+	
 
 }
 
@@ -55,9 +56,23 @@ float path (Character *pChar, Map *pMap)
 
 void collision (Character *pChar, Map *pMap)
 {
+
 	pChar->cPosi.v_y*=path (pChar, pMap);
+	pChar->cPosi.v_x*=path (pChar, pMap);
+	
 	pChar->cPosi.y+=pChar->cPosi.v_y;
-	pChar->cPosi.x+=path (pChar, pMap)*pChar->cPosi.v_x;
+	pChar->cPosi.x+=pChar->cPosi.v_x;
+	
+	if (getMapXY(pMap, (int)(pChar->cPosi.x), (int)(pChar->cPosi.y+1.5))=='#' || getMapXY(pMap, (int)(pChar->cPosi.x+1), (int)(pChar->cPosi.y+1.5))=='#')
+	{
+		pChar->floor = 1;
+	} 
+	else
+	{
+		pChar->floor = 0;
+		
+	}
+	
  
 	
 }

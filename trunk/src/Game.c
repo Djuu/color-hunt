@@ -4,50 +4,25 @@
 
 void left(Game *pGame)
 {
-	Map *pMap = getGameMap(pGame);
-	Character *pChar = getGameChar(pGame);
-	if(pMap->tab[(int)(pChar->cPosi.y)][(int)(pChar->cPosi.x)-1]!='#')
-		pChar->cPosi.x-=0.8;
 
+	Character *pChar = getGameChar(pGame);
+
+	pChar->cPosi.v_x=-0.5;
 	
 }
 
 void right(Game *pGame)
 {
-	Map *pMap = getGameMap(pGame);
+
 	Character *pChar = getGameChar(pGame);
-	if(pMap->tab[(int)(pChar->cPosi.y)][(int)(pChar->cPosi.x)+1]!='#')
-		pChar->cPosi.x+=0.8;
+	pChar->cPosi.v_x=0.5;
 	
 }
 
 void jump(Game *pGame)
 {
-	/*	if(perso->saut == 1 && hmap->tab[perso->y-1][perso->x]!= '#')
-		{
-		
-			if(perso->air<sautHauteur)
-			{
-				perso->y--;
-				usleep(300);
-				perso->air++;
-			}
-			else
-			{
-				perso->sol=0;
-				perso->saut=0;
-				perso->air=0;
-			}	
-			
-		
-		}
-		if(hmap->tab[perso->y-1][perso->x]== '#')
-		{
-			perso->air=0;
-			perso->sol=0;
-			perso->saut = sautHauteur;
-		}
-*/
+	if(pGame->gChar.floor == 1)
+	pGame->gChar.cPosi.v_y = -1;
 	
 }
 
@@ -85,6 +60,13 @@ void initGame (Game *pGame)
 	pGame->gChar.cPosi.v_x = 0;/*0.2*/
 	pGame->gChar.cPosi.v_y=0;
 	pGame->gChar.cPosi.v_grav = 0.08;/*0.02*/
-	pGame->gChar.cPosi.v_saut = -1;/*0.01*/
+	pGame->gChar.cPosi.v_saut = 0;/*0.01*/
 	pGame->gChar.cPosi.v_y =pGame->gChar.cPosi.v_saut;
+}
+
+void initSpeed(Game *pGame)
+{
+	Character *pChar = getGameChar(pGame);
+	pChar->cPosi.v_x=0;
+
 }
