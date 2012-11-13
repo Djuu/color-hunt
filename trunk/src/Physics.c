@@ -55,16 +55,9 @@ float path (Character *pChar, Map *pMap)
 
 void collision (Character *pChar, Map *pMap)
 {
-
-	pChar->cPosi.y+=path (pChar, pMap)*pChar->cPosi.v_y;
+	pChar->cPosi.v_y*=path (pChar, pMap);
+	pChar->cPosi.y+=pChar->cPosi.v_y;
 	pChar->cPosi.x+=path (pChar, pMap)*pChar->cPosi.v_x;
-	if(getMapXY(pMap, (int)pChar->cPosi.y+1, (int)pChar->cPosi.x )=='#')
-	{
-		pChar->cPosi.v_y = 0;
-		printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-	}
-	printf("%f ", pChar->cPosi.v_y);
-		
-		 
+ 
 	
 }
