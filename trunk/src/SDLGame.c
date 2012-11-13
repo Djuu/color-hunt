@@ -161,10 +161,10 @@ void loopSDL(SdlGame *pSdlGame)
 		{
 			
 	 /*               gravitation(&(pSdlGame->pGame).perso, &(pSdlGame->pGame).gMap);*/
-	if( collision (&(pSdlGame->pGame.gChar), &(pSdlGame->pGame.gMap))==0)
-	{
-		gravity (&(pSdlGame->pGame.gChar));
-	}
+			collision (&(pSdlGame->pGame.gChar), &(pSdlGame->pGame.gMap));
+
+			gravity (&(pSdlGame->pGame.gChar));
+
 	 
 	
 	
