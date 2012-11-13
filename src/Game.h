@@ -19,6 +19,6 @@ void initGame (Game *pGame);
 void controlKey (Game *pGame, const char key);
 Map *getGameMap (Game *pGame);
 Character *getGameChar (Game* pGame);
-
+void initSpeed(Game *pGame);
 #endif
 
