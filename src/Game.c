@@ -83,6 +83,7 @@ void initGame (Game *pGame)
 	initChar(&(pGame -> gChar));
 	mapInit(&(pGame -> gMap));	
 	pGame->gChar.cPosi.v_x = 0;/*0.2*/
+	pGame->gChar.cPosi.v_y=0;
 	pGame->gChar.cPosi.v_grav = 0.08;/*0.02*/
 	pGame->gChar.cPosi.v_saut = -1;/*0.01*/
 	pGame->gChar.cPosi.v_y =pGame->gChar.cPosi.v_saut;
