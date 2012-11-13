@@ -27,3 +27,18 @@ void setPosi (Position *pPosi, const float x, const float y, const float z)
 	pPosi -> y = y;
 	pPosi -> z = z;
 }
+
+int getPosiXint(const Position *pPosi)
+{
+	return (int)(pPosi->x);
+}
+
+int getPosiYint(const Position *pPosi)
+{
+	return (int)(pPosi->y);
+}
+
+int getPosiZint(const Position *pPosi)
+{
+	return (int)(pPosi->z);
+}

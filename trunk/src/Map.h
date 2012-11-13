@@ -18,7 +18,7 @@ Description : Affichage de la map
 */
 /*void mapAffiche(map *pMap);*/
 
-const char getMapXY(const Map *, const int x, const int y);
+char getMapXY(const Map *, const int x, const int y);
 
 /**
 Function
