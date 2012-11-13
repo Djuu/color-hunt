@@ -5,6 +5,7 @@
 #include <SDL/SDL.h>
 #include "Game.h"
 
+
 typedef struct
 {
 	Game pGame;

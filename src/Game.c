@@ -7,8 +7,8 @@ void left(Game *pGame)
 	Map *pMap = getGameMap(pGame);
 	Character *pChar = getGameChar(pGame);
 	if(pMap->tab[(int)(pChar->cPosi.y)][(int)(pChar->cPosi.x)-1]!='#')
-		pChar->cPosi.x-=1;
-	
+		pChar->cPosi.x-=0.8;
+
 	
 }
 
@@ -17,7 +17,7 @@ void right(Game *pGame)
 	Map *pMap = getGameMap(pGame);
 	Character *pChar = getGameChar(pGame);
 	if(pMap->tab[(int)(pChar->cPosi.y)][(int)(pChar->cPosi.x)+1]!='#')
-		pChar->cPosi.x+=1;
+		pChar->cPosi.x+=0.8;
 	
 }
 
@@ -82,8 +82,8 @@ void initGame (Game *pGame)
 {
 	initChar(&(pGame -> gChar));
 	mapInit(&(pGame -> gMap));	
-	pGame->gChar.cPosi.v_x = 0.2;
-	pGame->gChar.cPosi.v_grav = 0.08;
-	pGame->gChar.cPosi.v_saut = -0.01;
+	pGame->gChar.cPosi.v_x = 0;/*0.2*/
+	pGame->gChar.cPosi.v_grav = 0.08;/*0.02*/
+	pGame->gChar.cPosi.v_saut = -1;/*0.01*/
 	pGame->gChar.cPosi.v_y =pGame->gChar.cPosi.v_saut;
 }

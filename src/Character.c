@@ -3,7 +3,7 @@
 void initChar (Character *pChar)
 {
 	pChar -> cPosi.x = 3;
-	pChar -> cPosi.y = 5;
+	pChar -> cPosi.y = 10;
 	pChar -> cPosi.z = 0;
 	pChar-> floor = 0;
 	pChar-> air = 0;
