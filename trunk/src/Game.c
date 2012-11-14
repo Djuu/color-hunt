@@ -32,9 +32,11 @@ void controlKey(Game *pGame, const char key)
 	switch(key)
 	{
 		case 'g':
+			if (pGame -> gChar.air != 1)
 			left (pGame);
 			break;
 		case 'd':
+			if (pGame -> gChar.air != 2)
 			right (pGame);
 			break;
 		case 's':

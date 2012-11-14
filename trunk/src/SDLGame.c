@@ -5,8 +5,11 @@
 
 const int TAILLE_SPRITE=20;
 
+const int SCREEN_WIDTH =800;
+const int SCREEN_HEIGHT =720;
+
 SDL_Surface *SDL_load_image(const char* filename );
-void SDL_apply_surface( SDL_Surface* source, SDL_Surface* destination, int x, int y );
+void SDL_apply_surface( SDL_Surface* source, SDL_Surface* destination, int x, int y);
 
 void initSDL(SdlGame *pSdlGame)
 {
@@ -14,17 +17,21 @@ void initSDL(SdlGame *pSdlGame)
 	Game *pGame;
 	int dimx, dimy;
 	
+	/*Déplacer la map*/
+	pSdlGame->scrollX=0;
+	pSdlGame->scrollY=0;
+	
 	pGame = &(pSdlGame -> pGame);
 	initGame(pGame);
 	assert(getDimX(getGameMap(pGame))!=0);
 	dimx=getDimX(getGameMap(pGame));
 	dimy=getDimY(getGameMap(pGame));
-	
-	dimx=dimx*TAILLE_SPRITE;
-	dimy=dimy*TAILLE_SPRITE;
+
+	pSdlGame->rectScreen.x=0;
+	pSdlGame->rectScreen.y=0;
 	
 	SDL_Init(SDL_INIT_VIDEO);
-	pSdlGame -> surfaceScreen = SDL_SetVideoMode(dimx,dimy,32, SDL_HWSURFACE|SDL_DOUBLEBUF); /*|SDL_FULLSCREEN*/	
+	pSdlGame -> surfaceScreen = SDL_SetVideoMode(SCREEN_WIDTH,SCREEN_HEIGHT,32, SDL_HWSURFACE|SDL_DOUBLEBUF);/*|SDL_FULLSCREEN);*/
 	SDL_WM_SetCaption( "ColorHunt", NULL );
 	
 	pSdlGame -> surfaceChar = SDL_load_image("data/mario2.bmp");
@@ -32,53 +39,89 @@ void initSDL(SdlGame *pSdlGame)
 		pSdlGame->surfaceChar = SDL_load_image("../data/mario2.bmp");
 	assert( pSdlGame->surfaceChar!=NULL);
 	
-	pSdlGame -> surfaceMap = SDL_load_image("data/grasss.bmp");
-	if (pSdlGame->surfaceMap==NULL)	
-		pSdlGame->surfaceMap = SDL_load_image("../data/grasss.bmp");
-	assert( pSdlGame->surfaceMap!=NULL);
+	pSdlGame -> surfaceEarth = SDL_load_image("data/grasss.bmp");
+	if (pSdlGame->surfaceEarth==NULL)	
+		pSdlGame->surfaceEarth = SDL_load_image("../data/grasss.bmp");
+	assert( pSdlGame->surfaceEarth!=NULL);
+
+
+	
 }
 
 void sdlDisplay(SdlGame *pSdlGame)
 {
-	int x,y;
+	int i,j;
 	Game *pGame = &(pSdlGame->pGame);
 	Character *pChar= getGameChar(pGame);
 	Map *pMap=getGameMap(pGame);
+	SDL_Rect posiChar;
 
+	posiChar.x = getPosiChar(pChar).x*TAILLE_SPRITE - pSdlGame->scrollX;
+	posiChar.y = getPosiChar(pChar).y*TAILLE_SPRITE - pSdlGame->scrollY;
+	
 	/* Remplir l'écran de blanc */
 	SDL_FillRect( pSdlGame->surfaceScreen, &pSdlGame->surfaceScreen->clip_rect, SDL_MapRGB( pSdlGame->surfaceScreen->format, 0xFF, 0xFF, 0xFF ));
 
-	
+	SDL_Rect positionTile;
 	assert(getDimX(pMap)!=0);
-	for (x=0;x<getDimX(pMap);++x)
-		for (y=0;y<getDimY(pMap);++y)
-			if (getMapXY(pMap,x,y)=='#')
-				SDL_apply_surface(pSdlGame-> surfaceMap, pSdlGame->surfaceScreen, x*TAILLE_SPRITE,  y*TAILLE_SPRITE);
 	
 	
+	int xmin,xmax,ymin,ymax;
+	xmin = pSdlGame->scrollX/TAILLE_SPRITE;
+	xmax = (pSdlGame->scrollX + SCREEN_WIDTH)/TAILLE_SPRITE;
+	ymin = pSdlGame->scrollY/TAILLE_SPRITE;
+	ymax = (pSdlGame->scrollY + SCREEN_HEIGHT)/TAILLE_SPRITE;
+	
+
+	for (i=xmin;i<xmax;++i)
+	{
+		for (j=ymin;j<ymax;++j)
+		{
+			positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+			positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+			
+			switch (pSdlGame->pGame.gMap.tab[j][i])
+			{
+				case '#':
+					SDL_BlitSurface(pSdlGame->surfaceEarth,NULL, pSdlGame->surfaceScreen, &positionTile);
+				break;
+			
+			}
+		} 
+				
+	}
 	
 	
-		
-		/*SDL_BlitSurface(pSdlGame -> surfaceChar, &(pSdlGame->rcSprite), pSdlGame->surfaceEcran, &(pSdlGame->rcSprite));*/
-	SDL_apply_surface(pSdlGame->surfaceChar, pSdlGame->surfaceScreen, getPosiChar(pChar).x*TAILLE_SPRITE,  getPosiChar(pChar).y*TAILLE_SPRITE);
+	SDL_BlitSurface(pSdlGame->surfaceChar,NULL, pSdlGame->surfaceScreen, &posiChar);
+	
+	
 }
 
 void loopSDL(SdlGame *pSdlGame)
 {
 	SDL_Event event;
-	int continueBoucle=1;
-	int rafraichissement=1;
+	int continueLoop=1;
+	int refresh=1;
+	
+	Game *pGame = &(pSdlGame->pGame);
+	Character *pChar= getGameChar(pGame);
+	Map *pMap=getGameMap(pGame);
+	
+	float tempPosiChar;
+	tempPosiChar= getPosiChar(pChar).x;
+	
+	float scrollTemp;
 	
 	/* Horloges (en secondes) */
-	float horloge_courante, horloge_precedente;
+	float currentClock, previousClock;
 
 	/* Intervalle de temps (en secondes) entre deux évolutions du Game */
 	/* Changer la valeur pour ralentir ou accélérer le déplacement des fantomes */
-	float intervalle_horloge = 0.01f;
+	float clockInterval = 0.01f;
 	
 	/* Récupère l'horloge actuelle et la convertit en secondes */
     /* clock() retourne le nombre de tops horloge depuis le lancement du programme */
-	horloge_precedente = (float)clock()/(float)CLOCKS_PER_SEC;
+	previousClock = (float)clock()/(float)CLOCKS_PER_SEC;
     
     
     
@@ -86,13 +129,13 @@ void loopSDL(SdlGame *pSdlGame)
     
     
 	
-	int tempGauche=0;
-	int tempDroite=0;
+	int tmpLeft=0;
+	int tmpRight=0;
 	
 /*	animSpInit(pSdlGame->rcSprite,128,0, TAILLE_SPRITE,TAILLE_SPRITE);*/
 	
 	
-	while(continueBoucle==1)
+	while(continueLoop==1)
 	{
 		
 		/*pSdlGame->rcSprite.x=getPosiX(&(pSdlGame->Game.perso));
@@ -104,7 +147,7 @@ void loopSDL(SdlGame *pSdlGame)
 		
 		
 		 /* Récupère l'horloge actuelle et la convertit en secondes */
-		horloge_courante = (float)clock()/(float)CLOCKS_PER_SEC;
+		currentClock = (float)clock()/(float)CLOCKS_PER_SEC;
 
        
 
@@ -120,16 +163,16 @@ void loopSDL(SdlGame *pSdlGame)
 					switch (event.key.keysym.sym)
 					{
 						case SDLK_LEFT:
-							tempGauche=1; 
+							tmpLeft=1; 
 							break;
 						case SDLK_RIGHT:
-							tempDroite=1;
+							tmpRight=1;
 							break;	
 						case SDLK_UP:
 							controlKey(&(pSdlGame->pGame), 's');
 							break;	
 						case SDLK_ESCAPE:
-							continueBoucle = 0;
+							continueLoop = 0;
 							break;
 						default:
 							break;
@@ -139,13 +182,13 @@ void loopSDL(SdlGame *pSdlGame)
 					switch (event.key.keysym.sym)
 					{
 						case SDLK_LEFT:
-							tempGauche=0; 
+							tmpLeft=0; 
 							break;
 						case SDLK_RIGHT:
-							tempDroite=0;
+							tmpRight=0;
 							break;
 						case SDLK_ESCAPE:
-							continueBoucle = 0;
+							continueLoop = 0;
 							break;
 						default:
 							break;
@@ -157,7 +200,7 @@ void loopSDL(SdlGame *pSdlGame)
 			
 		}
 		 /* Si suffisamment de temps s'est écoulé depuis la dernière prise d'horloge */
-		if (horloge_courante-horloge_precedente>=intervalle_horloge)
+		if (currentClock-previousClock>=clockInterval)
 		{
 			
 	 /*               gravitation(&(pSdlGame->pGame).perso, &(pSdlGame->pGame).gMap);*/
@@ -165,23 +208,67 @@ void loopSDL(SdlGame *pSdlGame)
 
 			gravity (&(pSdlGame->pGame.gChar));
 
-	 collision (&(pSdlGame->pGame.gChar), &(pSdlGame->pGame.gMap));
+	 		collision (&(pSdlGame->pGame.gChar), &(pSdlGame->pGame.gMap));
 	
 	
-		        rafraichissement = 1;
-		        horloge_precedente = horloge_courante;
+		        refresh = 1;
+		        previousClock = currentClock;
 		
-
-			if(tempGauche==1)
+			float scrollTmp=0;
+			
+			
+			/*blocage du scroll*/
+			/*if (pSdlGame->scrollX<0)
+			{
+				pSdlGame->scrollX=0;
+			}
+			if (pSdlGame->scrollX>pMap->dimx*TAILLE_SPRITE)
+			{
+				pSdlGame->scrollX>pMap->dimx*TAILLE_SPRITE
+			}*/
+			
+			
+			if(tmpLeft==1)
 			{
 				controlKey(&(pSdlGame->pGame), 'g');
+		
+				printf("DIFF 1 : %d\n" , (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX));
+					printf("DIFF 2 : %d\n" , (int)(SCREEN_WIDTH*3/4));
+				int temp;
+				temp = (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX);
+				if( temp == (int)(SCREEN_WIDTH*3/4) )
+				{
+					
+					
+					pSdlGame->scrollX=getPosiChar(pChar).x*TAILLE_SPRITE-SCREEN_WIDTH*3/4;
+				}
+				if (temp > (int)(SCREEN_WIDTH*3/4))
+				{
+					temp =(int)(SCREEN_WIDTH*3/4);
+				}
+				if(temp < (int)(SCREEN_WIDTH*3/4))
+				{
+					pSdlGame->scrollX-=30;
+				}
 			}
-			if(tempDroite==1)
+			if(tmpRight==1)
 			{
-				controlKey(&(pSdlGame->pGame), 'd');
 				
+				controlKey(&(pSdlGame->pGame), 'd');
+				if (getPosiChar(pChar).x<getPosiChar(pChar).x*TAILLE_SPRITE-SCREEN_WIDTH/4)
+				{
+			
+					tempPosiChar= getPosiChar(pChar).x;
+					
+					if(TAILLE_SPRITE-SCREEN_WIDTH/4)
+					
+					pSdlGame->scrollX=getPosiChar(pChar).x*TAILLE_SPRITE-SCREEN_WIDTH/4;
+					printf("Position perso : %f\n" , getPosiChar(pChar).x);
+					printf("Position scroll : %f\n" , pSdlGame->scrollX);
+					printf("\n");
+				}
 			}
-			if(tempGauche==0 && tempDroite==0)
+			if(tmpLeft==0 && tmpRight==0)
 			{
 				initSpeed(&(pSdlGame->pGame));
 			}
@@ -192,7 +279,7 @@ void loopSDL(SdlGame *pSdlGame)
 		
 		
 		}	
-		if (rafraichissement==1)
+		if (refresh==1)
 		{
 			
 		    /* on affiche le Game sur le buffer caché */
@@ -231,7 +318,7 @@ SDL_Surface *SDL_load_image(const char* filename )
 }
 
 
-void SDL_apply_surface( SDL_Surface* source, SDL_Surface* destination, int x, int y )
+void SDL_apply_surface( SDL_Surface* source, SDL_Surface* destination, int x, int y)
 {
 	/* Make a temporary rectangle to hold the offsets */
 	SDL_Rect offset;
@@ -241,5 +328,5 @@ void SDL_apply_surface( SDL_Surface* source, SDL_Surface* destination, int x, in
 	offset.y = y;
 
 	/* Blit the surface */
-	SDL_BlitSurface( source, NULL, destination, &offset );
+	SDL_BlitSurface( source,NULL, destination, &offset );
 }

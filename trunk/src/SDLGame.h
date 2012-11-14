@@ -11,10 +11,13 @@ typedef struct
 	Game pGame;
 	SDL_Surface *surfaceScreen;
 	SDL_Surface *surfaceChar;
-	SDL_Surface *surfaceMap;
+	SDL_Surface *surfaceEarth;
 	SDL_Surface *surfaceEnemy;
 	SDL_Rect rcSprite;
 	SDL_Rect rcSpPosi;
+	SDL_Rect rectScreen;
+	float scrollX;
+	float scrollY;
 }SdlGame;
 
 
