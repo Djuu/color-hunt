@@ -15,7 +15,7 @@ void initSDL(SdlGame *pSdlGame)
 {
 	
 	Game *pGame;
-	int dimx, dimy;
+
 	
 	/*Déplacer la map*/
 	pSdlGame->scrollX=0;
@@ -23,9 +23,6 @@ void initSDL(SdlGame *pSdlGame)
 	
 	pGame = &(pSdlGame -> pGame);
 	initGame(pGame);
-	assert(getDimX(getGameMap(pGame))!=0);
-	dimx=getDimX(getGameMap(pGame));
-	dimy=getDimY(getGameMap(pGame));
 
 	pSdlGame->rectScreen.x=0;
 	pSdlGame->rectScreen.y=0;
@@ -106,11 +103,6 @@ void loopSDL(SdlGame *pSdlGame)
 	Game *pGame = &(pSdlGame->pGame);
 	Character *pChar= getGameChar(pGame);
 	Map *pMap=getGameMap(pGame);
-	
-	float tempPosiChar;
-	tempPosiChar= getPosiChar(pChar).x;
-	
-	float scrollTemp;
 	
 	/* Horloges (en secondes) */
 	float currentClock, previousClock;
@@ -213,60 +205,30 @@ void loopSDL(SdlGame *pSdlGame)
 	
 		        refresh = 1;
 		        previousClock = currentClock;
-		
-			float scrollTmp=0;
 			
-			
-			/*blocage du scroll*/
-			/*if (pSdlGame->scrollX<0)
-			{
+			// Limitation de la fenetre de scrolling
+			if (pSdlGame->scrollX<0)
 				pSdlGame->scrollX=0;
-			}
-			if (pSdlGame->scrollX>pMap->dimx*TAILLE_SPRITE)
-			{
-				pSdlGame->scrollX>pMap->dimx*TAILLE_SPRITE
-			}*/
+			if (pSdlGame->scrollX+SCREEN_WIDTH>TAILLE_SPRITE*pMap->dimx-1)
+				pSdlGame->scrollX=TAILLE_SPRITE*pMap->dimx-SCREEN_WIDTH;
 			
-			
+			int temp;
+			temp = (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX);
 			if(tmpLeft==1)
 			{
 				controlKey(&(pSdlGame->pGame), 'g');
+				if(temp <= SCREEN_WIDTH/4)
+					pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
+
 		
-				printf("DIFF 1 : %d\n" , (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX));
-					printf("DIFF 2 : %d\n" , (int)(SCREEN_WIDTH*3/4));
-				int temp;
-				temp = (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX);
-				if( temp == (int)(SCREEN_WIDTH*3/4) )
-				{
-					
-					
-					pSdlGame->scrollX=getPosiChar(pChar).x*TAILLE_SPRITE-SCREEN_WIDTH*3/4;
-				}
-				if (temp > (int)(SCREEN_WIDTH*3/4))
-				{
-					temp =(int)(SCREEN_WIDTH*3/4);
-				}
-				if(temp < (int)(SCREEN_WIDTH*3/4))
-				{
-					pSdlGame->scrollX-=30;
-				}
 			}
 			if(tmpRight==1)
 			{
 				
 				controlKey(&(pSdlGame->pGame), 'd');
-				if (getPosiChar(pChar).x<getPosiChar(pChar).x*TAILLE_SPRITE-SCREEN_WIDTH/4)
-				{
-			
-					tempPosiChar= getPosiChar(pChar).x;
-					
-					if(TAILLE_SPRITE-SCREEN_WIDTH/4)
-					
-					pSdlGame->scrollX=getPosiChar(pChar).x*TAILLE_SPRITE-SCREEN_WIDTH/4;
-					printf("Position perso : %f\n" , getPosiChar(pChar).x);
-					printf("Position scroll : %f\n" , pSdlGame->scrollX);
-					printf("\n");
-				}
+				if(temp >= SCREEN_WIDTH*3/4)
+					pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
+
 			}
 			if(tmpLeft==0 && tmpRight==0)
 			{
