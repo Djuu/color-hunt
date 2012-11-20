@@ -28,7 +28,7 @@ void initSDL(SdlGame *pSdlGame)
 	pSdlGame->rectScreen.y=0;
 	
 	SDL_Init(SDL_INIT_VIDEO);
-	pSdlGame -> surfaceScreen = SDL_SetVideoMode(SCREEN_WIDTH,SCREEN_HEIGHT,32, SDL_HWSURFACE|SDL_DOUBLEBUF);/*|SDL_FULLSCREEN);*/
+	pSdlGame -> surfaceScreen = SDL_SetVideoMode(SCREEN_WIDTH,SCREEN_HEIGHT,32, SDL_HWSURFACE|SDL_DOUBLEBUF);//|SDL_FULLSCREEN);
 	SDL_WM_SetCaption( "ColorHunt", NULL );
 	
 	pSdlGame -> surfaceChar = SDL_load_image("data/mario2.bmp");

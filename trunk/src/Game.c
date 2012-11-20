@@ -57,13 +57,20 @@ Character *getGameChar(Game *pGame)
 
 void initGame (Game *pGame)
 {
+	int i,j;
 	initChar(&(pGame -> gChar));
-	mapInit(&(pGame -> gMap));	
-	pGame->gChar.cPosi.v_x = 0;/*0.2*/
-	pGame->gChar.cPosi.v_y=0;
+	mapInit(&(pGame -> gMap),"Map/Map2.txt");	
+	for(j=0;j<pGame -> gMap.dimy;++j)
+		for(i=0;i<pGame -> gMap.dimx;++i)
+			switch(pGame -> gMap.tab[j][i])
+			{
+				case 'C':
+					pGame -> gChar.cPosi.x = i;
+					pGame -> gChar .cPosi.y = j;
+				break;
+			}
+	
 	pGame->gChar.cPosi.v_grav = 0.08;/*0.02*/
-	pGame->gChar.cPosi.v_saut = 0;/*0.01*/
-	pGame->gChar.cPosi.v_y =pGame->gChar.cPosi.v_saut;
 }
 
 void initSpeed(Game *pGame)

@@ -11,7 +11,7 @@ typedef struct
 /**
 Description : Initialisation de la map. Allocation du tableau
 */
-void mapInit(Map *pMap);
+void mapInit(Map *pMap, const char* Name);
 
 /**
 Description : Affichage de la map
