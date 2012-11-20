@@ -12,10 +12,10 @@ void gravity (Character *pChar)
 float path (Character *pChar, Map *pMap)
 {
 	float i;
+	float posX, posY, posYd, posXd, posYr, posXr, posYl, posXl;
 	Position *current;
 	current=(Position*)malloc(sizeof(Position));
-	
-	float posX, posY, posYd, posXd, posYr, posXr, posYl, posXl;
+
 	setPosi (current, pChar->cPosi.x, pChar->cPosi.y,0);
 
 	

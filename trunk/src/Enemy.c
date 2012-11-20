@@ -2,13 +2,14 @@
 
 void initEnemy(Enemies *pEnemies, int num)
 {
+	
+	int i = 0;
 	assert(num >= 0);
 	pEnemies->eEnemy = calloc(num, sizeof(Enemy));
 	pEnemies -> number = num;
-	int i = 0;
 	for (i = 0; i< num; i++)
 	{
-		printf("%d\n",pEnemies -> eEnemy[i].eChar.cPosi.x);
+		printf("%f\n",pEnemies -> eEnemy[i].eChar.cPosi.x);
 		initChar(&(pEnemies -> eEnemy[i].eChar));
 			
 	}

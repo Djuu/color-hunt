@@ -25,7 +25,7 @@ void initSDL(SdlGame *pSdlGame)
 	pSdlGame->rectScreen.y=0;
 	
 	SDL_Init(SDL_INIT_VIDEO);
-	pSdlGame -> surfaceScreen = SDL_SetVideoMode(SCREEN_WIDTH,SCREEN_HEIGHT,32, SDL_HWSURFACE|SDL_DOUBLEBUF);//|SDL_FULLSCREEN);
+	pSdlGame -> surfaceScreen = SDL_SetVideoMode(SCREEN_WIDTH,SCREEN_HEIGHT,32, SDL_HWSURFACE|SDL_DOUBLEBUF);/*|SDL_FULLSCREEN);*/
 	SDL_WM_SetCaption( "ColorHunt", NULL );
 	
 	pSdlGame -> surfaceChar = SDL_load_image("data/mario2.bmp");
@@ -50,7 +50,9 @@ void initSDL(SdlGame *pSdlGame)
 void sdlDisplay(SdlGame *pSdlGame)
 {
 	int i,j;
+	int xmin,xmax,ymin,ymax;
 	SDL_Rect positionTile;
+	
 	Game *pGame = &(pSdlGame->pGame);
 	Character *pChar= getGameChar(pGame);
 	Enemy *pEnemy = getGameEnemies(pGame, 1);
@@ -70,9 +72,9 @@ void sdlDisplay(SdlGame *pSdlGame)
 	assert(getDimX(pMap)!=0);
 	
 	
-	int xmin,xmax,ymin,ymax;
+	
 	xmin = pSdlGame->scrollX/TAILLE_SPRITE;
-	xmax = (pSdlGame->scrollX + SCREEN_WIDTH)/TAILLE_SPRITE;
+	xmax = (pSdlGame->scrollX + SCREEN_WIDTH)/TAILLE_SPRITE+1;
 	ymin = pSdlGame->scrollY/TAILLE_SPRITE;
 	ymax = (pSdlGame->scrollY + SCREEN_HEIGHT)/TAILLE_SPRITE;
 	
@@ -108,6 +110,9 @@ void loopSDL(SdlGame *pSdlGame)
 	SDL_Event event;
 	int continueLoop=1;
 	int refresh=1;
+	int tmpLeft=0;
+	int tmpRight=0;
+	int temp;
 	
 	Game *pGame = &(pSdlGame->pGame);
 	Character *pChar= getGameChar(pGame);
@@ -124,15 +129,7 @@ void loopSDL(SdlGame *pSdlGame)
     /* clock() retourne le nombre de tops horloge depuis le lancement du programme */
 	previousClock = (float)clock()/(float)CLOCKS_PER_SEC;
     
-    
 
-     
-    
-    
-	
-	int tmpLeft=0;
-	int tmpRight=0;
-	int temp;
 /*	animSpInit(pSdlGame->rcSprite,128,0, TAILLE_SPRITE,TAILLE_SPRITE);*/
 	
 	
