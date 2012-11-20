@@ -28,7 +28,6 @@ void mapInit(Map *pMap,const char * Name)
 }
 
 
-
 char getMapXY(const Map *pMap, const int x, const int y)
 {
 	assert( x>=0) ;

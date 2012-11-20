@@ -17,7 +17,7 @@ float path (Character *pChar, Map *pMap)
 	
 	float posX, posY, posYd, posXd, posYr, posXr, posYl, posXl;
 	setPosi (current, pChar->cPosi.x, pChar->cPosi.y,0);
-	/*tab[0]=getMapXY(pMap, getPosiXint(current), getPosiYint(current));*/
+
 	
 	for (i=0.01; i<=1; i+=0.01) 
 	{
