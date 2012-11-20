@@ -25,6 +25,8 @@ typedef struct
 
 
 /**
+Precontition : SdlGame non initialise
+Poscondition : SdlGame initialise
 Description : Initialisation des surfaces ecran, hero et map
 */
 void initSDL(SdlGame*);

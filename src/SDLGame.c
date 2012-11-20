@@ -47,6 +47,11 @@ void initSDL(SdlGame *pSdlGame)
 	
 }
 
+
+/*
+Procedure : privee
+Description: procedure perpettant d'afficher les sprites et les SDL_Surface sur l'ecran
+*/
 void sdlDisplay(SdlGame *pSdlGame)
 {
 	int i,j;
@@ -71,8 +76,9 @@ void sdlDisplay(SdlGame *pSdlGame)
 	
 	assert(getDimX(pMap)!=0);
 	
-	
-	
+/*
+Recadrage de la fenetre sur une partie de la map et affichage de la map au fur et a mesure que le personnage avance
+*/
 	xmin = pSdlGame->scrollX/TAILLE_SPRITE;
 	xmax = (pSdlGame->scrollX + SCREEN_WIDTH)/TAILLE_SPRITE+1;
 	ymin = pSdlGame->scrollY/TAILLE_SPRITE;
@@ -152,7 +158,7 @@ void loopSDL(SdlGame *pSdlGame)
 
 
 
-		
+/* Evenement des touches */		
 		while (SDL_PollEvent(&event))
 		{
 			switch(event.type)
@@ -201,6 +207,7 @@ void loopSDL(SdlGame *pSdlGame)
 		if (currentClock-previousClock>=clockInterval)
 		{
 			
+/* Application de la gravite et des collisions */
 
 			gravity (&(pSdlGame->pGame.gChar));
 			gravity (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar));

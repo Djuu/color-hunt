@@ -5,7 +5,15 @@
 #include "Object.h"
 #include "Map.h"
 
+
+/**
+Description : application de la gravitation 
+*/
 void gravity (Character *pChar);
+
+/**
+Description : application des collisions 
+*/
 void collision (Character *pChar, Map *pMap);
 
 #endif
