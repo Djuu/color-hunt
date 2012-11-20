@@ -11,10 +11,7 @@ void gravity (Character *pChar)
 
 float path (Character *pChar, Map *pMap)
 {
-	char *tab;
 	float i;
-	int j=1;
-	tab=(char*)calloc(1,sizeof(char));
 	Position *current;
 	current=(Position*)malloc(sizeof(Position));
 	
@@ -36,8 +33,7 @@ float path (Character *pChar, Map *pMap)
 		posYl = pChar->cPosi.y + i*pChar->cPosi.v_y+1;
 		posXl = pChar->cPosi.x + i*pChar->cPosi.v_x;
 		
-			/*tab=realloc(tab,(j+1)*sizeof(char));	
-			tab[j]=getMapXY(pMap, (int)posX, (int)posY);*/
+
 			if (getMapXY(pMap, (int)(posX-0.5), (int)posY)=='#' || getMapXY(pMap, (int)(posXl-0.5), (int)posYl)=='#')
 			{
 				pChar -> air = 1;
