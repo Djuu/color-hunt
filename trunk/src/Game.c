@@ -2,13 +2,15 @@
 
 
 
-void initGame (Game *pGame)
+void initGame (Game *pGame, const char* Map)
 {
 	int i,j;
 	initChar(&(pGame -> gChar));
 	initEnemy(&(pGame -> gEnemies), 5);
 	
-	mapInit(&(pGame -> gMap),"Map/Map1.txt");
+	pGame->level = 1;
+	
+	mapInit(&(pGame -> gMap),Map);
 	for (j=0;j<pGame->gMap.dimy;j++)
 		for(i=0;i<pGame->gMap.dimx;i++)
 			switch(pGame->gMap.tab[j][i])
@@ -25,6 +27,21 @@ void initGame (Game *pGame)
 
 }
 
+void warpMap (Game *pGame)
+{
+	Map *pMap=getGameMap(pGame);
+	Character *pChar= getGameChar(pGame);
+	int i,j;
+	for (j=0;j<pMap->dimy;j++)
+		for(i=0;i<pMap->dimx;i++)
+			switch(getMapXY(pMap, (int)(pChar->cPosi.x-0.5), (int)(pChar->cPosi.y-0.5)))
+			{
+				case'2' : 
+					initGame(pGame,"Map/Map2.txt");
+					pGame->level = 2;
+				break;
+			}
+}
 void initSpeed(Game *pGame)
 {
 	Character *pChar = getGameChar(pGame);

@@ -19,7 +19,7 @@ void initSDL(SdlGame *pSdlGame)
 	pSdlGame->scrollY=0;
 	
 	pGame = &(pSdlGame -> pGame);
-	initGame(pGame);
+	initGame(pGame,"Map/Map1.txt");
 
 	pSdlGame->rectScreen.x=0;
 	pSdlGame->rectScreen.y=0;
@@ -125,8 +125,8 @@ void loopSDL(SdlGame *pSdlGame)
 	previousClock = (float)clock()/(float)CLOCKS_PER_SEC;
     
     
-    
-    
+
+     
     
     
 	
@@ -138,7 +138,7 @@ void loopSDL(SdlGame *pSdlGame)
 	
 	while(continueLoop==1)
 	{
-		
+		   
 		/*pSdlGame->rcSprite.x=getPosiX(&(pSdlGame->Game.perso));
 		pSdlGame->rcSprite.y=getPosiY(&(pSdlGame->Game.perso));*/
 		/*Position du sprite*/
@@ -204,14 +204,21 @@ void loopSDL(SdlGame *pSdlGame)
 		if (currentClock-previousClock>=clockInterval)
 		{
 			
-	 /*               gravitation(&(pSdlGame->pGame).perso, &(pSdlGame->pGame).gMap);*/
-			
 
 			gravity (&(pSdlGame->pGame.gChar));
 			gravity (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar));
 	 		collision (&(pSdlGame->pGame.gChar), &(pSdlGame->pGame.gMap));
 			collision (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), &(pSdlGame->pGame.gMap));
-	
+			
+		warpMap(pGame);
+			if (pGame -> level == 2)
+			{
+				pSdlGame->scrollX=0;
+				pSdlGame->scrollY=0;
+				pGame -> level =1;
+			}
+			printf(" posX : %f \n posY :%f \n\n ", getPosiChar(pChar).x , getPosiChar(pChar).y);
+			printf(" Vret : %d \n " , pGame -> level);
 		        refresh = 1;
 		        previousClock = currentClock;
 			
@@ -226,7 +233,7 @@ void loopSDL(SdlGame *pSdlGame)
 			if(tmpLeft==1)
 			{
 				controlKey(&(pSdlGame->pGame), 'g');
-				if(temp <= SCREEN_WIDTH*1/2)
+				if(temp <= SCREEN_WIDTH*1/2 &&  temp >0 && temp<SCREEN_WIDTH)
 					pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
 
 		
@@ -235,7 +242,7 @@ void loopSDL(SdlGame *pSdlGame)
 			{
 				
 				controlKey(&(pSdlGame->pGame), 'd');
-				if(temp >= SCREEN_WIDTH*1/2)
+				if(temp >= SCREEN_WIDTH*1/2 && temp >0 && temp<SCREEN_WIDTH )
 					pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
 
 			}
@@ -243,10 +250,6 @@ void loopSDL(SdlGame *pSdlGame)
 			{
 				initSpeed(&(pSdlGame->pGame));
 			}
-			/*if(pSdlGame->Game.perso.sol == 1 && pSdlGame->Game.perso.saut ==1) 
-			{
-				controlKey(&(pSdlGame->Game), 's');
-			}*/
 		
 		
 		}	

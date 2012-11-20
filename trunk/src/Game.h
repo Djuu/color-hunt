@@ -11,15 +11,17 @@ typedef struct
 	Enemies gEnemies;
 	Map gMap;
 	Object *tabObj;
+	int level;
 }Game;
 
 /** Initialise le jeu */
-void initGame (Game *pGame);
+void initGame (Game *pGame, const char* Map);
 /** Appel la fonction correspondant a la touche appelée */
 void controlKey (Game *pGame, const char key);
 Map *getGameMap (Game *pGame);
 Character *getGameChar (Game* pGame);
 void initSpeed(Game *pGame);
 Enemy *getGameEnemies(Game *pGame, int id);
+void warpMap (Game *pGame);
 #endif
 
