@@ -1,6 +1,3 @@
-#include <assert.h>
-#include <time.h>
-
 #include "SDLGame.h"
 
 const int TAILLE_SPRITE=20;
@@ -35,6 +32,11 @@ void initSDL(SdlGame *pSdlGame)
 	if (pSdlGame->surfaceChar ==NULL)
 		pSdlGame->surfaceChar = SDL_load_image("../data/mario2.bmp");
 	assert( pSdlGame->surfaceChar!=NULL);
+
+	pSdlGame -> surfaceEnemy = IMG_Load("data/goomba.jpg");
+	if (pSdlGame->surfaceEnemy ==NULL)
+		pSdlGame->surfaceEnemy = IMG_Load("../data/goomba.jpg");
+	assert( pSdlGame->surfaceEnemy!=NULL);
 	
 	pSdlGame -> surfaceEarth = SDL_load_image("data/grasss.bmp");
 	if (pSdlGame->surfaceEarth==NULL)	
@@ -48,18 +50,23 @@ void initSDL(SdlGame *pSdlGame)
 void sdlDisplay(SdlGame *pSdlGame)
 {
 	int i,j;
+	SDL_Rect positionTile;
 	Game *pGame = &(pSdlGame->pGame);
 	Character *pChar= getGameChar(pGame);
+	Enemy *pEnemy = getGameEnemies(pGame, 1);
 	Map *pMap=getGameMap(pGame);
-	SDL_Rect posiChar;
-
+	SDL_Rect posiChar, posiEnemy;
+	/*Position posiEnemy;*/
+	
 	posiChar.x = getPosiChar(pChar).x*TAILLE_SPRITE - pSdlGame->scrollX;
 	posiChar.y = getPosiChar(pChar).y*TAILLE_SPRITE - pSdlGame->scrollY;
 	
+	posiEnemy.x = getPosiEnemy(pEnemy).x*TAILLE_SPRITE- pSdlGame->scrollX;
+	posiEnemy.y = getPosiEnemy(pEnemy).y*TAILLE_SPRITE- pSdlGame->scrollY;
 	/* Remplir l'écran de blanc */
 	SDL_FillRect( pSdlGame->surfaceScreen, &pSdlGame->surfaceScreen->clip_rect, SDL_MapRGB( pSdlGame->surfaceScreen->format, 0xFF, 0xFF, 0xFF ));
 
-	SDL_Rect positionTile;
+	
 	assert(getDimX(pMap)!=0);
 	
 	
@@ -82,6 +89,7 @@ void sdlDisplay(SdlGame *pSdlGame)
 				case '#':
 					SDL_BlitSurface(pSdlGame->surfaceEarth,NULL, pSdlGame->surfaceScreen, &positionTile);
 				break;
+				
 			
 			}
 		} 
@@ -90,6 +98,7 @@ void sdlDisplay(SdlGame *pSdlGame)
 	
 	
 	SDL_BlitSurface(pSdlGame->surfaceChar,NULL, pSdlGame->surfaceScreen, &posiChar);
+	SDL_BlitSurface(pSdlGame->surfaceEnemy,NULL, pSdlGame->surfaceScreen, &posiEnemy);
 	
 	
 }
@@ -123,7 +132,7 @@ void loopSDL(SdlGame *pSdlGame)
 	
 	int tmpLeft=0;
 	int tmpRight=0;
-	
+	int temp;
 /*	animSpInit(pSdlGame->rcSprite,128,0, TAILLE_SPRITE,TAILLE_SPRITE);*/
 	
 	
@@ -199,20 +208,20 @@ void loopSDL(SdlGame *pSdlGame)
 			
 
 			gravity (&(pSdlGame->pGame.gChar));
-
+			gravity (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar));
 	 		collision (&(pSdlGame->pGame.gChar), &(pSdlGame->pGame.gMap));
-	
+			collision (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), &(pSdlGame->pGame.gMap));
 	
 		        refresh = 1;
 		        previousClock = currentClock;
 			
-			// Limitation de la fenetre de scrolling
+			/* Limitation de la fenetre de scrolling*/
 			if (pSdlGame->scrollX<0)
 				pSdlGame->scrollX=0;
 			if (pSdlGame->scrollX+SCREEN_WIDTH>TAILLE_SPRITE*pMap->dimx-1)
 				pSdlGame->scrollX=TAILLE_SPRITE*pMap->dimx-SCREEN_WIDTH;
 			
-			int temp;
+			
 			temp = (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX);
 			if(tmpLeft==1)
 			{

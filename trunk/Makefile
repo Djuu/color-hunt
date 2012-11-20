@@ -1,6 +1,6 @@
 options = -g -Wall -pedantic
 ssdl = `sdl-config --cflags --libs`
-sttf = -lSDLmain -lSDL -lSDL_ttf 
+sttf = -lSDLmain -lSDL -lSDL_ttf -lSDL_image
 endbin = bin/
 endobj = obj/
 endsrc = src/

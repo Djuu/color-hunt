@@ -8,9 +8,9 @@
 typedef struct
 {
 	Character gChar;
+	Enemies gEnemies;
 	Map gMap;
 	Object *tabObj;
-	Enemy *tabEnemy;
 }Game;
 
 /** Initialise le jeu */
@@ -20,5 +20,6 @@ void controlKey (Game *pGame, const char key);
 Map *getGameMap (Game *pGame);
 Character *getGameChar (Game* pGame);
 void initSpeed(Game *pGame);
+Enemy *getGameEnemies(Game *pGame, int id);
 #endif
 
