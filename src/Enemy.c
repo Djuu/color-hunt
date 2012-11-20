@@ -1,54 +1,56 @@
 #include "Enemy.h"
-/*
-void initEnemy(Enemy *enemy, int num)
+
+void initEnemy(Enemies *pEnemies, int num)
 {
 	assert(num >= 0);
-	enemy -> number = num;
+	pEnemies->eEnemy = calloc(num, sizeof(Enemy));
+	pEnemies -> number = num;
 	int i = 0;
-	for (i = 0; i<enemy -> num; i++)
+	for (i = 0; i< num; i++)
 	{
-		initChar (enemy -> eChar[i]);
+		printf("%d\n",pEnemies -> eEnemy[i].eChar.cPosi.x);
+		initChar(&(pEnemies -> eEnemy[i].eChar));
+			
 	}
 	
-	enemy -> id = 0;
 }
 
 
-Position getPosiEnemy (const Enemy *enemy)
+Position getPosiEnemy (const Enemy *pEnemy)
 {
-	assert(enemy -> eChar != NULL);
-	return pChar -> cPosi;
+
+	return pEnemy -> eChar.cPosi;
 }
 
-void setPosiEnemy (Enemy *enemy, const float x, const float y, const float z)
+void setPosiEnemy (Enemies *pEnemies,int id, const float x, const float y, const float z)
 {
-	assert(pChar != NULL);
-	pChar -> cPosi.x = x;
-	pChar -> cPosi.y = y;
-	pChar -> cPosi.z = z;
+	assert(pEnemies != NULL);
+	pEnemies -> eEnemy[id].eChar.cPosi.x = x;
+	pEnemies -> eEnemy[id].eChar.cPosi.y = y;
+	pEnemies -> eEnemy[id].eChar.cPosi.z = z;
 }
 
-int getLifeEnemy (const Enemy *enemy)
+int getLifeEnemy (const Enemies *pEnemies, int id)
 {
-	assert(pChar -> life >= 0 || pChar -> life <= 100);
-	return pChar -> life;
+	assert(pEnemies -> eEnemy[id].eChar.life >= 0 || pEnemies -> eEnemy[id].eChar.life <= 100);
+	return pEnemies -> eEnemy[id].eChar.life;
 }
 
-void setLifeEnemy (Enemy *enemy, int nbLife)
+void setLifeEnemy (Enemies *pEnemies, int id, int nbLife)
 {
 	assert(nbLife >= 0 || nbLife <= 0);
-	pChar -> life = nbLife;
+	pEnemies -> eEnemy[id].eChar.life = nbLife;
 }
 
-int getManaEnemy (const Enemy *enemy)
+int getManaEnemy (const Enemies *pEnemies, int id)
 {
-	assert(pChar -> mana >= 0 || pChar -> mana <= 100);
-	return pChar -> mana;
+	assert(pEnemies -> eEnemy[id].eChar.mana >= 0 || pEnemies -> eEnemy[id].eChar.mana <= 100);
+	return pEnemies -> eEnemy[id].eChar.mana;
 }
 
-void setManaEnemy (Enemy *enemy, int nbMana)
+void setManaEnemy (Enemies *pEnemies,int id, int nbMana)
 {
 	assert(nbMana >= 0 || nbMana <= 0);
-	pChar -> mana = nbMana;
+	pEnemies -> eEnemy[id].eChar.mana = nbMana;
 }
-*/
+

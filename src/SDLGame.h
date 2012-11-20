@@ -1,6 +1,9 @@
 #ifndef _SDLGAME
 #define _SDLGAME
 
+#include <assert.h>
+#include <time.h>
+ #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL.h>
 #include "Game.h"

@@ -2,6 +2,36 @@
 
 
 
+void initGame (Game *pGame)
+{
+	int i,j;
+	initChar(&(pGame -> gChar));
+	initEnemy(&(pGame -> gEnemies), 5);
+	
+	mapInit(&(pGame -> gMap),"Map/Map1.txt");
+	for (j=0;j<pGame->gMap.dimy;j++)
+		for(i=0;i<pGame->gMap.dimx;i++)
+			switch(pGame->gMap.tab[j][i])
+			{
+				case 'C':
+					pGame->gChar.cPosi.x = i;
+					pGame->gChar.cPosi.y = j;
+				break;
+				case 'E':
+					pGame->gEnemies.eEnemy[1].eChar.cPosi.x = i;
+					pGame->gEnemies.eEnemy[1].eChar.cPosi.y = j;
+				break;
+			}	
+
+}
+
+void initSpeed(Game *pGame)
+{
+	Character *pChar = getGameChar(pGame);
+	pChar->cPosi.v_x=0;
+
+}
+
 void left(Game *pGame)
 {
 
@@ -55,27 +85,8 @@ Character *getGameChar(Game *pGame)
 	return &(pGame -> gChar);
 }
 
-void initGame (Game *pGame)
+Enemy *getGameEnemies(Game *pGame, int id)
 {
-	int i,j;
-	initChar(&(pGame -> gChar));
-	mapInit(&(pGame -> gMap),"Map/Map2.txt");	
-	for(j=0;j<pGame -> gMap.dimy;++j)
-		for(i=0;i<pGame -> gMap.dimx;++i)
-			switch(pGame -> gMap.tab[j][i])
-			{
-				case 'C':
-					pGame -> gChar.cPosi.x = i;
-					pGame -> gChar .cPosi.y = j;
-				break;
-			}
-	
-	pGame->gChar.cPosi.v_grav = 0.08;/*0.02*/
+	return &(pGame -> gEnemies.eEnemy[id].eChar);
 }
 
-void initSpeed(Game *pGame)
-{
-	Character *pChar = getGameChar(pGame);
-	pChar->cPosi.v_x=0;
-
-}
