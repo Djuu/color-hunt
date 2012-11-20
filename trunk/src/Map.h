@@ -21,7 +21,7 @@ Description : Affichage de la map
 char getMapXY(const Map *, const int x, const int y);
 
 /**
-Function
+Fonction 
 Description : renvoie la taille horizontale de la map 
 Retoure : entier
 */
@@ -33,7 +33,13 @@ Retoure : entier
 */
 int getDimY(const Map*);
 
+/**
+Description : donner une valeur à la taille horizontale de la map 
+*/
 void setDimX(Map* , int);
 
+/**
+Description : donner une valeur à la taille verticale de la map 
+*/
 void setDimY(Map* , int);
 #endif

@@ -9,6 +9,10 @@ void gravity (Character *pChar)
 }
 
 
+/*
+Description : fonction interne qui identifie les cases que le personnage parcoure et renvoi une faleur en fonction de la distance qui seppare le personnage de "la case de collision" 
+Retourne : reel
+*/
 float path (Character *pChar, Map *pMap)
 {
 	float i;
