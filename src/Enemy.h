@@ -5,7 +5,11 @@
 
 typedef struct
 {
-	int a;
+	int number;
+	int id;
+	Character *eChar;
 }Enemy;
+
+
 
 #endif 

@@ -217,7 +217,7 @@ void loopSDL(SdlGame *pSdlGame)
 			if(tmpLeft==1)
 			{
 				controlKey(&(pSdlGame->pGame), 'g');
-				if(temp <= SCREEN_WIDTH/4)
+				if(temp <= SCREEN_WIDTH*1/2)
 					pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
 
 		
@@ -226,7 +226,7 @@ void loopSDL(SdlGame *pSdlGame)
 			{
 				
 				controlKey(&(pSdlGame->pGame), 'd');
-				if(temp >= SCREEN_WIDTH*3/4)
+				if(temp >= SCREEN_WIDTH*1/2)
 					pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
 
 			}
