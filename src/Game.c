@@ -104,6 +104,6 @@ Character *getGameChar(Game *pGame)
 
 Enemy *getGameEnemies(Game *pGame, int id)
 {
-	return &(pGame -> gEnemies.eEnemy[id].eChar);
+	return &(pGame -> gEnemies.eEnemy[id]);
 }
 

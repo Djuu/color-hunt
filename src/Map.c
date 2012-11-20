@@ -6,15 +6,16 @@
 
 void mapInit(Map *pMap,const char * Name)
 {
+	int x, y;
+	
 	FILE *f = fopen(Name,"r");
   	if (f == NULL)
 	{
 		printf("Impossible d'ouvrir le fichier %s\n",Name);
 		exit(1);
 	}
-	int x, y;
-	fscanf(f ,"%d %d",&(pMap -> dimx),&(pMap -> dimy));
 	
+	fscanf(f ,"%d %d",&(pMap -> dimx),&(pMap -> dimy));
 	pMap->tab = (char **)malloc(sizeof(char *)*pMap->dimy);
 	for (y=0; y<pMap->dimy; y++)
 		pMap->tab[y] = (char *)malloc(sizeof(char)*pMap->dimx);
