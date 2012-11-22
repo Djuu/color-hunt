@@ -17,10 +17,10 @@ void initEnemy(Enemies *pEnemies, int num)
 }
 
 
-Position getPosiEnemy (const Enemy *pEnemy)
+Position getPosiEnemy (const Enemies *pEnemies, int id)
 {
 
-	return pEnemy -> eChar.cPosi;
+	return pEnemies -> eEnemy[id].eChar.cPosi;
 }
 
 void setPosiEnemy (Enemies *pEnemies,int id, const float x, const float y, const float z)

@@ -60,7 +60,7 @@ void sdlDisplay(SdlGame *pSdlGame)
 	
 	Game *pGame = &(pSdlGame->pGame);
 	Character *pChar= getGameChar(pGame);
-	Enemy *pEnemy = getGameEnemies(pGame, 1);
+	Enemies *pEnemies = getGameEnemies(pGame);
 	Map *pMap=getGameMap(pGame);
 	SDL_Rect posiChar, posiEnemy;
 	/*Position posiEnemy;*/
@@ -68,8 +68,8 @@ void sdlDisplay(SdlGame *pSdlGame)
 	posiChar.x = getPosiChar(pChar).x*TAILLE_SPRITE - pSdlGame->scrollX;
 	posiChar.y = getPosiChar(pChar).y*TAILLE_SPRITE - pSdlGame->scrollY;
 	
-	posiEnemy.x = getPosiEnemy(pEnemy).x*TAILLE_SPRITE- pSdlGame->scrollX;
-	posiEnemy.y = getPosiEnemy(pEnemy).y*TAILLE_SPRITE- pSdlGame->scrollY;
+	posiEnemy.x = getPosiEnemy(pEnemies,1).x*TAILLE_SPRITE- pSdlGame->scrollX;
+	posiEnemy.y = getPosiEnemy(pEnemies,1).y*TAILLE_SPRITE- pSdlGame->scrollY;
 	/* Remplir l'écran de blanc */
 	SDL_FillRect( pSdlGame->surfaceScreen, &pSdlGame->surfaceScreen->clip_rect, SDL_MapRGB( pSdlGame->surfaceScreen->format, 0xFF, 0xFF, 0xFF ));
 
@@ -209,20 +209,24 @@ void loopSDL(SdlGame *pSdlGame)
 			
 /* Application de la gravite et des collisions */
 
-			gravity (&(pSdlGame->pGame.gChar));
-			gravity (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar));
+			
+			
+			
+			collisionEnemies(&(pSdlGame->pGame.gChar),&(pSdlGame->pGame.gEnemies));
+
 	 		collision (&(pSdlGame->pGame.gChar), &(pSdlGame->pGame.gMap));
 			collision (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), &(pSdlGame->pGame.gMap));
-			
-		warpMap(pGame);
+			gravity (&(pSdlGame->pGame.gChar));
+			gravity (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar));
+			warpMap(pGame);	
 			if (pGame -> level == 2)
 			{
 				pSdlGame->scrollX=0;
 				pSdlGame->scrollY=0;
 				pGame -> level =1;
 			}
-			printf(" posX : %f \n posY :%f \n\n ", getPosiChar(pChar).x , getPosiChar(pChar).y);
-			printf(" Vret : %d \n " , pGame -> level);
+		/*	printf(" posX : %f \n posY :%f \n\n ", getPosiChar(pChar).x , getPosiChar(pChar).y); 
+		printf(" Vret : %d \n " , pGame -> level);  */
 		        refresh = 1;
 		        previousClock = currentClock;
 			
