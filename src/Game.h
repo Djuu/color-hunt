@@ -21,7 +21,7 @@ void controlKey (Game *pGame, const char key);
 Map *getGameMap (Game *pGame);
 Character *getGameChar (Game* pGame);
 void initSpeed(Game *pGame);
-Enemy *getGameEnemies(Game *pGame, int id);
+Enemies *getGameEnemies(Game *pGame);
 void warpMap (Game *pGame);
 #endif
 

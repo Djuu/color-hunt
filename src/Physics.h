@@ -1,7 +1,7 @@
 #ifndef _PHYSICS
 #define _PHYSICS
 
-#include "Character.h"
+#include "Enemy.h"
 #include "Object.h"
 #include "Map.h"
 
@@ -16,4 +16,5 @@ Description : application des collisions
 */
 void collision (Character *pChar, Map *pMap);
 
+float pathEnemy(Character *pChar, Enemies *pEnemies ,int id);
 #endif

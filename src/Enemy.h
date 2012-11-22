@@ -15,7 +15,7 @@ typedef struct
 }Enemies;
 
 void initEnemy(Enemies *pEnemies, int num);
-Position getPosiEnemy (const Enemy *pEnemy);
+Position getPosiEnemy (const Enemies *pEnemies, int id);
 void setPosiEnemy (Enemies *pEnemies,int id, const float x, const float y, const float z);
 int getLifeEnemy (const Enemies *pEnemies, int id);
 void setLifeEnemy (Enemies *pEnemies, int id, int nbLife);
