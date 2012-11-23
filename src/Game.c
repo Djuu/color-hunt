@@ -108,4 +108,46 @@ Enemies *getGameEnemies(Game *pGame)
 	return &(pGame -> gEnemies);
 }
 
+void collisionMap (Character *pChar, Map *pMap)
+{
+	
+	pChar->cPosi.v_y*=pathMap (pChar, pMap);
+	pChar->cPosi.v_x*=pathMap (pChar, pMap);
+	
+	pChar->cPosi.y+=pChar->cPosi.v_y;
+	pChar->cPosi.x+=pChar->cPosi.v_x;
+	
+	if (getMapXY(pMap, (int)(pChar->cPosi.x), (int)(pChar->cPosi.y+1.5))=='#' || 
+	    getMapXY(pMap, (int)(pChar->cPosi.x+1), (int)(pChar->cPosi.y+1.5))=='#')
+	{
+		pChar->floor = 1;
+	} 
+	else
+	{
+		pChar->floor = 0;
+		
+	}
+	
+}
+
+void collision(Game *pGame)
+{
+	int j;
+	Position *posiChar;
+	Enemies *pEnemies;
+	posiChar = &(pGame -> gChar.cPosi);
+	pEnemies = &(pGame -> gEnemies);
+
+	for(j=1;j<2; j++)
+	{
+		
+		posiChar->v_x *=path(posiChar, &(pEnemies->eEnemy[j].eChar.cPosi));
+		posiChar->v_y *=path(posiChar, &(pEnemies->eEnemy[j].eChar.cPosi));
+		pEnemies->eEnemy[j].eChar.cPosi.v_x *=path(posiChar, &(pEnemies->eEnemy[j].eChar.cPosi));
+		pEnemies->eEnemy[j].eChar.cPosi.v_y *=path(posiChar, &(pEnemies->eEnemy[j].eChar.cPosi));
+
+	}
+	
+}
+
 
