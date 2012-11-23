@@ -13,7 +13,7 @@ void gravity (Character *pChar)
 Description : fonction interne qui identifie les cases que le personnage parcoure et renvoi une faleur en fonction de la distance qui seppare le personnage de "la case de collision" 
 Retourne : reel
 */
-float path (Character *pChar, Map *pMap)
+float pathMap (Character *pChar, Map *pMap)
 {
 	float i;
 	float posX, posY, posYd, posXd, posYr, posXr, posYl, posXl;
@@ -85,86 +85,58 @@ float path (Character *pChar, Map *pMap)
 	return 1;
 }
 
-void collision (Character *pChar, Map *pMap)
-{
-	
-	pChar->cPosi.v_y*=path (pChar, pMap);
-	pChar->cPosi.v_x*=path (pChar, pMap);
-	
-	pChar->cPosi.y+=pChar->cPosi.v_y;
-	pChar->cPosi.x+=pChar->cPosi.v_x;
-	
-	if (getMapXY(pMap, (int)(pChar->cPosi.x), (int)(pChar->cPosi.y+1.5))=='#' || 
-	    getMapXY(pMap, (int)(pChar->cPosi.x+1), (int)(pChar->cPosi.y+1.5))=='#')
-	{
-		pChar->floor = 1;
-	} 
-	else
-	{
-		pChar->floor = 0;
-		
-	}
-	
-}
+
 
 
 /*
 Description : fonction interne qui identifie les cases que le personnage parcoure et renvoi une valeur en fonction de la distance qui seppare le personnage de l'ennemie
 Retourne : reel
 */
-float pathEnemy(Character *pChar, Enemies *pEnemies ,int id)
+float path(Position *pPosi1, Position *pPosi2)
 {
 
 	float i;
-	int j;
-	int nbLife =getLife (pChar);
 	float posX, posY, posYd, posXd, posYr, posXr, posYl, posXl;
 	float posXe, posYe, posYde, posXde, posYre, posXre, posYle, posXle;
 	Position *current;
 	current=(Position*)malloc(sizeof(Position));
 	
-	setPosi (current, pChar->cPosi.x, pChar->cPosi.y,0);
+	setPosi (current, pPosi1 -> x, pPosi1 -> y,0);
 	
 		for (i=0.01; i<=1; i+=0.01) 
 		{
-			Position charPosition;
-			Position enemyPosition;
-			
-			charPosition = getPosiChar(pChar);
-			posX = charPosition.x + i*charPosition.v_x;
-			posY = charPosition.y + i*charPosition.v_y;
 
-			posYd = charPosition.y + i*charPosition.v_y+1;
-			posXd = charPosition.x + i*charPosition.v_x+1;
+			posX = pPosi1 -> x + i*pPosi1 -> v_x;
+			posY = pPosi1 -> y + i*pPosi1 -> v_y;
 
-			posYr = charPosition.y + i*charPosition.v_y;
-			posXr = charPosition.x + i*charPosition.v_x+1;
+			posYd = pPosi1 -> y + i*pPosi1 -> v_y+1;
+			posXd = pPosi1 -> x + i*pPosi1 -> v_x+1;
 
-			posYl = charPosition.y + i*charPosition.v_y+1;
-			posXl = charPosition.x + i*charPosition.v_x;
+			posYr = pPosi1 -> y + i*pPosi1 -> v_y;
+			posXr = pPosi1 -> x + i*pPosi1 -> v_x+1;
+
+			posYl = pPosi1 -> y + i*pPosi1 -> v_y+1;
+			posXl = pPosi1 -> x + i*pPosi1 -> v_x;
 		
 		
+	
 			
-			enemyPosition=getPosiEnemy(pEnemies,id);
-			
-			posXe = enemyPosition.x + i*enemyPosition.v_x;
-			posYe = enemyPosition.y + i*enemyPosition.v_y;
+			posXe = pPosi2 -> x + i*pPosi2 -> v_x;
+			posYe = pPosi2 -> y + i*pPosi2 -> v_y;
 
-			posYde = enemyPosition.y + i*enemyPosition.v_y+1; 
-			posXde = enemyPosition.x + i*enemyPosition.v_x+1;
+			posYde = pPosi2 -> y + i*pPosi2 -> v_y+1; 
+			posXde = pPosi2 -> x + i*pPosi2 -> v_x+1;
 
-			posYre = enemyPosition.y + i*enemyPosition.v_y;
-			posXre = enemyPosition.x + i*enemyPosition.v_x+1;
+			posYre = pPosi2 -> y + i*pPosi2 -> v_y;
+			posXre = pPosi2 -> x + i*pPosi2 -> v_x+1;
 
-			posYle = enemyPosition.y + i*enemyPosition.v_y+1;
-			posXle = enemyPosition.x + i*enemyPosition.v_x;
+			posYle = pPosi2 -> y + i*pPosi2 -> v_y+1;
+			posXle = pPosi2 -> x + i*pPosi2 -> v_x;
 
 
-			 if((posXe < posXr+0.1 && posX-0.1 < posXre) && (posY+0.1<posYde && posYe<posYl-0.1))
+			 if((posXe < posXr+0.1 && posX-0.1 < posXre) && (posY<posYde && posYe<posYl))
 			 {
 			 
-			 	nbLife -=10;
-			 	printf("%f \n",i);
 			 	return i-0.01;
 			 		
 			 }
@@ -174,19 +146,3 @@ float pathEnemy(Character *pChar, Enemies *pEnemies ,int id)
 }
 
 
-void collisionEnemies (Character *pChar, Enemies *pEnemies)
-{
-	int j;
-	
-		for(j=0;j<pEnemies ->number; j++)
-		{
-			pChar->cPosi.v_y*=pathEnemy(pChar, pEnemies,j);
-			pChar->cPosi.v_x*=pathEnemy(pChar, pEnemies,j);
-	
-		}
-	
-	
-	
-	
-	
-}

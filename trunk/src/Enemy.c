@@ -55,3 +55,7 @@ void setManaEnemy (Enemies *pEnemies,int id, int nbMana)
 	pEnemies -> eEnemy[id].eChar.mana = nbMana;
 }
 
+void moveEnemy (Enemies *pEnemies,int id)
+{
+	pEnemies -> eEnemy[id].eChar.cPosi.v_x=0.2;
+}

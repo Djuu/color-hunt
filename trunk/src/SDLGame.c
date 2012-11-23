@@ -212,13 +212,16 @@ void loopSDL(SdlGame *pSdlGame)
 			
 			
 			
-			collisionEnemies(&(pSdlGame->pGame.gChar),&(pSdlGame->pGame.gEnemies));
+			/*collisionEnemies(&(pSdlGame->pGame.gChar),&(pSdlGame->pGame.gEnemies));*/
+			collision(pGame);
 
-	 		collision (&(pSdlGame->pGame.gChar), &(pSdlGame->pGame.gMap));
-			collision (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), &(pSdlGame->pGame.gMap));
+	 		collisionMap (pChar, pMap);
+	 		collisionMap (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), pMap);
+			/*collision (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), &(pSdlGame->pGame.gMap));*/
 			gravity (&(pSdlGame->pGame.gChar));
 			gravity (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar));
 			warpMap(pGame);	
+			moveEnemy (&(pSdlGame->pGame.gEnemies),1);
 			if (pGame -> level == 2)
 			{
 				pSdlGame->scrollX=0;
