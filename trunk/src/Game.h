@@ -23,7 +23,7 @@ Character *getGameChar (Game* pGame);
 void initSpeed(Game *pGame);
 Enemies *getGameEnemies(Game *pGame);
 void warpMap (Game *pGame);
-void collisionMap (Character *pChar, Map *pMap);
+void collisionMap (Game *pGame);
 void collision(Game *pGame);
 #endif
 

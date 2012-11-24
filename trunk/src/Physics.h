@@ -14,7 +14,7 @@ void gravity (Character *pChar);
 /**
 Description : application des collisions 
 */
-float pathMap (Character *pChar, Map *pMap);
+float pathMap (Position *pPosi, Map *pMap);
 
 float path(Position *pPosi1, Position *pPosi2);
 #endif

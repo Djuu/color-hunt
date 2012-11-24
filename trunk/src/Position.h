@@ -12,6 +12,7 @@ typedef struct
 	double v_x;
 	double v_grav;
 	double v_y;
+	int air;
 
 }Position;
 
