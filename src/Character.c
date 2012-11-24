@@ -6,7 +6,7 @@ void initChar (Character *pChar)
 	pChar->cPosi.v_y=0;
 	pChar->cPosi.v_grav = 0.08;/*0.02*/
 	pChar-> floor = 0;
-	pChar-> air = 0;
+	pChar->cPosi.air = 0;
 	setLife(pChar, 100);
 	setMana(pChar, 0);
 	pChar-> attack = 0;
