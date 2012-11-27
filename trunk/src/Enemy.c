@@ -7,11 +7,13 @@ void initEnemy(Enemies *pEnemies, int num)
 	assert(num >= 0);
 	pEnemies->eEnemy = calloc(num, sizeof(Enemy));
 	pEnemies -> number = num;
+	
 	for (i = 0; i< num; i++)
 	{
 		printf("%f\n",pEnemies -> eEnemy[i].eChar.cPosi.x);
 		initChar(&(pEnemies -> eEnemy[i].eChar));
-			
+		pEnemies -> eEnemy[i].eChar.cPosi.spriteSizeH =1;
+		
 	}
 	
 }

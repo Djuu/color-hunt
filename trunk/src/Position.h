@@ -12,6 +12,9 @@ typedef struct
 	double v_x;
 	double v_grav;
 	double v_y;
+	float spriteSizeW;
+	float spriteSizeH;
+	
 
 }Position;
 
