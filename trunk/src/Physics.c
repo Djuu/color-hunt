@@ -13,43 +13,44 @@ void gravity (Character *pChar)
 Description : fonction interne qui identifie les cases que le personnage parcoure et renvoi une faleur en fonction de la distance qui seppare le personnage de "la case de collision" 
 Retourne : reel
 */
-float pathMap (Position *pPosi, Map *pMap)
+float pathMap (Character *pChar, Map *pMap)
 {
 	float i;
 	float posX, posY, posYd, posXd, posYr, posXr, posYl, posXl;
 	Position *current;
 	current=(Position*)malloc(sizeof(Position));
 
-	setPosi (current, pPosi -> x, pPosi -> y,0);
+	setPosi (current, pChar->cPosi.x, pChar->cPosi.y,0);
 
 	
 	for (i=0.01; i<=1; i+=0.01) 
 	{
-		
-		posX = pPosi -> x + i*pPosi -> v_x;
-		posY = pPosi -> y + i*pPosi -> v_y;
+		Position charPosition;
+		charPosition = getPosiChar(pChar);
+		posX = charPosition.x + i*charPosition.v_x;
+		posY = charPosition.y + i*charPosition.v_y;
 
-		posYd = pPosi -> y + i*pPosi -> v_y+1;
-		posXd = pPosi -> x + i*pPosi -> v_x+1;
+		posYd = charPosition.y + i*charPosition.v_y+1;
+		posXd = charPosition.x + i*charPosition.v_x+1;
 
-		posYr = pPosi -> y + i*pPosi -> v_y;
-		posXr = pPosi -> x + i*pPosi -> v_x+1;
+		posYr = charPosition.y + i*charPosition.v_y;
+		posXr = charPosition.x + i*charPosition.v_x+1;
 
-		posYl = pPosi -> y + i*pPosi -> v_y+1;
-		posXl = pPosi -> x + i*pPosi -> v_x;
+		posYl = charPosition.y + i*charPosition.v_y+1;
+		posXl = charPosition.x + i*charPosition.v_x;
 	
 
 		if (getMapXY(pMap, (int)(posX-0.5), (int)posY)=='#' || getMapXY(pMap, (int)(posXl-0.5), (int)posYl)=='#')
 		{
-			pPosi -> air = 1;
+			pChar -> air = 1;
 		}
 		else if (getMapXY(pMap, (int)(posXd+0.5), (int)posYd)=='#' || getMapXY(pMap, (int)(posXr+0.5), (int)posYr)=='#')
 		{
-			pPosi -> air = 2;
+			pChar -> air = 2;
 		}
 		else 
 		{
-			pPosi -> air = 0;
+			pChar -> air = 0;
 		}
 		if(getMapXY(pMap, (int)posX, (int)posY)=='#' || getMapXY(pMap, (int)posXd, (int)posYd)=='#' 
 		|| getMapXY(pMap, (int)posXr, (int)posYr)=='#' || getMapXY(pMap, (int)posXl, (int)posYl)=='#') 
@@ -58,6 +59,21 @@ float pathMap (Position *pPosi, Map *pMap)
 			return i-0.01;
 
 		}
+/*			if(getMapXY(pMap, (int)posX, (int)posY)=='E' || getMapXY(pMap, (int)posXd, (int)posYd)=='E' 
+			|| getMapXY(pMap, (int)posXr, (int)posYr)=='E' || getMapXY(pMap, (int)posXl, (int)posYl)=='E') 
+			{
+				if(nbLife>0)
+				{ 
+					nbLife--;
+				}
+				setLife (pChar,nbLife);
+				printf(" %d \n", getLife (pChar));
+				return i-0.01;
+
+			}
+			
+		
+*/	
 			
 			
 			
