@@ -3,15 +3,26 @@
 
 #include <assert.h>
 #include <time.h>
- #include <SDL/SDL_image.h>
+#include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL.h>
 #include "Game.h"
+#include "Animation.h"
+
+
+/*Direction du sprite*/
+#define down 	0
+#define left 	1
+#define right 	2
+#define up 		3
+
+
 
 
 typedef struct
 {
 	Game pGame;
+	Sprite pSprite;
 	SDL_Surface *surfaceScreen;
 	SDL_Surface *surfaceChar;
 	SDL_Surface *surfaceEarth;

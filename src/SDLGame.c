@@ -1,7 +1,8 @@
 #include "SDLGame.h"
 
 const int TAILLE_SPRITE=20;
-
+const int CHAR_SPRITE_W =32;
+const int CHAR_SPRITE_H =48;
 const int SCREEN_WIDTH =800;
 const int SCREEN_HEIGHT =720;
 
@@ -12,25 +13,25 @@ void initSDL(SdlGame *pSdlGame)
 {
 	
 	Game *pGame;
-
-	
+	//int direction =0;
 	/*Déplacer la map*/
 	pSdlGame->scrollX=0;
 	pSdlGame->scrollY=0;
 	
 	pGame = &(pSdlGame -> pGame);
+
 	initGame(pGame,"Map/Map1.txt");
 
 	pSdlGame->rectScreen.x=0;
 	pSdlGame->rectScreen.y=0;
-	
+
 	SDL_Init(SDL_INIT_VIDEO);
-	pSdlGame -> surfaceScreen = SDL_SetVideoMode(SCREEN_WIDTH,SCREEN_HEIGHT,32, SDL_HWSURFACE|SDL_DOUBLEBUF);/*|SDL_FULLSCREEN);*/
+	pSdlGame -> surfaceScreen = SDL_SetVideoMode(SCREEN_WIDTH,SCREEN_HEIGHT,32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN);
 	SDL_WM_SetCaption( "ColorHunt", NULL );
-	
-	pSdlGame -> surfaceChar = SDL_load_image("data/mario2.bmp");
+
+	pSdlGame -> surfaceChar =  IMG_Load("data/char.png");
 	if (pSdlGame->surfaceChar ==NULL)
-		pSdlGame->surfaceChar = SDL_load_image("../data/mario2.bmp");
+		pSdlGame->surfaceChar =  IMG_Load("../data/char.png");
 	assert( pSdlGame->surfaceChar!=NULL);
 
 	pSdlGame -> surfaceEnemy = IMG_Load("data/goomba.jpg");
@@ -44,6 +45,7 @@ void initSDL(SdlGame *pSdlGame)
 	assert( pSdlGame->surfaceEarth!=NULL);
 
 
+	InitSprite (&(pSdlGame->pSprite),pSdlGame -> surfaceChar, TAILLE_SPRITE,TAILLE_SPRITE);
 	
 }
 
@@ -66,10 +68,10 @@ void sdlDisplay(SdlGame *pSdlGame)
 	/*Position posiEnemy;*/
 	
 	posiChar.x = getPosiChar(pChar).x*TAILLE_SPRITE - pSdlGame->scrollX;
-	posiChar.y = getPosiChar(pChar).y*TAILLE_SPRITE - pSdlGame->scrollY;
+	posiChar.y = getPosiChar(pChar).y*TAILLE_SPRITE- pSdlGame->scrollY;
 	
-	posiEnemy.x = getPosiEnemy(pEnemies,0).x*TAILLE_SPRITE- pSdlGame->scrollX;
-	posiEnemy.y = getPosiEnemy(pEnemies,0).y*TAILLE_SPRITE- pSdlGame->scrollY;
+	posiEnemy.x = getPosiEnemy(pEnemies,1).x*TAILLE_SPRITE- pSdlGame->scrollX;
+	posiEnemy.y = getPosiEnemy(pEnemies,1).y*TAILLE_SPRITE- pSdlGame->scrollY;
 	/* Remplir l'écran de blanc */
 	SDL_FillRect( pSdlGame->surfaceScreen, &pSdlGame->surfaceScreen->clip_rect, SDL_MapRGB( pSdlGame->surfaceScreen->format, 0xFF, 0xFF, 0xFF ));
 
@@ -103,9 +105,12 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
 		} 
 				
 	}
-	
-	
-	SDL_BlitSurface(pSdlGame->surfaceChar,NULL, pSdlGame->surfaceScreen, &posiChar);
+	pSdlGame->rcSprite.x=CHAR_SPRITE_W*pSdlGame->pSprite.frame;
+	pSdlGame->rcSprite.y=CHAR_SPRITE_H*pSdlGame->pSprite.direction;
+	pSdlGame->rcSprite.w=CHAR_SPRITE_W;
+	pSdlGame->rcSprite.h=CHAR_SPRITE_H;
+	SDL_BlitSurface(pSdlGame->pSprite.source, &(pSdlGame->rcSprite),  pSdlGame->surfaceScreen, &posiChar);
+	//SDL_BlitSurface(pSdlGame->surfaceChar,NULL, pSdlGame->surfaceScreen, &posiChar);
 	SDL_BlitSurface(pSdlGame->surfaceEnemy,NULL, pSdlGame->surfaceScreen, &posiEnemy);
 	
 	
@@ -113,17 +118,17 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
 
 void loopSDL(SdlGame *pSdlGame)
 {
+
 	SDL_Event event;
 	int continueLoop=1;
 	int refresh=1;
 	int tmpLeft=0;
 	int tmpRight=0;
 	int temp;
-	
 	Game *pGame = &(pSdlGame->pGame);
 	Character *pChar= getGameChar(pGame);
 	Map *pMap=getGameMap(pGame);
-	
+
 	/* Horloges (en secondes) */
 	float currentClock, previousClock;
 
@@ -154,8 +159,7 @@ void loopSDL(SdlGame *pSdlGame)
 		currentClock = (float)clock()/(float)CLOCKS_PER_SEC;
 
        
-
-
+	
 
 
 /* Evenement des touches */		
@@ -215,21 +219,21 @@ void loopSDL(SdlGame *pSdlGame)
 			/*collisionEnemies(&(pSdlGame->pGame.gChar),&(pSdlGame->pGame.gEnemies));*/
 			collision(pGame);
 
-	 		collisionMap (pGame);
-	 		/*collisionMap (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), pMap);
+	 		collisionMap (pChar, pMap);
+	 		collisionMap (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), pMap);
 			/*collision (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), &(pSdlGame->pGame.gMap));*/
 			gravity (&(pSdlGame->pGame.gChar));
-			gravity (&(pSdlGame->pGame.gEnemies.eEnemy[0].eChar));
+			gravity (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar));
 			warpMap(pGame);	
-			moveEnemy (&(pSdlGame->pGame.gEnemies),0);
+			moveEnemy (&(pSdlGame->pGame.gEnemies),1);
 			if (pGame -> level == 2)
 			{
 				pSdlGame->scrollX=0;
 				pSdlGame->scrollY=0;
 				pGame -> level =1;
 			}
-	
-
+		/*	printf(" posX : %f \n posY :%f \n\n ", getPosiChar(pChar).x , getPosiChar(pChar).y); 
+		printf(" Vret : %d \n " , pGame -> level);  */
 		        refresh = 1;
 		        previousClock = currentClock;
 			
@@ -243,6 +247,7 @@ void loopSDL(SdlGame *pSdlGame)
 			temp = (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX);
 			if(tmpLeft==1)
 			{
+				MoveSprite (&(pSdlGame->pSprite), left);
 				controlKey(&(pSdlGame->pGame), 'g');
 				if(temp <= SCREEN_WIDTH*1/2 &&  temp >0 && temp<SCREEN_WIDTH)
 					pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
@@ -251,7 +256,7 @@ void loopSDL(SdlGame *pSdlGame)
 			}
 			if(tmpRight==1)
 			{
-				
+				MoveSprite (&(pSdlGame->pSprite), right);
 				controlKey(&(pSdlGame->pGame), 'd');
 				if(temp >= SCREEN_WIDTH*1/2 && temp >0 && temp<SCREEN_WIDTH )
 					pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
@@ -275,6 +280,7 @@ void loopSDL(SdlGame *pSdlGame)
 		}
 		
 	}
+	DestructionSprite (&(pSdlGame->pSprite));
 }
 
 SDL_Surface *SDL_load_image(const char* filename )

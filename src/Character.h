@@ -11,6 +11,7 @@ typedef struct
 {
 	Position cPosi; 
 	int floor;
+	int air;
 	int life, mana;
 	int attack, superAttack;
 }Character;

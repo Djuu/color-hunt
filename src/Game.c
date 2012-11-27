@@ -4,12 +4,12 @@
 
 void initGame (Game *pGame, const char* Map)
 {
-	int i,j,e;
+	int i,j;
 	initChar(&(pGame -> gChar));
 	initEnemy(&(pGame -> gEnemies), 5);
 	
 	pGame->level = 1;
-	e=0;
+	
 	mapInit(&(pGame -> gMap),Map);
 	for (j=0;j<pGame->gMap.dimy;j++)
 		for(i=0;i<pGame->gMap.dimx;i++)
@@ -20,9 +20,8 @@ void initGame (Game *pGame, const char* Map)
 					pGame->gChar.cPosi.y = j;
 				break;
 				case 'E':
-					pGame->gEnemies.eEnemy[e].eChar.cPosi.x = i;
-					pGame->gEnemies.eEnemy[e].eChar.cPosi.y = j;
-					e++;
+					pGame->gEnemies.eEnemy[1].eChar.cPosi.x = i;
+					pGame->gEnemies.eEnemy[1].eChar.cPosi.y = j;
 				break;
 			}	
 
@@ -80,11 +79,11 @@ void controlKey(Game *pGame, const char key)
 	switch(key)
 	{
 		case 'g':
-			if (pGame -> gChar.cPosi.air != 1)
+			if (pGame -> gChar.air != 1)
 			left (pGame);
 			break;
 		case 'd':
-			if (pGame -> gChar.cPosi.air != 2)
+			if (pGame -> gChar.air != 2)
 			right (pGame);
 			break;
 		case 's':
@@ -109,49 +108,17 @@ Enemies *getGameEnemies(Game *pGame)
 	return &(pGame -> gEnemies);
 }
 
-void collisionMap (Game *pGame)
+void collisionMap (Character *pChar, Map *pMap)
 {
-	int j;
-	Position *posiChar;
-	Enemies *pEnemies;
-	Map *pMap;
-	Character * pChar;
-
-	pChar = getGameChar(pGame);
-	pMap = getGameMap(pGame);
-	posiChar = &(pGame -> gChar.cPosi);
-	pEnemies = &(pGame -> gEnemies);
-
-// Collision Ennemies / Map
-	for(j=0;j<pEnemies->number; j++)
-	{
-		pEnemies->eEnemy[j].eChar.cPosi.v_x *=pathMap(&(pEnemies->eEnemy[j].eChar.cPosi),pMap);
-		pEnemies->eEnemy[j].eChar.cPosi.v_y *=pathMap(&(pEnemies->eEnemy[j].eChar.cPosi),pMap);
-
-		pEnemies->eEnemy[j].eChar.cPosi.y+=pEnemies->eEnemy[j].eChar.cPosi.v_y;
-		pEnemies->eEnemy[j].eChar.cPosi.x+=pEnemies->eEnemy[j].eChar.cPosi.v_x;
-
-		if (getMapXY(pMap, (int)(pEnemies->eEnemy[j].eChar.cPosi.x), (int)(pEnemies->eEnemy[j].eChar.cPosi.y+1.5))=='#' || 
-		getMapXY(pMap, (int)(pEnemies->eEnemy[j].eChar.cPosi.x+1), (int)(pEnemies->eEnemy[j].eChar.cPosi.y+1.5))=='#')
-		{
-			pEnemies->eEnemy[j].eChar.floor = 1;
-		} 
-		else
-		{
-			pEnemies->eEnemy[j].eChar.floor = 0;
-		
-		}
-	}
-
-//Collision Hero / Map
-	posiChar->v_y*=pathMap (posiChar, pMap);
-	posiChar->v_x*=pathMap (posiChar, pMap);
 	
-	posiChar->y+=posiChar->v_y;
-	posiChar->x+=posiChar->v_x;
+	pChar->cPosi.v_y*=pathMap (pChar, pMap);
+	pChar->cPosi.v_x*=pathMap (pChar, pMap);
 	
-	if (getMapXY(pMap, (int)(posiChar->x), (int)(posiChar->y+1.5))=='#' || 
-	    getMapXY(pMap, (int)(posiChar->x+1), (int)(posiChar->y+1.5))=='#')
+	pChar->cPosi.y+=pChar->cPosi.v_y;
+	pChar->cPosi.x+=pChar->cPosi.v_x;
+	
+	if (getMapXY(pMap, (int)(pChar->cPosi.x), (int)(pChar->cPosi.y+1.5))=='#' || 
+	    getMapXY(pMap, (int)(pChar->cPosi.x+1), (int)(pChar->cPosi.y+1.5))=='#')
 	{
 		pChar->floor = 1;
 	} 
@@ -171,8 +138,7 @@ void collision(Game *pGame)
 	posiChar = &(pGame -> gChar.cPosi);
 	pEnemies = &(pGame -> gEnemies);
 
-//Collision Hero/Ennemies , Ennemies/Hero
-	for(j=0;j<pEnemies->number; j++)
+	for(j=1;j<2; j++)
 	{
 		
 		posiChar->v_x *=path(posiChar, &(pEnemies->eEnemy[j].eChar.cPosi));
