@@ -91,6 +91,10 @@ float path(Position *pPosi1, Position *pPosi2)
 	float k, l;
 	float posX, posY, posYd, posXd, posYr, posXr, posYl, posXl;
 	float posXe, posYe, posYde, posXde, posYre, posXre, posYle, posXle;
+	float sP1H = pPosi1->spriteSizeH;
+	float sP1W = pPosi1->spriteSizeW;
+	float sP2H = pPosi2->spriteSizeH;
+	float sP2W = pPosi2->spriteSizeW;
 	Position *current;
 	current=(Position*)malloc(sizeof(Position));
 	
@@ -98,20 +102,18 @@ float path(Position *pPosi1, Position *pPosi2)
 	
 		for (i=0.01; i<=1.0; i+=0.01) 
 		{
-			for (k=0.0; k<pPosi1->spriteSizeH; k+=0.1)
+			while(sP1H>0 && sP1W>0 && sP2H>0 && sP2W>0)
 			{
-				for (l=0; l<pPosi1->spriteSizeW; l+=0.1)
-				{
 					posX = pPosi1 -> x + i*pPosi1 -> v_x;
 					posY = pPosi1 -> y + i*pPosi1 -> v_y;
 
-					posYd = pPosi1 -> y + i*pPosi1 -> v_y+k;
-					posXd = pPosi1 -> x + i*pPosi1 -> v_x+l;
+					posYd = pPosi1 -> y + i*pPosi1 -> v_y+sP1H;
+					posXd = pPosi1 -> x + i*pPosi1 -> v_x+sP1W;
 
 					posYr = pPosi1 -> y + i*pPosi1 -> v_y;
-					posXr = pPosi1 -> x + i*pPosi1 -> v_x+l;
+					posXr = pPosi1 -> x + i*pPosi1 -> v_x+sP1W;
 
-					posYl = pPosi1 -> y + i*pPosi1 -> v_y+k;
+					posYl = pPosi1 -> y + i*pPosi1 -> v_y+sP1H;
 					posXl = pPosi1 -> x + i*pPosi1 -> v_x;
 				
 				
@@ -120,24 +122,37 @@ float path(Position *pPosi1, Position *pPosi2)
 					posXe = pPosi2 -> x + i*pPosi2 -> v_x;
 					posYe = pPosi2 -> y + i*pPosi2 -> v_y;
 
-					posYde = pPosi2 -> y + i*pPosi2 -> v_y+k; 
-					posXde = pPosi2 -> x + i*pPosi2 -> v_x+l;
+					posYde = pPosi2 -> y + i*pPosi2 -> v_y+sP2H; 
+					posXde = pPosi2 -> x + i*pPosi2 -> v_x+sP2W;
 
 					posYre = pPosi2 -> y + i*pPosi2 -> v_y;
-					posXre = pPosi2 -> x + i*pPosi2 -> v_x+l;
+					posXre = pPosi2 -> x + i*pPosi2 -> v_x+sP2W;
 
-					posYle = pPosi2 -> y + i*pPosi2 -> v_y+k;
+					posYle = pPosi2 -> y + i*pPosi2 -> v_y+sP2H;
 					posXle = pPosi2 -> x + i*pPosi2 -> v_x;
 
+					sP1H-=0.01;
+					sP1W-=0.01;
+					sP2H-=0.01;
+					sP2W-=0.01;
 
-					 if((posXe < posXr+0.1 && posX-0.1 < posXre) && (posY<posYde && posYe<posYl))
+					if((posXe > posX && posXe < posXr+sP1W) && (posY+sP1H>posYe && posY<posYe+sP2H))
 					 {
-					 
+						pPosi2 -> x+=0.1;
 						return i-0.01;
 							
 					 }
-				}
-			}
+					 if ((posX > posXe && posX<posXe+sP2W) && (posY+sP1H>posYe && posY<posYe+sP2H))
+					 {
+						 pPosi2 -> x-=0.2;
+			
+						return i-0.01;
+					
+					}
+					 
+					 
+				 }
+	
 		
 		}
 		return 1;

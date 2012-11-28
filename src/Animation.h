@@ -8,18 +8,23 @@
 
 
 
-
+typedef struct
+{
+	  int previousTime;
+	  int currentTime;
+	  int delay;
+}timeSprite;
 
 
 typedef struct
 {
-	
+	timeSprite pTimeSprite;
 	SDL_Surface *source;
 	SDL_Rect dest;
 	int width;
 	int height;
 	int direction;
-	int delay;
+
 	int frame;
 
 }Sprite;
