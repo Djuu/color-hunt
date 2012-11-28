@@ -1,10 +1,10 @@
 #include "SDLGame.h"
 
 const int TAILLE_SPRITE=20;
-const int CHAR_SPRITE_W =32;
-const int CHAR_SPRITE_H =48;
+const int CHAR_SPRITE_W =52;
+const int CHAR_SPRITE_H =49;
 const int SCREEN_WIDTH =800;
-const int SCREEN_HEIGHT =720;
+const int SCREEN_HEIGHT =600;
 
 SDL_Surface *SDL_load_image(const char* filename );
 void SDL_apply_surface( SDL_Surface* source, SDL_Surface* destination, int x, int y);
@@ -29,9 +29,16 @@ void initSDL(SdlGame *pSdlGame)
 	pSdlGame -> surfaceScreen = SDL_SetVideoMode(SCREEN_WIDTH,SCREEN_HEIGHT,32, SDL_HWSURFACE|SDL_DOUBLEBUF);/*|SDL_FULLSCREEN);*/
 	SDL_WM_SetCaption( "ColorHunt", NULL );
 
-	pSdlGame -> surfaceChar =  IMG_Load("data/char.png");
+
+/*Background*/
+  
+  SDL_Surface* temp = IMG_Load("data/bg.png");
+  pSdlGame->surfaceBG = SDL_DisplayFormat(temp);
+
+
+	pSdlGame -> surfaceChar =  IMG_Load("data/hero.png");
 	if (pSdlGame->surfaceChar ==NULL)
-		pSdlGame->surfaceChar =  IMG_Load("../data/char.png");
+		pSdlGame->surfaceChar =  IMG_Load("../data/hero.png");
 	assert( pSdlGame->surfaceChar!=NULL);
 
 	pSdlGame -> surfaceEnemy = IMG_Load("data/goomba.jpg");
@@ -39,13 +46,17 @@ void initSDL(SdlGame *pSdlGame)
 		pSdlGame->surfaceEnemy = IMG_Load("../data/goomba.jpg");
 	assert( pSdlGame->surfaceEnemy!=NULL);
 	
-	pSdlGame -> surfaceEarth = SDL_load_image("data/grasss.bmp");
+	pSdlGame -> surfaceEarth = IMG_Load("data/grass2.png");
 	if (pSdlGame->surfaceEarth==NULL)	
-		pSdlGame->surfaceEarth = SDL_load_image("../data/grasss.bmp");
+		pSdlGame->surfaceEarth = IMG_Load("../data/grass2.png");
 	assert( pSdlGame->surfaceEarth!=NULL);
+	
+pSdlGame -> surfaceGrass = IMG_Load("data/grass4.png");
+	if (pSdlGame->surfaceGrass==NULL)	
+		pSdlGame->surfaceGrass = IMG_Load("../data/grass4.png");
+	assert( pSdlGame->surfaceGrass!=NULL);
 
-
-	InitSprite (&(pSdlGame->pSprite),pSdlGame -> surfaceChar, TAILLE_SPRITE,TAILLE_SPRITE);
+	InitSprite (&(pSdlGame->pSprite),pSdlGame -> surfaceChar, CHAR_SPRITE_W,CHAR_SPRITE_H);
 	
 }
 
@@ -67,13 +78,18 @@ void sdlDisplay(SdlGame *pSdlGame)
 	SDL_Rect posiChar, posiEnemy;
 	/*Position posiEnemy;*/
 	
+	
+	/*Background*/
+	SDL_BlitSurface(pSdlGame->surfaceBG, NULL, pSdlGame->surfaceScreen, NULL);
+	
+	
 	posiChar.x = getPosiChar(pChar).x*TAILLE_SPRITE - pSdlGame->scrollX;
 	posiChar.y = getPosiChar(pChar).y*TAILLE_SPRITE- pSdlGame->scrollY;
 	
 	posiEnemy.x = getPosiEnemy(pEnemies,1).x*TAILLE_SPRITE- pSdlGame->scrollX;
 	posiEnemy.y = getPosiEnemy(pEnemies,1).y*TAILLE_SPRITE- pSdlGame->scrollY;
 	/* Remplir l'écran de blanc */
-	SDL_FillRect( pSdlGame->surfaceScreen, &pSdlGame->surfaceScreen->clip_rect, SDL_MapRGB( pSdlGame->surfaceScreen->format, 0xFF, 0xFF, 0xFF ));
+	//SDL_FillRect( pSdlGame->surfaceScreen, &pSdlGame->surfaceScreen->clip_rect, SDL_MapRGB( pSdlGame->surfaceScreen->format, 0xFF, 0xFF, 0xFF ));
 
 	
 	assert(getDimX(pMap)!=0);
@@ -100,12 +116,18 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
 			positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
 					SDL_BlitSurface(pSdlGame->surfaceEarth,NULL, pSdlGame->surfaceScreen, &positionTile);
 				break;
+				case '%':
+				positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+			positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+					SDL_BlitSurface(pSdlGame->surfaceGrass,NULL, pSdlGame->surfaceScreen, &positionTile);
+				break;
 				
 			
 			}
 		} 
 				
 	}
+	
 	pSdlGame->rcSprite.x=CHAR_SPRITE_W*pSdlGame->pSprite.frame;
 	pSdlGame->rcSprite.y=CHAR_SPRITE_H*pSdlGame->pSprite.direction;
 	pSdlGame->rcSprite.w=CHAR_SPRITE_W;
@@ -218,13 +240,14 @@ void loopSDL(SdlGame *pSdlGame)
 			
 			
 			/*collisionEnemies(&(pSdlGame->pGame.gChar),&(pSdlGame->pGame.gEnemies));*/
-			collision(pGame);
+			
 
 	 		collisionMap (pChar, pMap);
 	 		collisionMap (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), pMap);
 			/*collision (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), &(pSdlGame->pGame.gMap));*/
 			gravity (&(pSdlGame->pGame.gChar));
 			gravity (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar));
+			collision(pGame);
 			warpMap(pGame);	
 			moveEnemy (&(pSdlGame->pGame.gEnemies),1);
 			if (pGame -> level == 2)

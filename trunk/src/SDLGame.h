@@ -11,9 +11,9 @@
 
 
 /*Direction du sprite*/
-#define down 	0
+#define down 	4
 #define left 	1
-#define right 	2
+#define right 	0
 #define up 		3
 
 
@@ -27,6 +27,8 @@ typedef struct
 	SDL_Surface *surfaceChar;
 	SDL_Surface *surfaceEarth;
 	SDL_Surface *surfaceEnemy;
+	SDL_Surface *surfaceGrass;
+	SDL_Surface *surfaceBG;
 	SDL_Rect rcSprite;
 	SDL_Rect rcSpPosi;
 	SDL_Rect rectScreen;
