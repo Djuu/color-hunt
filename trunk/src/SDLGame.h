@@ -26,7 +26,7 @@ typedef struct
 	SDL_Surface *surfaceScreen;
 	SDL_Surface *surfaceChar;
 	SDL_Surface *surfaceEarth;
-	SDL_Surface *surfaceEnemy;
+	SDL_Surface **surfaceEnemies;
 	SDL_Surface *surfaceGrass;
 	SDL_Surface *surfaceBG;
 	SDL_Rect rcSprite;

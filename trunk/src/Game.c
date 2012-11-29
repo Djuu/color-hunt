@@ -4,10 +4,10 @@
 
 void initGame (Game *pGame, const char* Map)
 {
-	int i,j;
+	int i,j, k;
 	initChar(&(pGame -> gChar));
 	initEnemy(&(pGame -> gEnemies), 5);
-	
+	k=0;
 	pGame->level = 1;
 	
 	mapInit(&(pGame -> gMap),Map);
@@ -20,8 +20,9 @@ void initGame (Game *pGame, const char* Map)
 					pGame->gChar.cPosi.y = j;
 				break;
 				case 'E':
-					pGame->gEnemies.eEnemy[1].eChar.cPosi.x = i;
-					pGame->gEnemies.eEnemy[1].eChar.cPosi.y = j;
+					pGame->gEnemies.eEnemy[k].eChar.cPosi.x = i;
+					pGame->gEnemies.eEnemy[k].eChar.cPosi.y = j;
+					k++;
 				break;
 			}	
 
@@ -130,23 +131,14 @@ void collisionMap (Character *pChar, Map *pMap)
 	
 }
 
-void collision(Game *pGame)
+void action(Position *pPosi1, Position *pPosi2, float power)
 {
-	int j;
-	Position *posiChar;
-	Enemies *pEnemies;
-	posiChar = &(pGame -> gChar.cPosi);
-	pEnemies = &(pGame -> gEnemies);
-
-	for(j=1;j<2; j++)
-	{
+	
+		printf("pPosi1 = %f _________pPosi2 = %f\n", pPosi1->x, pPosi2->x);
+	
+			pPosi1 -> v_y=-0.2;
+			pPosi1 -> v_x+=power/5;
 		
-		posiChar->v_x *=path(posiChar, &(pEnemies->eEnemy[j].eChar.cPosi));
-		posiChar->v_y *=path(posiChar, &(pEnemies->eEnemy[j].eChar.cPosi));
-		pEnemies->eEnemy[j].eChar.cPosi.v_x *=path(posiChar, &(pEnemies->eEnemy[j].eChar.cPosi));
-		pEnemies->eEnemy[j].eChar.cPosi.v_y *=path(posiChar, &(pEnemies->eEnemy[j].eChar.cPosi));
-
-	}
 	
 }
 

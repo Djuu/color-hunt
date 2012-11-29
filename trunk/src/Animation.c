@@ -22,7 +22,7 @@ void InitTimeSprite(timeSprite *pTimeSprite)
 {
 	pTimeSprite ->previousTime=0;
 	pTimeSprite ->currentTime=0;
-	pTimeSprite ->delay=30;
+	pTimeSprite ->delay=20;
 }
 
 void DestructionSprite (Sprite *pSprite)
@@ -48,7 +48,7 @@ void MoveSprite (Sprite* pSprite, int dir)
 
 
         pSprite ->pTimeSprite.currentTime = SDL_GetTicks();
-        printf(" =====> %d <======\n", pSprite ->pTimeSprite.currentTime -  pSprite ->pTimeSprite.previousTime);
+      /*  printf(" =====> %d <======\n", pSprite ->pTimeSprite.currentTime -  pSprite ->pTimeSprite.previousTime);*/
         if ( pSprite ->pTimeSprite.currentTime -  pSprite ->pTimeSprite.previousTime >  pSprite ->pTimeSprite.delay)
         {
 			pSprite->frame++; 

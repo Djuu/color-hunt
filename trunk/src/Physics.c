@@ -84,7 +84,7 @@ float pathMap (Character *pChar, Map *pMap)
 Description : fonction interne qui identifie les cases que le personnage parcoure et renvoi une valeur en fonction de la distance qui seppare le personnage de l'ennemie
 Retourne : reel
 */
-float path(Position *pPosi1, Position *pPosi2)
+int collision(Position *pPosi1, Position *pPosi2)
 {
 
 	float i;
@@ -138,15 +138,13 @@ float path(Position *pPosi1, Position *pPosi2)
 
 					if((posXe > posX && posXe < posXr+sP1W) && (posY+sP1H>posYe && posY<posYe+sP2H))
 					 {
-						pPosi2 -> x+=0.1;
-						return i-0.01;
+						return 1; /*si pPosi1 vient par la gauche*/
 							
 					 }
+					  
 					 if ((posX > posXe && posX<posXe+sP2W) && (posY+sP1H>posYe && posY<posYe+sP2H))
 					 {
-						 pPosi2 -> x-=0.2;
-			
-						return i-0.01;
+						return 2; /*si pPosi1 vient par la droite*/
 					
 					}
 					 
@@ -155,7 +153,7 @@ float path(Position *pPosi1, Position *pPosi2)
 	
 		
 		}
-		return 1;
+		return 0;
 }
 
 
