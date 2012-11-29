@@ -38,17 +38,24 @@ void warpMap (Game *pGame)
 			switch(getMapXY(pMap, (int)(pChar->cPosi.x-0.5), (int)(pChar->cPosi.y-0.5)))
 			{
 				case'2' : 
-					initGame(pGame,"Map/Map2.txt");
+					initGame(pGame,"Map/Map1.txt");
 					pGame->level = 2;
 				break;
 			}
 }
-void initSpeed(Game *pGame)
+void initSpeedX(Game *pGame)
 {
 	Character *pChar = getGameChar(pGame);
 	pChar->cPosi.v_x=0;
 
 }
+
+void initSpeedY(Game *pGame)
+{
+	Character *pChar = getGameChar(pGame);
+	pChar->cPosi.v_y=0;
+}
+
 
 void left(Game *pGame)
 {
@@ -66,6 +73,23 @@ void right(Game *pGame)
 	pChar->cPosi.v_x=0.5;
 	
 }
+
+void up(Game *pGame)
+{
+
+	Character *pChar = getGameChar(pGame);
+	pChar->cPosi.v_y=-0.5;
+	
+}
+
+void down(Game *pGame)
+{
+
+	Character *pChar = getGameChar(pGame);
+	pChar->cPosi.v_y=0.5;
+	
+}
+
 
 void jump(Game *pGame)
 {
@@ -90,6 +114,26 @@ void controlKey(Game *pGame, const char key)
 		case 's':
 			jump (pGame);
 			break;		
+	}
+}
+
+void controlKey2(Game *pGame, const char key)
+{ 
+	
+	switch(key)
+	{
+		case 'g':
+			left (pGame);
+			break;
+		case 'd':
+			right (pGame);
+			break;
+		case 'h':
+			up (pGame);
+			break;	
+		case 'b':
+			down (pGame);
+			break;	
 	}
 }
 

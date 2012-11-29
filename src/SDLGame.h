@@ -22,6 +22,7 @@ typedef struct
 	int kLeft;
 	int kRight;
 	int kJump;
+	int kDown;
 }Key;
 
 

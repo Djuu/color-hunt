@@ -21,7 +21,7 @@ void initSDL(SdlGame *pSdlGame)
 	
 	pGame = &(pSdlGame -> pGame);
 
-	initGame(pGame,"Map/Map1.txt");
+	initGame(pGame,"Map/WorldMap.txt");
 
 	pSdlGame->rectScreen.x=0;
 	pSdlGame->rectScreen.y=0;
@@ -148,7 +148,35 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
 	}
 	
 }
+void keyManagment2(SdlGame *pSdlGame)
+{
+	if(pSdlGame->pKey.kLeft==1)
+	{
+		controlKey2(&(pSdlGame->pGame), 'g');
+	}
+	if(pSdlGame->pKey.kRight==1)
+	{
+		controlKey2(&(pSdlGame->pGame), 'd');
+	}
+	if (pSdlGame->pKey.kJump ==1)
+	{
+		controlKey2(&(pSdlGame->pGame), 'h');
+	}
+	if (pSdlGame->pKey.kDown ==1)
+	{
+		controlKey2(&(pSdlGame->pGame), 'b');
+	}
+	if(pSdlGame->pKey.kLeft==0 && pSdlGame->pKey.kRight==0)
+	{
+		initSpeedX(&(pSdlGame->pGame));
+	}
+	if(pSdlGame->pKey.kJump==0 && pSdlGame->pKey.kDown==0)
+	{
+		initSpeedY(&(pSdlGame->pGame));
+	}
 
+
+}
 void keyManagment(SdlGame *pSdlGame)
 {
 	int i;
@@ -188,7 +216,7 @@ void keyManagment(SdlGame *pSdlGame)
 			}
 			if(pSdlGame->pKey.kLeft==0 && pSdlGame->pKey.kRight==0)
 			{
-				initSpeed(&(pSdlGame->pGame));
+				initSpeedX(&(pSdlGame->pGame));
 			}
 		
 	}
@@ -225,6 +253,10 @@ void loopSDL(SdlGame *pSdlGame)
 
 /*	animSpInit(pSdlGame->rcSprite,128,0, TAILLE_SPRITE,TAILLE_SPRITE);*/
 	
+	pSdlGame->pKey.kLeft =0;
+	pSdlGame->pKey.kRight =0;
+	pSdlGame->pKey.kJump =0;
+	pSdlGame->pKey.kDown =0;
 	
 	while(continueLoop==1)
 	{
@@ -261,6 +293,9 @@ void loopSDL(SdlGame *pSdlGame)
 						case SDLK_UP:
 							pSdlGame->pKey.kJump =1;
 							break;	
+						case SDLK_DOWN:
+							pSdlGame->pKey.kDown =1;
+							break;	
 						case SDLK_ESCAPE:
 							continueLoop = 0;
 							break;
@@ -280,6 +315,9 @@ void loopSDL(SdlGame *pSdlGame)
 						case SDLK_UP:
 							pSdlGame->pKey.kJump = 0;
 							break;
+						case SDLK_DOWN:
+							pSdlGame->pKey.kDown =0;
+							break;
 						case SDLK_ESCAPE:
 							continueLoop = 0;
 							break;
@@ -298,7 +336,8 @@ void loopSDL(SdlGame *pSdlGame)
 			
 /* Application de la gravite et des collisions */
 
-			
+if(pGame -> level != 1)
+{		
 			
 			
 			/*collisionEnemies(&(pSdlGame->pGame.gChar),&(pSdlGame->pGame.gEnemies));*/
@@ -320,7 +359,7 @@ void loopSDL(SdlGame *pSdlGame)
 			{
 				pSdlGame->scrollX=0;
 				pSdlGame->scrollY=0;
-				pGame -> level =1;
+				pGame -> level =42;
 			}
 		/*	printf(" posX : %f \n posY :%f \n\n ", getPosiChar(pChar).x , getPosiChar(pChar).y); 
 		printf(" Vret : %d \n " , pGame -> level);  */
@@ -371,19 +410,28 @@ void loopSDL(SdlGame *pSdlGame)
 			}
 				
 			
-	//	}
-		
-		
-		}	
-		
-		/*Deplacement de l'ecran*/
+	/*Deplacement de l'ecran*/
 		temp = (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX);
 		if(temp > SCREEN_WIDTH*1/2-10 && temp < SCREEN_WIDTH*1/2+10 && temp >0 && temp<SCREEN_WIDTH)
 			pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
 		//printf("temp = %d_______SCREEN_WIDTH*1/2= %d\n", temp, SCREEN_WIDTH*1/2);
 	/*	if(temp == SCREEN_WIDTH*1/2 && temp >0 && temp<SCREEN_WIDTH )
 						pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;*/
-						
+		
+		}
+		else
+		{
+		
+			keyManagment2(pSdlGame);
+			collisionMap (pChar, pMap);
+			warpMap(pGame);
+		
+		
+		}
+				
+	}
+		
+					
 		if (refresh==1)
 		{
 			

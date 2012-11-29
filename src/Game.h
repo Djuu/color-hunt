@@ -20,10 +20,15 @@ void initGame (Game *pGame, const char* Map);
 void controlKey (Game *pGame, const char key);
 Map *getGameMap (Game *pGame);
 Character *getGameChar (Game* pGame);
-void initSpeed(Game *pGame);
+void initSpeedX(Game *pGame);
+void initSpeedY(Game *pGame);
 Enemies *getGameEnemies(Game *pGame);
 void warpMap (Game *pGame);
 void collisionMap (Character *pChar, Map *pMap);
+
+void down(Game *pGame);
+void up(Game *pGame);
+void controlKey2 (Game *pGame, const char key);
 
 /**
  Description : projection de pPosi1 par pPosi2 avec une force power
