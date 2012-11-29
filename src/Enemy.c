@@ -11,7 +11,7 @@ void initEnemy(Enemies *pEnemies, int num)
 	for (i = 0; i< num; i++)
 	{
 		initChar(&(pEnemies -> eEnemy[i].eChar));
-		pEnemies -> eEnemy[i].eChar.cPosi.spriteSizeH =1;
+		pEnemies -> eEnemy[i].eChar.cPosi.spriteSizeH = 1;
 		
 	}
 	

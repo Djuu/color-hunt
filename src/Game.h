@@ -24,6 +24,10 @@ void initSpeed(Game *pGame);
 Enemies *getGameEnemies(Game *pGame);
 void warpMap (Game *pGame);
 void collisionMap (Character *pChar, Map *pMap);
-void collision(Game *pGame);
+
+/**
+ Description : projection de pPosi1 par pPosi2 avec une force power
+*/
+void action(Position *pPosi1, Position *pPosi2, float power);
 #endif
 

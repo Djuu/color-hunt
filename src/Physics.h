@@ -16,5 +16,9 @@ Description : application des collisions
 */
 float pathMap (Character *pChar, Map *pMap);
 
-float path(Position *pPosi1, Position *pPosi2);
+/**
+Description : application de la collision entre deux position
+
+ */
+int collision(Position *pPosi1, Position *pPosi2);
 #endif
