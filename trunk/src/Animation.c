@@ -22,7 +22,7 @@ void InitTimeSprite(timeSprite *pTimeSprite)
 {
 	pTimeSprite ->previousTime=0;
 	pTimeSprite ->currentTime=0;
-	pTimeSprite ->delay=20;
+	pTimeSprite ->delay=0;
 }
 
 void DestructionSprite (Sprite *pSprite)
@@ -42,6 +42,8 @@ void DisplaySprite (Sprite* pSprite, SDL_Rect pos, int dir, SDL_Surface *screen)
 */
 void MoveSprite (Sprite* pSprite, int dir)
 {
+	float clockCurrent =  (float)clock()/(float)CLOCKS_PER_SEC;
+	static float clockPrevious = 0;
     Uint8 *keystate = SDL_GetKeyState(NULL);
 	pSprite->direction = dir;
 
@@ -49,15 +51,20 @@ void MoveSprite (Sprite* pSprite, int dir)
 
         pSprite ->pTimeSprite.currentTime = SDL_GetTicks();
       /*  printf(" =====> %d <======\n", pSprite ->pTimeSprite.currentTime -  pSprite ->pTimeSprite.previousTime);*/
-        if ( pSprite ->pTimeSprite.currentTime -  pSprite ->pTimeSprite.previousTime >  pSprite ->pTimeSprite.delay)
+       /*  if ( pSprite ->pTimeSprite.currentTime -  pSprite ->pTimeSprite.previousTime >  pSprite ->pTimeSprite.delay)
         {
 			pSprite->frame++; 
 			 pSprite ->pTimeSprite.previousTime= pSprite ->pTimeSprite.currentTime; 
         }
-        else
+       else
         {
             SDL_Delay( pSprite ->pTimeSprite.delay - ( pSprite ->pTimeSprite.currentTime -  pSprite ->pTimeSprite.previousTime));
-        }
+        }*/
+        if (clockCurrent-clockPrevious >0.02)
+        {
+				pSprite->frame++; 
+				clockPrevious=clockCurrent;
+		}
         if(pSprite->frame > 30)
         {
             pSprite->frame = 15;

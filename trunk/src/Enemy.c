@@ -58,5 +58,5 @@ void setManaEnemy (Enemies *pEnemies,int id, int nbMana)
 
 void moveEnemy (Enemies *pEnemies,int id)
 {
-	pEnemies -> eEnemy[id].eChar.cPosi.v_x=0.2;
+	pEnemies -> eEnemy[id].eChar.cPosi.v_x=-0.2;
 }

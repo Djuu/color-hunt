@@ -7,12 +7,13 @@ void initChar (Character *pChar)
 	pChar->cPosi.v_grav = 0.08;/*0.02*/
 	pChar-> floor = 0;
 	pChar-> air = 0;
+	pChar -> projection = 0;
 	setLife(pChar, 100);
 	setMana(pChar, 0);
 	pChar-> attack = 0;
 	pChar-> superAttack = 0;
-	pChar->cPosi.spriteSizeW =1;
-	pChar->cPosi.spriteSizeH =2;
+	pChar->cPosi.spriteSizeW =2.4;
+	pChar->cPosi.spriteSizeH =2.4;
 }
 
 Position getPosiChar (const Character *pChar)

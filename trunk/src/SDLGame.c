@@ -149,15 +149,60 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
 	
 }
 
+void keyManagment(SdlGame *pSdlGame)
+{
+	int i;
+	for(i=0; i<pSdlGame -> pGame.gEnemies.number; i++)
+	{
+		if(collision(&(pSdlGame->pGame.gChar.cPosi),&(pSdlGame->pGame.gEnemies.eEnemy[i].eChar.cPosi))==1)
+		{
+			pSdlGame->pGame.gChar.projection = 1;
+		}
+		else if (collision(&(pSdlGame->pGame.gChar.cPosi),&(pSdlGame->pGame.gEnemies.eEnemy[i].eChar.cPosi))==2)
+		{
+	
+			pSdlGame->pGame.gChar.projection = 2;
+		}
+	}
+		if(pSdlGame->pGame.gChar.projection == 0)	
+		{
+			
+			if(pSdlGame->pKey.kLeft==1)
+			{
+				MoveSprite (&(pSdlGame->pSprite), left);
+				controlKey(&(pSdlGame->pGame), 'g');
+				
+
+		
+			}
+			if(pSdlGame->pKey.kRight==1)
+			{
+				MoveSprite (&(pSdlGame->pSprite), right);
+				controlKey(&(pSdlGame->pGame), 'd');
+				
+
+			}
+			if (pSdlGame->pKey.kJump ==1)
+			{
+					controlKey(&(pSdlGame->pGame), 's');
+			}
+			if(pSdlGame->pKey.kLeft==0 && pSdlGame->pKey.kRight==0)
+			{
+				initSpeed(&(pSdlGame->pGame));
+			}
+		
+	}
+
+	
+}
+
+
 void loopSDL(SdlGame *pSdlGame)
 {
 	int k;
 	SDL_Event event;
 	int continueLoop=1;
 	int refresh=1;
-	int tmpLeft=0;
-	int tmpRight=0;
-	int tmpJump = 0;
 	int temp;
 	Game *pGame = &(pSdlGame->pGame);
 	Character *pChar= getGameChar(pGame);
@@ -171,7 +216,7 @@ void loopSDL(SdlGame *pSdlGame)
 	
 	/* Intervalle de temps (en secondes) entre deux évolutions du Game */
 	/* Changer la valeur pour ralentir ou accélérer le déplacement des fantomes */
-	float clockInterval = 0.01f;
+	float clockInterval = 0.02f;
 	
 	/* Récupère l'horloge actuelle et la convertit en secondes */
     /* clock() retourne le nombre de tops horloge depuis le lancement du programme */
@@ -208,13 +253,13 @@ void loopSDL(SdlGame *pSdlGame)
 					switch (event.key.keysym.sym)
 					{
 						case SDLK_LEFT:
-							tmpLeft=1; 
+							pSdlGame->pKey.kLeft=1; 
 							break;
 						case SDLK_RIGHT:
-							tmpRight=1;
+							pSdlGame->pKey.kRight=1;
 							break;	
 						case SDLK_UP:
-							tmpJump =1;
+							pSdlGame->pKey.kJump =1;
 							break;	
 						case SDLK_ESCAPE:
 							continueLoop = 0;
@@ -227,13 +272,13 @@ void loopSDL(SdlGame *pSdlGame)
 					switch (event.key.keysym.sym)
 					{
 						case SDLK_LEFT:
-							tmpLeft=0; 
+							pSdlGame->pKey.kLeft=0; 
 							break;
 						case SDLK_RIGHT:
-							tmpRight=0;
+							pSdlGame->pKey.kRight=0;
 							break;
 						case SDLK_UP:
-							tmpJump = 0;
+							pSdlGame->pKey.kJump = 0;
 							break;
 						case SDLK_ESCAPE:
 							continueLoop = 0;
@@ -291,76 +336,39 @@ void loopSDL(SdlGame *pSdlGame)
 	//	for(k=0; k< pSdlGame->pGame.gEnemies.number; k++)
 	//	{
 			//printf("======> %d <=======\n ", collision(&(pSdlGame->pGame.gChar.cPosi),&(pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi)));
-			if(collision(&(pSdlGame->pGame.gChar.cPosi),&(pSdlGame->pGame.gEnemies.eEnemy[2].eChar.cPosi))==1)
-			{
-				tempCol=1;			
-			}
-			else if (collision(&(pSdlGame->pGame.gChar.cPosi),&(pSdlGame->pGame.gEnemies.eEnemy[2].eChar.cPosi))==2)
-			{
-				tempCol=2;			
-			}
-				
-				
-			if(tempCol==0)	
-			{
-				
-				if(tmpLeft==1)
-				{
-					MoveSprite (&(pSdlGame->pSprite), left);
-					controlKey(&(pSdlGame->pGame), 'g');
-					
-
-			
-				}
-				if(tmpRight==1)
-				{
-					MoveSprite (&(pSdlGame->pSprite), right);
-					controlKey(&(pSdlGame->pGame), 'd');
-					
-
-				}
-				if (tmpJump ==1)
-				{
-						controlKey(&(pSdlGame->pGame), 's');
-				}
-				if(tmpLeft==0 && tmpRight==0)
-				{
-					initSpeed(&(pSdlGame->pGame));
-				}
-			}
-			
-			if(tempCol==1)
-			{
-				if(powerDetect<4)
-				{
-					action(&(pSdlGame->pGame.gChar.cPosi),&(pSdlGame->pGame.gEnemies.eEnemy[2].eChar.cPosi), powerDetect);
-					powerDetect+=0.4;
-				}
-				else
-				{
-					powerDetect=0;
-					tempCol=0;
-				}
-			}
-			else if (tempCol==2)
-			{
-				if(powerDetect<4)
-				{
-					action(&(pSdlGame->pGame.gChar.cPosi),&(pSdlGame->pGame.gEnemies.eEnemy[2].eChar.cPosi), -powerDetect);
-					powerDetect+=0.4;
-				}
-				else
-				{
-					powerDetect=0;
-					tempCol=0;
-				}
-			}
+		
 			
 			
 			
 	
+			keyManagment(pSdlGame);	
+			if(pSdlGame->pGame.gChar.projection == 1)
+			{
+					if(powerDetect<4)
+					{
+						action(&(pSdlGame->pGame.gChar.cPosi), powerDetect);
+						powerDetect+=0.4;
+					}
+					else
+					{
+						powerDetect=0;
+						pSdlGame->pGame.gChar.projection=0;
+					}
 				
-				
+			}
+			if (pSdlGame->pGame.gChar.projection == 2)
+			{
+				if(powerDetect<4)
+				{
+					action(&(pSdlGame->pGame.gChar.cPosi), -powerDetect);
+					powerDetect+=0.4;
+				}
+				else
+				{
+					powerDetect=0;
+					pSdlGame->pGame.gChar.projection=0;
+				}
+			}
 				
 			
 	//	}
@@ -371,8 +379,8 @@ void loopSDL(SdlGame *pSdlGame)
 		/*Deplacement de l'ecran*/
 		temp = (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX);
 		if(temp > SCREEN_WIDTH*1/2-10 && temp < SCREEN_WIDTH*1/2+10 && temp >0 && temp<SCREEN_WIDTH)
-						pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
-		printf("temp = %d_______SCREEN_WIDTH*1/2= %d\n", temp, SCREEN_WIDTH*1/2);
+			pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
+		//printf("temp = %d_______SCREEN_WIDTH*1/2= %d\n", temp, SCREEN_WIDTH*1/2);
 	/*	if(temp == SCREEN_WIDTH*1/2 && temp >0 && temp<SCREEN_WIDTH )
 						pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;*/
 						

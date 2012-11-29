@@ -136,7 +136,7 @@ int collision(Position *pPosi1, Position *pPosi2)
 					sP2H-=0.01;
 					sP2W-=0.01;
 
-					if((posXe > posX && posXe < posXr+sP1W) && (posY+sP1H>posYe && posY<posYe+sP2H))
+					if((posXe > posX && posXe < posX+sP1W) && (posY+sP1H>posYe && posY<posYe+sP2H))
 					 {
 						return 1; /*si pPosi1 vient par la gauche*/
 							

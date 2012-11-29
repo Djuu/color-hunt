@@ -28,6 +28,6 @@ void collisionMap (Character *pChar, Map *pMap);
 /**
  Description : projection de pPosi1 par pPosi2 avec une force power
 */
-void action(Position *pPosi1, Position *pPosi2, float power);
+void action(Position *pPosi, float power);
 #endif
 

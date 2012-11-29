@@ -131,15 +131,11 @@ void collisionMap (Character *pChar, Map *pMap)
 	
 }
 
-void action(Position *pPosi1, Position *pPosi2, float power)
+void action(Position *pPosi, float power)
 {
 	
-		printf("pPosi1 = %f _________pPosi2 = %f\n", pPosi1->x, pPosi2->x);
-	
-			pPosi1 -> v_y=-0.2;
-			pPosi1 -> v_x+=power/5;
-		
-	
+	pPosi -> v_x+=power/5;
+	pPosi -> v_y=-0.2;
 }
 
 
