@@ -17,12 +17,20 @@
 #define up 		3
 
 
+typedef struct
+{
+	int kLeft;
+	int kRight;
+	int kJump;
+}Key;
+
 
 
 typedef struct
 {
 	Game pGame;
 	Sprite pSprite;
+	Key pKey;
 	SDL_Surface *surfaceScreen;
 	SDL_Surface *surfaceChar;
 	SDL_Surface *surfaceEarth;
@@ -35,6 +43,7 @@ typedef struct
 	float scrollX;
 	float scrollY;
 }SdlGame;
+
 
 
 /**

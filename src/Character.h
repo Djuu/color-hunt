@@ -14,6 +14,7 @@ typedef struct
 	int air;
 	int life, mana;
 	int attack, superAttack;
+	int projection;
 }Character;
 
 /**

@@ -1,4 +1,4 @@
-options = -g -Wall -pedantic
+options = -g -Wall -pedantic -DNDEBUG -O2
 ssdl = `sdl-config --cflags --libs`
 sttf = -lSDLmain -lSDL -lSDL_ttf -lSDL_image
 endbin = bin/
