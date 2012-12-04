@@ -95,10 +95,7 @@ int collision(Position *pPosi1, Position *pPosi2)
 	float sP1W = pPosi1->spriteSizeW;
 	float sP2H = pPosi2->spriteSizeH;
 	float sP2W = pPosi2->spriteSizeW;
-	Position *current;
-	current=(Position*)malloc(sizeof(Position));
 	
-	setPosi (current, pPosi1 -> x, pPosi1 -> y,0);
 	
 		for (i=0.01; i<=1.0; i+=0.01) 
 		{
@@ -136,17 +133,19 @@ int collision(Position *pPosi1, Position *pPosi2)
 					sP2H-=0.01;
 					sP2W-=0.01;
 
-					if((posXe > posX && posXe < posX+sP1W) && (posY+sP1H>posYe && posY<posYe+sP2H))
+
+					 if ((posX > posXe && posX<posXe+sP2W+1) && (posY+sP1H>posYe && posY<posYe+sP2H))
 					 {
 						return 1; /*si pPosi1 vient par la gauche*/
+					
+					}
+					if((posXe > posX && posXe < posX+sP1W+1) &&(posY+sP1H>posYe && posY<posYe+sP2H))
+					 {
+						return 2; /*si pPosi1 vient par la droite*/
 							
 					 }
 					  
-					 if ((posX > posXe && posX<posXe+sP2W) && (posY+sP1H>posYe && posY<posYe+sP2H))
-					 {
-						return 2; /*si pPosi1 vient par la droite*/
 					
-					}
 					 
 					 
 				 }

@@ -2,32 +2,34 @@
 
 
 
-void InitSprite (Sprite *pSprite,SDL_Surface *nom, int w,int h)
+void InitSprite (Sprites *pSprites,int id, int w,int h, int nbFrame, int reFrame)
 {
-	InitTimeSprite(&(pSprite->pTimeSprite));
-    pSprite->width = w;
-    pSprite->height = h;
-        pSprite->direction = 1;
-        pSprite->frame = 0;
+	
+	pSprites->nbSprite =id+1; /*nombre de sprite*/
+	//pSprites->aSprite = calloc(id+1, sizeof(Sprite));
+	pSprites->aSprite[id].width = w;
+	pSprites->aSprite[id].height = h;
+	pSprites->direction = 0;
+	pSprites->aSprite[id].nbFrame = nbFrame;
+	pSprites->aSprite[id].reFrame = reFrame;
+	pSprites->aSprite[id].end=1;
+	pSprites->frame = 0;
+	pSprites->position = 16;
 
-	pSprite->source = nom;
-        if (pSprite->source == NULL)
-        {
-            fprintf(stderr,"Erreur, le chargement de l'image n'a pas etais fait \n");
-            exit(EXIT_FAILURE);
-        }
+}
+void displaySprite(Sprites *pSprites, int id)
+{
+	pSprites->aSprite[id].rcSprite.x=pSprites->aSprite[id].width*pSprites->frame;
+	pSprites->aSprite[id].rcSprite.y=pSprites->aSprite[id].height*pSprites->position;
+	
+	pSprites->aSprite[id].rcSprite.w=pSprites->aSprite[id].width;
+	pSprites->aSprite[id].rcSprite.h=pSprites->aSprite[id].height;
 }
 
-void InitTimeSprite(timeSprite *pTimeSprite)
+void freeSprite(Sprites *pSprites)
 {
-	pTimeSprite ->previousTime=0;
-	pTimeSprite ->currentTime=0;
-	pTimeSprite ->delay=0;
-}
-
-void DestructionSprite (Sprite *pSprite)
-{
-    SDL_FreeSurface(pSprite->source);
+		assert(pSprites->aSprite!=NULL);
+		free(pSprites->aSprite);
 }
 /*
 void DisplaySprite (Sprite* pSprite, SDL_Rect pos, int dir, SDL_Surface *screen)
@@ -40,34 +42,47 @@ void DisplaySprite (Sprite* pSprite, SDL_Rect pos, int dir, SDL_Surface *screen)
     SDL_Flip(screen);
 }
 */
-void MoveSprite (Sprite* pSprite, int dir)
+void animSprite (Sprites* pSprites, int id, int loop)
 {
 	float clockCurrent =  (float)clock()/(float)CLOCKS_PER_SEC;
-	static float clockPrevious = 0;
+	static float clockPrevious = 0.0;
+	float speedSprite=(1.0/(float)(pSprites->aSprite[id].nbFrame+3));
     Uint8 *keystate = SDL_GetKeyState(NULL);
-	pSprite->direction = dir;
+    pSprites->position = id;
+    if (id == 0)
+    {
+		pSprites->direction=0;
+	}
+	else if(id==1)
+	{
+		pSprites->direction=1;
+	
+	}
+	
 
-
-
-        pSprite ->pTimeSprite.currentTime = SDL_GetTicks();
-      /*  printf(" =====> %d <======\n", pSprite ->pTimeSprite.currentTime -  pSprite ->pTimeSprite.previousTime);*/
-       /*  if ( pSprite ->pTimeSprite.currentTime -  pSprite ->pTimeSprite.previousTime >  pSprite ->pTimeSprite.delay)
-        {
-			pSprite->frame++; 
-			 pSprite ->pTimeSprite.previousTime= pSprite ->pTimeSprite.currentTime; 
-        }
-       else
-        {
-            SDL_Delay( pSprite ->pTimeSprite.delay - ( pSprite ->pTimeSprite.currentTime -  pSprite ->pTimeSprite.previousTime));
-        }*/
-        if (clockCurrent-clockPrevious >0.02)
-        {
-				pSprite->frame++; 
+	printf("temp = %f\n",speedSprite);
+		if (clockCurrent-clockPrevious > speedSprite)
+		{
+				pSprites->frame++; 
 				clockPrevious=clockCurrent;
 		}
-        if(pSprite->frame > 30)
-        {
-            pSprite->frame = 15;
-        }
-    
+		
+		if (loop == 0)	
+		{
+			if(pSprites->frame >= (pSprites->aSprite[id].nbFrame))
+			{
+				
+				pSprites->frame = pSprites->aSprite[id].reFrame;
+			}
+		}
+		if(pSprites->aSprite[id].end==0 && loop == 1)
+		{
+			if(pSprites->frame == pSprites->aSprite[id].nbFrame+1)
+			{
+				pSprites->aSprite[id].end=1;
+				pSprites->frame=0;			
+			}
+		}
+	
+
 }

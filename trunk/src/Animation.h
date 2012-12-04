@@ -7,33 +7,34 @@
 #include <time.h>
 
 
-
 typedef struct
 {
-	  int previousTime;
-	  int currentTime;
-	  int delay;
-}timeSprite;
-
-
-typedef struct
-{
-	timeSprite pTimeSprite;
-	SDL_Surface *source;
-	SDL_Rect dest;
 	int width;
 	int height;
-	int direction;
-
-	int frame;
-
+	int nbFrame; /*nombre de frame*/
+	int reFrame; /*le frame a partir duquel on recommence*/
+	SDL_Rect rcSprite;
+	int end;
+	
 }Sprite;
 
+typedef struct
+{
+	Sprite aSprite[20];
+	SDL_Surface *source;
+	int nbSprite;
+	int direction;
+	int frame; /*le frame du debut*/
+	int position;
+	
+}Sprites;
 
+/**
+Precondition : SDL_Surface implemente
 
-
-void InitSprite (Sprite *pSprite,SDL_Surface *nom, int w,int h);
-void DestructionSprite (Sprite *pSprite);
-void MoveSprite (Sprite* pSprite, int anim);
-
+*/
+void InitSprite (Sprites *pSprites,int id, int w,int h, int nbFrame, int reFrame);
+void animSprite (Sprites* pSprites, int id, int loop);
+void displaySprite(Sprites *pSprites, int id);
+void freeSprite(Sprites *pSprites);
 #endif

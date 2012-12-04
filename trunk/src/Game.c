@@ -162,8 +162,8 @@ void collisionMap (Character *pChar, Map *pMap)
 	pChar->cPosi.y+=pChar->cPosi.v_y;
 	pChar->cPosi.x+=pChar->cPosi.v_x;
 	
-	if (getMapXY(pMap, (int)(pChar->cPosi.x), (int)(pChar->cPosi.y+1.5*pChar->cPosi.spriteSizeH))=='#' || 
-	    getMapXY(pMap, (int)(pChar->cPosi.x+pChar->cPosi.spriteSizeW), (int)(pChar->cPosi.y+1.5*pChar->cPosi.spriteSizeH))=='#')
+	if (getMapXY(pMap, (int)(pChar->cPosi.x), (int)(pChar->cPosi.y+pChar->cPosi.spriteSizeH+1))=='#' || 
+	    getMapXY(pMap, (int)(pChar->cPosi.x+pChar->cPosi.spriteSizeW), (int)(pChar->cPosi.y+pChar->cPosi.spriteSizeH+1))=='#')
 	{
 		pChar->floor = 1;
 	} 
