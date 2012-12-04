@@ -284,9 +284,9 @@ printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFL].end);
 		
 		if(pSdlGame->pGame.gChar.projection == 0 &&
 		(pSdlGame->pSprites.aSprite[attackR].end==1 || pSdlGame->pSprites.aSprite[attackL].end==1) &&
-		(pSdlGame->pSprites.aSprite[attackFR].end==1 | pSdlGame->pSprites.aSprite[attackFL].end==1))	
+		(pSdlGame->pSprites.aSprite[attackFR].end==1 || pSdlGame->pSprites.aSprite[attackFL].end==1))
 		{
-			pSdlGame->pGame.gChar.attack =0;
+			
 			if(pSdlGame->pKey.kLeft==1)
 			{
 
@@ -309,13 +309,12 @@ printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFL].end);
 			{
 				controlKey(&(pSdlGame->pGame), 's');
 			}
-			
-			
 		
 		}
-		if (pSdlGame->pKey.kCtrl == 1)
+	
+			if (pSdlGame->pKey.kCtrl == 1)
 			{  
-				pSdlGame->pGame.gChar.attack =1;
+				
 				if (pSdlGame->pSprites.direction == 0)
 				{
 					animSprite (&(pSdlGame->pSprites), attackR, 1);
@@ -324,10 +323,11 @@ printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFL].end);
 				{
 					animSprite (&(pSdlGame->pSprites), attackL, 1);
 				}
+				pSdlGame->pGame.gChar.attack =1;
 			}
 			if (pSdlGame->pKey.kShift == 1)
 			{  
-				pSdlGame->pGame.gChar.attack =1;
+				
 				if (pSdlGame->pSprites.direction == 0)
 				{
 					animSprite (&(pSdlGame->pSprites), attackFR, 1);
@@ -336,6 +336,7 @@ printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFL].end);
 				{
 					animSprite (&(pSdlGame->pSprites), attackFL, 1);
 				}
+				pSdlGame->pGame.gChar.attack =1;
 			}
 			if(pSdlGame->pKey.kLeft==0 && pSdlGame->pKey.kRight==0)
 			{
@@ -357,10 +358,12 @@ printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFL].end);
 			if (pSdlGame->pSprites.aSprite[attackR].end==1 || pSdlGame->pSprites.aSprite[attackL].end==1)
 			{
 				pSdlGame->pKey.kCtrl = 0;	
+			
 			}
 			if (pSdlGame->pSprites.aSprite[attackFR].end==1 || pSdlGame->pSprites.aSprite[attackFL].end==1)
 			{
 				pSdlGame->pKey.kShift = 0;	
+				
 			}
 	
 	/*	if(pSdlGame->pSprites.aSprite[KOR].end==1 && pSdlGame->pSprites.aSprite[KOL].end==1)
@@ -454,17 +457,17 @@ if(pSdlGame->pGame.gChar.attack == 0)
 							pSdlGame->pKey.kDown =1;
 							break;	
 						case SDLK_RCTRL:
-							
+							pSdlGame->pGame.gChar.attack = 1;
 							pSdlGame->pSprites.aSprite[attackR].end=0;
 							pSdlGame->pSprites.aSprite[attackL].end=0;
 							pSdlGame->pKey.kCtrl =1;
-							pSdlGame->pGame.gChar.attack = 1;
+							
 							break;		
 						case SDLK_RSHIFT:
 							pSdlGame->pSprites.aSprite[attackFR].end=0;
 							pSdlGame->pSprites.aSprite[attackFL].end=0;
-							pSdlGame->pKey.kShift = 1;
-							pSdlGame->pGame.gChar.attack = 1;
+							
+							
 							break;		
 						case SDLK_ESCAPE:
 							continueLoop = 0;
