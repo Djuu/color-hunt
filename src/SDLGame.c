@@ -458,11 +458,13 @@ if(pSdlGame->pGame.gChar.attack == 0)
 							pSdlGame->pSprites.aSprite[attackR].end=0;
 							pSdlGame->pSprites.aSprite[attackL].end=0;
 							pSdlGame->pKey.kCtrl =1;
+							pSdlGame->pGame.gChar.attack = 1;
 							break;		
 						case SDLK_RSHIFT:
 							pSdlGame->pSprites.aSprite[attackFR].end=0;
 							pSdlGame->pSprites.aSprite[attackFL].end=0;
 							pSdlGame->pKey.kShift = 1;
+							pSdlGame->pGame.gChar.attack = 1;
 							break;		
 						case SDLK_ESCAPE:
 							continueLoop = 0;
