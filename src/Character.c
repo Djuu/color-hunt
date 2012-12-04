@@ -12,8 +12,8 @@ void initChar (Character *pChar)
 	setMana(pChar, 0);
 	pChar-> attack = 0;
 	pChar-> superAttack = 0;
-	pChar->cPosi.spriteSizeW =2.4;
-	pChar->cPosi.spriteSizeH =2.4;
+	pChar->cPosi.spriteSizeW =1.5;
+	pChar->cPosi.spriteSizeH =2.5;
 }
 
 Position getPosiChar (const Character *pChar)
