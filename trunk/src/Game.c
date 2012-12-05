@@ -7,6 +7,7 @@ void initGame (Game *pGame, const char* Map)
 	int i,j, k;
 	initChar(&(pGame -> gChar));
 	initEnemy(&(pGame -> gEnemies), 5);
+	initObjects(&(pGame ->gObjects),10,1);
 	k=0;
 	pGame->level = 1;
 	
@@ -104,16 +105,28 @@ void controlKey(Game *pGame, const char key)
 	switch(key)
 	{
 		case 'g':
-			if (pGame -> gChar.air != 1)
-			left (pGame);
+			if(pGame->gChar.attack ==0 )
+			{
+				if (pGame -> gChar.air != 1)
+				left (pGame);
+			}
 			break;
 		case 'd':
-			if (pGame -> gChar.air != 2)
-			right (pGame);
+			if(pGame->gChar.attack ==0 )
+			{
+				if (pGame -> gChar.air != 2)
+				right (pGame);
+			}
 			break;
 		case 's':
 			jump (pGame);
 			break;		
+		case 'a':
+			attack(pGame);
+			break;
+		case'A':
+			superAttack(pGame);
+			break;
 	}
 }
 
@@ -147,6 +160,11 @@ Character *getGameChar(Game *pGame)
 	return &(pGame -> gChar);
 }
 
+Objects *getGameObjects(Game *pGame)
+{
+	return &(pGame -> gObjects);
+}
+
 
 Enemies *getGameEnemies(Game *pGame)
 {
@@ -175,11 +193,53 @@ void collisionMap (Character *pChar, Map *pMap)
 	
 }
 
-void action(Position *pPosi, float power)
+void action(Game *pGame, float power)
 {
+	if (pGame->gChar.attack != 1 && pGame->gChar.superAttack != 1)
+	{
+		pGame->gChar.cPosi.v_x+=power/5;
+		pGame->gChar.cPosi.v_y=-0.2;
+	}
+}
+
+void attack(Game *pGame)
+{
+	int i;
+	int e=0;
+	Character *pChar = getGameChar(pGame);
+	for(i=0;i<pGame->gEnemies.number;i++)
+	{
+		//printf("ATTACk  =  %d ",collision(&(pChar->cPosi),&(pGame->gEnemies.eEnemy[i].eChar.cPosi)));
+		if(collision(&(pChar->cPosi),&(pGame->gEnemies.eEnemy[i].eChar.cPosi))==2 )
+		{
+			if (e==0)
+			{
+				pGame->gEnemies.eEnemy[i].eChar.life -=30;
+				printf("Enemy %d HP ====== %d \n",i,pGame->gEnemies.eEnemy[i].eChar.life);
+				
+				//printf("SIZE = %f \n",pChar->cPosi.spriteSizeW);
+				e=1;
+
+			}
+			
+			
+		}
+		printf("SIZE = %f \n",pChar->cPosi.spriteSizeW);
+	}
 	
-	pPosi -> v_x+=power/5;
-	pPosi -> v_y=-0.2;
+}
+
+void superAttack(Game *pGame)
+{
+	Character *pChar = getGameChar(pGame);
+	Objects *pObjects = getGameObjects(pGame);
+
+	pObjects -> oObject[1].oPosi.x = pChar->cPosi.x;
+	pObjects -> oObject[1].oPosi.y =pChar->cPosi.y;
+	moveObjectR(&(pObjects -> oObject[1]));
+	
+	
+
 }
 
 

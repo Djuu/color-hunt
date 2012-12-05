@@ -10,7 +10,7 @@ typedef struct
 	Character gChar;
 	Enemies gEnemies;
 	Map gMap;
-	Object *tabObj;
+	Objects gObjects;
 	int level;
 }Game;
 
@@ -29,10 +29,13 @@ void collisionMap (Character *pChar, Map *pMap);
 void down(Game *pGame);
 void up(Game *pGame);
 void controlKey2 (Game *pGame, const char key);
+void attack(Game *pGame);
+Objects *getGameObjects(Game *pGame);
+void superAttack(Game *pGame);
 
 /**
  Description : projection de pPosi1 par pPosi2 avec une force power
 */
-void action(Position *pPosi, float power);
+void action(Game *pGame, float power);
 #endif
 

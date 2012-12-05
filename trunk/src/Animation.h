@@ -1,10 +1,10 @@
 #ifndef _ANIMATION
 #define _ANIMATION
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_ttf.h>
+// #include <SDL/SDL_image.h>
+// #include <SDL/SDL_ttf.h>
 #include <SDL/SDL.h>
-#include <assert.h>
-#include <time.h>
+
+ 
 
 
 typedef struct
@@ -24,7 +24,7 @@ typedef struct
 	SDL_Surface *source;
 	int nbSprite;
 	int direction;
-	int frame; /*le frame du debut*/
+	int frame; 
 	int position;
 	
 }Sprites;
@@ -34,7 +34,7 @@ Precondition : SDL_Surface implemente
 
 */
 void InitSprite (Sprites *pSprites,int id, int w,int h, int nbFrame, int reFrame);
-void animSprite (Sprites* pSprites, int id, int loop);
-void displaySprite(Sprites *pSprites, int id);
+void animSprite (Sprites* pSprites, int id, int loop, int dir);
+void displaySprite(Sprites *pSprites, SDL_Rect posi, SDL_Surface *screen);
 void freeSprite(Sprites *pSprites);
 #endif
