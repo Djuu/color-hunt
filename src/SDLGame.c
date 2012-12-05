@@ -1,6 +1,9 @@
 #include "SDLGame.h"
 
-const int TAILLE_SPRITE=20;
+#include <assert.h>
+#include <time.h>
+
+const int TAILLE_SPRITE= 20;
 const int CHAR_SPRITE_W =52;
 const int CHAR_SPRITE_H =54;
 const int SCREEN_WIDTH =800;
@@ -61,6 +64,11 @@ pSdlGame -> surfaceGrass = IMG_Load("data/grass4.png");
 	if (pSdlGame->surfaceGrass==NULL)	
 		pSdlGame->surfaceGrass = IMG_Load("../data/grass4.png");
 	assert( pSdlGame->surfaceGrass!=NULL);
+	
+pSdlGame -> surfaceFireBall = IMG_Load("data/fireBall.png");
+	if (pSdlGame->surfaceFireBall==NULL)	
+		pSdlGame->surfaceFireBall = IMG_Load("../data/fireBall.png");
+	assert( pSdlGame->surfaceFireBall!=NULL);
 
 
 /*Initialisation des sprites*/
@@ -86,6 +94,11 @@ pSdlGame -> surfaceGrass = IMG_Load("data/grass4.png");
 	/*KO gauche*/
 	InitSprite (&(pSdlGame->pSprites),KOL, 52, 45, 5, 0);
 	
+	pSdlGame->pSpritesObject.source = pSdlGame -> surfaceFireBall; /*incrementation du sprite global*/
+	/*boule de feu droit*/
+	InitSprite (&(pSdlGame->pSpritesObject),0, 30, 56, 5, 0);
+	/*boule de feu gauche*/
+	InitSprite (&(pSdlGame->pSpritesObject),1, 52, 56, 5, 0);
 }
 
 
@@ -103,7 +116,7 @@ void sdlDisplay(SdlGame *pSdlGame)
 	Character *pChar= getGameChar(pGame);
 	Enemies *pEnemies = getGameEnemies(pGame);
 	Map *pMap=getGameMap(pGame);
-	SDL_Rect posiChar, posiEnemy;
+	SDL_Rect posiEnemy,posiChar, posiFireBall;
 	/*Position posiEnemy;*/
 	
 	
@@ -114,6 +127,13 @@ void sdlDisplay(SdlGame *pSdlGame)
 	posiChar.x = getPosiChar(pChar).x*TAILLE_SPRITE - pSdlGame->scrollX;
 	posiChar.y = getPosiChar(pChar).y*TAILLE_SPRITE- pSdlGame->scrollY;
 
+	displaySprite(&(pSdlGame->pSprites), posiChar, pSdlGame->surfaceScreen);
+	
+	posiFireBall.x = pSdlGame->pGame.gObjects.oObject[1].oPosi.x*TAILLE_SPRITE- pSdlGame->scrollX;
+	posiFireBall.y = pSdlGame->pGame.gObjects.oObject[1].oPosi.y*TAILLE_SPRITE- pSdlGame->scrollY;
+	
+	displaySprite(&(pSdlGame->pSpritesObject), posiFireBall, pSdlGame->surfaceScreen);
+	
 	
 	/* Remplir l'écran de blanc */
 	//SDL_FillRect( pSdlGame->surfaceScreen, &pSdlGame->surfaceScreen->clip_rect, SDL_MapRGB( pSdlGame->surfaceScreen->format, 0xFF, 0xFF, 0xFF ));
@@ -156,69 +176,6 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
 	}
 	
 	
-
-	if(pSdlGame->pKey.kLeft==1)
-	{
-		displaySprite(&(pSdlGame->pSprites), left);
-	
-		SDL_BlitSurface(pSdlGame->pSprites.source, &(pSdlGame->pSprites.aSprite[left].rcSprite),  pSdlGame->surfaceScreen, &posiChar);
-	}
-	else if(pSdlGame->pKey.kRight==1)
-	{
-		displaySprite(&(pSdlGame->pSprites), right);
-		SDL_BlitSurface(pSdlGame->pSprites.source, &(pSdlGame->pSprites.aSprite[right].rcSprite),  pSdlGame->surfaceScreen, &posiChar);
-	}
-	else if(pSdlGame->pKey.kCtrl==1)
-	{
-		if (pSdlGame->pSprites.direction == 0)
-		{
-			displaySprite(&(pSdlGame->pSprites), attackR);
-			SDL_BlitSurface(pSdlGame->pSprites.source, &(pSdlGame->pSprites.aSprite[attackR].rcSprite),  pSdlGame->surfaceScreen, &posiChar);
-		}
-		if (pSdlGame->pSprites.direction == 1)
-		{
-			displaySprite(&(pSdlGame->pSprites), attackL);
-			SDL_BlitSurface(pSdlGame->pSprites.source, &(pSdlGame->pSprites.aSprite[attackL].rcSprite),  pSdlGame->surfaceScreen, &posiChar);
-		}	
-	}
-	else if(pSdlGame->pKey.kShift==1)
-	{
-		if (pSdlGame->pSprites.direction == 0)
-		{
-			displaySprite(&(pSdlGame->pSprites), attackFR);
-			SDL_BlitSurface(pSdlGame->pSprites.source, &(pSdlGame->pSprites.aSprite[attackFR].rcSprite),  pSdlGame->surfaceScreen, &posiChar);
-		}
-		if (pSdlGame->pSprites.direction == 1)
-		{
-			displaySprite(&(pSdlGame->pSprites), attackFL);
-			SDL_BlitSurface(pSdlGame->pSprites.source, &(pSdlGame->pSprites.aSprite[attackFL].rcSprite),  pSdlGame->surfaceScreen, &posiChar);
-		}	
-	}
-	else if(pSdlGame->pGame.gChar.projection==1)
-	{
-		displaySprite(&(pSdlGame->pSprites), KOR);
-		SDL_BlitSurface(pSdlGame->pSprites.source, &(pSdlGame->pSprites.aSprite[KOR].rcSprite),  pSdlGame->surfaceScreen, &posiChar);
-	}
-	else if(pSdlGame->pGame.gChar.projection==2)
-	{
-			displaySprite(&(pSdlGame->pSprites), KOL);
-			SDL_BlitSurface(pSdlGame->pSprites.source, &(pSdlGame->pSprites.aSprite[KOL].rcSprite),  pSdlGame->surfaceScreen, &posiChar);
-	}
-	else
-	{
-		if (pSdlGame->pSprites.direction == 0)
-		{
-			displaySprite(&(pSdlGame->pSprites), stayR);
-			SDL_BlitSurface(pSdlGame->pSprites.source, &(pSdlGame->pSprites.aSprite[stayR].rcSprite),  pSdlGame->surfaceScreen, &posiChar);
-		}
-		if (pSdlGame->pSprites.direction == 1)
-		{
-			displaySprite(&(pSdlGame->pSprites), stayL);
-			SDL_BlitSurface(pSdlGame->pSprites.source, &(pSdlGame->pSprites.aSprite[stayL].rcSprite),  pSdlGame->surfaceScreen, &posiChar);
-		}
-		
-	}
-	
 	
 	
 	
@@ -232,6 +189,21 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
 	}
 	
 }
+
+void colisionSprite(SdlGame *pSdlGame)
+{
+	if (pSdlGame->pGame.gChar.floor == 1)	
+	{
+		pSdlGame->pGame.gChar.cPosi.spriteSizeW = (pSdlGame->pSprites.aSprite[pSdlGame->pSprites.position].width)/TAILLE_SPRITE;
+	}
+	else
+	{
+		pSdlGame->pGame.gChar.cPosi.spriteSizeW = 2;
+	}
+	pSdlGame->pGame.gChar.cPosi.spriteSizeH = pSdlGame->pSprites.aSprite[pSdlGame->pSprites.position].height/TAILLE_SPRITE;
+}
+
+
 void keyManagment2(SdlGame *pSdlGame)
 {
 	if(pSdlGame->pKey.kLeft==1)
@@ -265,6 +237,7 @@ void keyManagment2(SdlGame *pSdlGame)
 void keyManagment(SdlGame *pSdlGame)
 {
 	int i;
+
 	for(i=0; i<pSdlGame -> pGame.gEnemies.number; i++)
 	{
 		if(collision(&(pSdlGame->pGame.gChar.cPosi),&(pSdlGame->pGame.gEnemies.eEnemy[i].eChar.cPosi))==1)
@@ -277,21 +250,21 @@ void keyManagment(SdlGame *pSdlGame)
 			pSdlGame->pGame.gChar.projection = 2;
 		}
 	}
-printf("end = %d\n", pSdlGame->pSprites.aSprite[attackR].end);
+/*printf("end = %d\n", pSdlGame->pSprites.aSprite[attackR].end);
 printf("end = %d\n", pSdlGame->pSprites.aSprite[attackL].end);
 printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFR].end);
-printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFL].end);
+printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFL].end);*/
 		
-		if(pSdlGame->pGame.gChar.projection == 0 &&
-		(pSdlGame->pSprites.aSprite[attackR].end==1 || pSdlGame->pSprites.aSprite[attackL].end==1) &&
-		(pSdlGame->pSprites.aSprite[attackFR].end==1 || pSdlGame->pSprites.aSprite[attackFL].end==1))
+		if(pSdlGame->pGame.gChar.projection == 0 && pSdlGame->pGame.gChar.attack ==0 && pSdlGame->pGame.gChar.superAttack == 0)
 		{
 			
 			if(pSdlGame->pKey.kLeft==1)
 			{
 
-				
-				animSprite (&(pSdlGame->pSprites), left, 0);
+				if(pSdlGame->pGame.gChar.attack == 0 && pSdlGame->pGame.gChar.superAttack == 0)
+				{
+					animSprite (&(pSdlGame->pSprites), left, 0, pSdlGame->pGame.gChar.cPosi.direction);
+				}
 				controlKey(&(pSdlGame->pGame), 'g');
 			}
 
@@ -299,8 +272,10 @@ printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFL].end);
 			{
 				
 
-				
-				animSprite (&(pSdlGame->pSprites), right, 0);
+				if(pSdlGame->pGame.gChar.attack == 0 && pSdlGame->pGame.gChar.superAttack == 0)
+				{
+					animSprite (&(pSdlGame->pSprites), right, 0, pSdlGame->pGame.gChar.cPosi.direction);
+				}
 				controlKey(&(pSdlGame->pGame), 'd');
 			}
 
@@ -311,34 +286,42 @@ printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFL].end);
 			}
 		
 		}
+
 	
 			if (pSdlGame->pKey.kCtrl == 1)
 			{  
-				
+				pSdlGame->pGame.gChar.attack =1;
 				if (pSdlGame->pSprites.direction == 0)
 				{
-					animSprite (&(pSdlGame->pSprites), attackR, 1);
+					controlKey(&(pSdlGame->pGame), 'a');
+					animSprite (&(pSdlGame->pSprites), attackR, 1, pSdlGame->pGame.gChar.cPosi.direction);
 				}
 				if (pSdlGame->pSprites.direction == 1)
 				{
-					animSprite (&(pSdlGame->pSprites), attackL, 1);
+					animSprite (&(pSdlGame->pSprites), attackL, 1, pSdlGame->pGame.gChar.cPosi.direction);
 				}
-				pSdlGame->pGame.gChar.attack =1;
+				
 			}
+			
 			if (pSdlGame->pKey.kShift == 1)
 			{  
-				
+				pSdlGame->pGame.gChar.superAttack =1;
 				if (pSdlGame->pSprites.direction == 0)
 				{
-					animSprite (&(pSdlGame->pSprites), attackFR, 1);
+					
+					controlKey(&(pSdlGame->pGame), 'A');
+					animSprite (&(pSdlGame->pSpritesObject), fireBallR, 1, pSdlGame->pGame.gChar.cPosi.direction);
+					animSprite (&(pSdlGame->pSprites), attackFR, 1, pSdlGame->pGame.gChar.cPosi.direction);
+					
+					
 				}
 				if (pSdlGame->pSprites.direction == 1)
 				{
-					animSprite (&(pSdlGame->pSprites), attackFL, 1);
+					animSprite (&(pSdlGame->pSprites), attackFL, 1, pSdlGame->pGame.gChar.cPosi.direction);
 				}
-				pSdlGame->pGame.gChar.attack =1;
+				
 			}
-			if(pSdlGame->pKey.kLeft==0 && pSdlGame->pKey.kRight==0)
+			if(pSdlGame->pKey.kLeft==0 && pSdlGame->pKey.kRight==0 && pSdlGame->pGame.gChar.attack == 0  && pSdlGame->pGame.gChar.superAttack == 0)
 			{
 				initSpeedX(&(pSdlGame->pGame));
 				if((pSdlGame->pSprites.aSprite[attackR].end==1 || pSdlGame->pSprites.aSprite[attackL].end==1) &&
@@ -347,22 +330,26 @@ printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFL].end);
 				{
 					if (pSdlGame->pSprites.direction == 0)
 					{
-						animSprite (&(pSdlGame->pSprites), stayR, 0);
+						animSprite (&(pSdlGame->pSprites), stayR, 0, pSdlGame->pGame.gChar.cPosi.direction);
 					}
 					else if(pSdlGame->pSprites.direction == 1)
 					{
-						animSprite (&(pSdlGame->pSprites), stayL, 0);
+						animSprite (&(pSdlGame->pSprites), stayL, 0, pSdlGame->pGame.gChar.cPosi.direction);
 					}
 				}
 			}
-			if (pSdlGame->pSprites.aSprite[attackR].end==1 || pSdlGame->pSprites.aSprite[attackL].end==1)
+			if (pSdlGame->pSprites.aSprite[attackR].end==1 && pSdlGame->pSprites.aSprite[attackL].end==1)
 			{
 				pSdlGame->pKey.kCtrl = 0;	
+		
+				pSdlGame->pGame.gChar.attack = 0;
 			
 			}
-			if (pSdlGame->pSprites.aSprite[attackFR].end==1 || pSdlGame->pSprites.aSprite[attackFL].end==1)
+
+			if (pSdlGame->pSprites.aSprite[attackFR].end==1 && pSdlGame->pSprites.aSprite[attackFL].end==1)
 			{
 				pSdlGame->pKey.kShift = 0;	
+				pSdlGame->pGame.gChar.superAttack = 0;
 				
 			}
 	
@@ -416,7 +403,7 @@ void loopSDL(SdlGame *pSdlGame)
 	pSdlGame->pKey.kShift = 0;
 	while(continueLoop==1)
 	{
-	
+//	printf("attack = %d\n", pSdlGame->pGame.gChar.attack);
 		/*pSdlGame->rcSprite.x=getPosiX(&(pSdlGame->Game.perso));
 		pSdlGame->rcSprite.y=getPosiY(&(pSdlGame->Game.perso));*/
 		/*Position du sprite*/
@@ -428,12 +415,11 @@ void loopSDL(SdlGame *pSdlGame)
 		 /* Récupère l'horloge actuelle et la convertit en secondes */
 		currentClock = (float)clock()/(float)CLOCKS_PER_SEC;
 
-	printf("frame = %d _______ position = %d\n", pSdlGame->pSprites.frame, pSdlGame->pSprites.position);
+//	printf("frame = %d _______ position = %d _______ dirrection = %d\n", pSdlGame->pSprites.frame, pSdlGame->pSprites.position, pSdlGame->pSprites.direction);
 
 
 /* Evenement des touches */		
-if(pSdlGame->pGame.gChar.attack == 0)
-{
+
 		while (SDL_PollEvent(&event))
 		{
 			switch(event.type)
@@ -457,17 +443,40 @@ if(pSdlGame->pGame.gChar.attack == 0)
 							pSdlGame->pKey.kDown =1;
 							break;	
 						case SDLK_RCTRL:
+							if (pSdlGame->pSprites.frame !=0 && pSdlGame->pGame.gChar.attack == 0)
+							{
+								pSdlGame->pSprites.frame=0;
+							}
 							pSdlGame->pGame.gChar.attack = 1;
-							pSdlGame->pSprites.aSprite[attackR].end=0;
-							pSdlGame->pSprites.aSprite[attackL].end=0;
+							if (pSdlGame->pSprites.direction == 0)
+							{
+								pSdlGame->pSprites.aSprite[attackR].end=0;
+								
+							}
+							if(pSdlGame->pSprites.direction == 1)
+							{
+								pSdlGame->pSprites.aSprite[attackL].end=0;
+							}
+							
 							pSdlGame->pKey.kCtrl =1;
 							
 							break;		
 						case SDLK_RSHIFT:
-							pSdlGame->pSprites.aSprite[attackFR].end=0;
-							pSdlGame->pSprites.aSprite[attackFL].end=0;
+							if (pSdlGame->pSprites.frame !=0 && pSdlGame->pGame.gChar.superAttack == 0)
+							{
+								pSdlGame->pSprites.frame=0;
+							}
+							pSdlGame->pGame.gChar.superAttack = 1;
+							if (pSdlGame->pSprites.direction == 0)
+							{
+								pSdlGame->pSprites.aSprite[attackFR].end=0;
+							}
+							if(pSdlGame->pSprites.direction == 1)
+							{
+								pSdlGame->pSprites.aSprite[attackFL].end=0;
+							}
 							
-							
+							pSdlGame->pKey.kShift =1;
 							break;		
 						case SDLK_ESCAPE:
 							continueLoop = 0;
@@ -480,11 +489,17 @@ if(pSdlGame->pGame.gChar.attack == 0)
 					switch (event.key.keysym.sym)
 					{
 						case SDLK_LEFT:
-							pSdlGame->pSprites.frame=0;
+							if (pSdlGame->pGame.gChar.attack == 0 && pSdlGame->pGame.gChar.superAttack == 0)
+							{
+								pSdlGame->pSprites.frame=0;
+							}
 							pSdlGame->pKey.kLeft=0; 							
 							break;
 						case SDLK_RIGHT:
-							pSdlGame->pSprites.frame=0;
+							if (pSdlGame->pGame.gChar.attack == 0 && pSdlGame->pGame.gChar.superAttack == 0)
+							{
+								pSdlGame->pSprites.frame=0;
+							}
 							pSdlGame->pKey.kRight=0;							
 							break;
 						case SDLK_SPACE:
@@ -513,7 +528,7 @@ if(pSdlGame->pGame.gChar.attack == 0)
 							break;
 			}
 			
-		}
+		
 	}
 		 /* Si suffisamment de temps s'est écoulé depuis la dernière prise d'horloge */
 		if (currentClock-previousClock>=clockInterval)
@@ -526,8 +541,9 @@ if(pGame -> level != 1)
 			
 			
 			/*collisionEnemies(&(pSdlGame->pGame.gChar),&(pSdlGame->pGame.gEnemies));*/
-			
-
+			applySpeedObject(&(pSdlGame->pGame.gObjects.oObject[1]));
+			printf("OBJET .X : %f\n",pSdlGame->pGame.gObjects.oObject[1].oPosi.x);
+			colisionSprite(pSdlGame);
 	 		collisionMap (pChar, pMap);
 	 		
 			/*collision (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), &(pSdlGame->pGame.gMap));*/
@@ -538,7 +554,9 @@ if(pGame -> level != 1)
 				gravity (&(pSdlGame->pGame.gEnemies.eEnemy[k].eChar));
 				collisionMap (&(pSdlGame->pGame.gEnemies.eEnemy[k].eChar), pMap);
 			}
-	
+			
+			refreshDirection(&(pSdlGame->pGame.gChar.cPosi));
+			
 			warpMap(pGame);	
 			moveEnemy (&(pSdlGame->pGame.gEnemies),1);
 			if (pGame -> level == 2)
@@ -570,10 +588,10 @@ if(pGame -> level != 1)
 		
 			if(pSdlGame->pGame.gChar.projection == 1)
 			{
-					animSprite (&(pSdlGame->pSprites), KOL, 1);
+					animSprite (&(pSdlGame->pSprites), KOL, 1, pSdlGame->pGame.gChar.cPosi.direction);
 					if(powerDetect<3)
 					{
-						action(&(pSdlGame->pGame.gChar.cPosi), powerDetect);
+						action(&(pSdlGame->pGame), powerDetect);
 						powerDetect+=0.4;
 					}
 					else
@@ -584,10 +602,10 @@ if(pGame -> level != 1)
 			}
 			if (pSdlGame->pGame.gChar.projection == 2)
 			{
-				animSprite (&(pSdlGame->pSprites), KOR, 1);
+				animSprite (&(pSdlGame->pSprites), KOR, 1, pSdlGame->pGame.gChar.cPosi.direction);
 				if(powerDetect<3)
 				{
-					action(&(pSdlGame->pGame.gChar.cPosi), -powerDetect);
+					action(&(pSdlGame->pGame), -powerDetect);
 					powerDetect+=0.4;
 				}
 				else
@@ -658,6 +676,10 @@ SDL_Surface *SDL_load_image(const char* filename )
 	/* Return the optimized image */
 	return optimizedImage;
 }
+
+
+
+
 void freeSdl(SdlGame *pSdlGame)
 {
 	SDL_FreeSurface (pSdlGame->surfaceScreen);

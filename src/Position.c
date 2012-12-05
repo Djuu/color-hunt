@@ -42,3 +42,15 @@ int getPosiZint(const Position *pPosi)
 {
 	return (int)(pPosi->z);
 }
+
+void refreshDirection(Position *pPosi)
+{
+		if (pPosi -> v_x>0)
+		{
+			pPosi -> direction = 0;
+		}
+		if (pPosi -> v_x<0)
+		{
+			pPosi -> direction = 1;
+		}
+}

@@ -18,10 +18,8 @@ float pathMap (Character *pChar, Map *pMap)
 	float i;
 	float k, l;
 	float posX, posY, posYd, posXd, posYr, posXr, posYl, posXl;
-	Position *current;
-	current=(Position*)malloc(sizeof(Position));
 
-	setPosi (current, pChar->cPosi.x, pChar->cPosi.y,0);
+	
 
 	
 	for (i=0.01; i<=1; i+=0.01) 
@@ -69,7 +67,7 @@ float pathMap (Character *pChar, Map *pMap)
 		}
 			
 			
-			setPosi (current, posX, posY,0);
+		
 			
 			
 		

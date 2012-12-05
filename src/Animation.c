@@ -1,5 +1,7 @@
 #include "Animation.h"
-
+#include "SDLGame.h"
+#include <time.h>
+#include <assert.h>
 
 
 void InitSprite (Sprites *pSprites,int id, int w,int h, int nbFrame, int reFrame)
@@ -17,13 +19,15 @@ void InitSprite (Sprites *pSprites,int id, int w,int h, int nbFrame, int reFrame
 	pSprites->position = 16;
 
 }
-void displaySprite(Sprites *pSprites, int id)
+void displaySprite(Sprites *pSprites, SDL_Rect posi, SDL_Surface *screen)
 {
-	pSprites->aSprite[id].rcSprite.x=pSprites->aSprite[id].width*pSprites->frame;
-	pSprites->aSprite[id].rcSprite.y=pSprites->aSprite[id].height*pSprites->position;
+	pSprites->aSprite[pSprites->position].rcSprite.y=pSprites->aSprite[pSprites->position].height*pSprites->position;
+	pSprites->aSprite[pSprites->position].rcSprite.x=pSprites->aSprite[pSprites->position].width*pSprites->frame;
 	
-	pSprites->aSprite[id].rcSprite.w=pSprites->aSprite[id].width;
-	pSprites->aSprite[id].rcSprite.h=pSprites->aSprite[id].height;
+	pSprites->aSprite[pSprites->position].rcSprite.w=pSprites->aSprite[pSprites->position].width;
+	pSprites->aSprite[pSprites->position].rcSprite.h=pSprites->aSprite[pSprites->position].height;
+	
+	SDL_BlitSurface(pSprites->source, &(pSprites->aSprite[pSprites->position].rcSprite), screen, &posi);
 }
 
 void freeSprite(Sprites *pSprites)
@@ -42,30 +46,22 @@ void DisplaySprite (Sprite* pSprite, SDL_Rect pos, int dir, SDL_Surface *screen)
     SDL_Flip(screen);
 }
 */
-void animSprite (Sprites* pSprites, int id, int loop)
+void animSprite (Sprites* pSprites, int id, int loop, int dir)
 {
 	float clockCurrent =  (float)clock()/(float)CLOCKS_PER_SEC;
 	static float clockPrevious = 0.0;
 	float speedSprite=(1.0/(float)(pSprites->aSprite[id].nbFrame+3));
-    Uint8 *keystate = SDL_GetKeyState(NULL);
+  //  Uint8 *keystate = SDL_GetKeyState(NULL);
     pSprites->position = id;
-    if (id == 0)
-    {
-		pSprites->direction=0;
-	}
-	else if(id==1)
-	{
-		pSprites->direction=1;
-	
-	}
-	
+    pSprites->direction = dir;
 
-	printf("temp = %f\n",speedSprite);
-		if (clockCurrent-clockPrevious > speedSprite)
+	if (clockCurrent-clockPrevious > speedSprite)
 		{
 				pSprites->frame++; 
 				clockPrevious=clockCurrent;
 		}
+
+		
 		
 		if (loop == 0)	
 		{
@@ -75,14 +71,16 @@ void animSprite (Sprites* pSprites, int id, int loop)
 				pSprites->frame = pSprites->aSprite[id].reFrame;
 			}
 		}
+//		printf("loop = %d\n", loop);
 		if(pSprites->aSprite[id].end==0 && loop == 1)
 		{
-			if(pSprites->frame == pSprites->aSprite[id].nbFrame+1)
+	
+			if(pSprites->frame == pSprites->aSprite[id].nbFrame)
 			{
 				pSprites->aSprite[id].end=1;
-				pSprites->frame=0;			
+		
 			}
 		}
-	
-
+		
+		
 }

@@ -1,10 +1,10 @@
 #ifndef _SDLGAME
 #define _SDLGAME
 
-#include <assert.h>
-#include <time.h>
+// #include <assert.h>
+// #include <time.h>
 #include <SDL/SDL_image.h>
-#include <SDL/SDL_ttf.h>
+// #include <SDL/SDL_ttf.h>
 #include <SDL/SDL.h>
 #include "Game.h"
 #include "Animation.h"
@@ -17,10 +17,14 @@
 #define attackL		3
 #define attackFR	4
 #define attackFL	5
-#define KOR			13
-#define KOL			14
+#define KOR			12
+#define KOL			13
+#define fireBallR	0
+#define fireBallL	1
 #define stayR 		16
 #define stayL 		17
+
+
 
 typedef struct
 {
@@ -37,9 +41,11 @@ typedef struct
 {
 	Game pGame;
 	Sprites pSprites;
+	Sprites pSpritesObject;
 	Key pKey;
 	SDL_Surface *surfaceScreen;
 	SDL_Surface *surfaceChar;
+	SDL_Surface *surfaceFireBall;
 	SDL_Surface *surfaceEarth;
 	SDL_Surface **surfaceEnemies;
 	SDL_Surface *surfaceGrass;

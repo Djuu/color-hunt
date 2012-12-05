@@ -14,6 +14,7 @@ typedef struct
 	double v_y;
 	float spriteSizeW;
 	float spriteSizeH;
+	int direction;
 	
 
 }Position;
@@ -53,5 +54,6 @@ Fixer une position
 */
 void setPosi (Position *pPosi, const float x, const float y, const float z); 
 
+void refreshDirection(Position *pPosi);
 
 #endif 
