@@ -45,11 +45,14 @@ typedef struct
 	Key pKey;
 	SDL_Surface *surfaceScreen;
 	SDL_Surface *surfaceChar;
+	SDL_Surface *surfaceFire;
 	SDL_Surface *surfaceFireBall;
 	SDL_Surface *surfaceEarth;
 	SDL_Surface **surfaceEnemies;
 	SDL_Surface *surfaceGrass;
 	SDL_Surface *surfaceBG;
+	SDL_Surface *surfaceLifeBG;
+	SDL_Surface *surfaceLife;
 	SDL_Rect rcSpPosi;
 	SDL_Rect rectScreen;
 	float scrollX;

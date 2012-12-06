@@ -21,6 +21,9 @@ int getLifeEnemy (const Enemies *pEnemies, int id);
 void setLifeEnemy (Enemies *pEnemies, int id, int nbLife);
 int getManaEnemy (const Enemies *pEnemies, int id);
 void setManaEnemy (Enemies *pEnemies,int id, int nbMana);
-void moveEnemy (Enemies *pEnemies,int id);
+void moveEnemyLeft (Enemies *pEnemies,int id);
+void moveEnemyRight (Enemies *pEnemies,int id);
+void deadEnemy(Enemies *pEnemies,int id);
+
 
 #endif 

@@ -170,7 +170,29 @@ Enemies *getGameEnemies(Game *pGame)
 {
 	return &(pGame -> gEnemies);
 }
-
+int distanceEnemies(Game *pGame)
+{
+		float distance=1000;
+		float diff;
+		float diffY;
+		int id=-1;
+		int i;
+		for (i=0; i<pGame->gEnemies.number; i++)
+		{
+			diff = fabs(pGame->gEnemies.eEnemy[i].eChar.cPosi.x - pGame->gChar.cPosi.x);
+			diffY = fabs(pGame->gEnemies.eEnemy[i].eChar.cPosi.y - pGame->gChar.cPosi.y);
+			if (distance > diff && diffY <2)
+			{
+				id=i;
+			}
+			printf("id = %d__________diff = %f_________diffY = %f__________distance = %f\n", id, diff, diffY, distance);
+			distance=diff;
+		}
+		
+		
+		return id;
+		
+}
 void collisionMap (Character *pChar, Map *pMap)
 {
 	
@@ -180,8 +202,8 @@ void collisionMap (Character *pChar, Map *pMap)
 	pChar->cPosi.y+=pChar->cPosi.v_y;
 	pChar->cPosi.x+=pChar->cPosi.v_x;
 	
-	if (getMapXY(pMap, (int)(pChar->cPosi.x), (int)(pChar->cPosi.y+pChar->cPosi.spriteSizeH+1))=='#' || 
-	    getMapXY(pMap, (int)(pChar->cPosi.x+pChar->cPosi.spriteSizeW), (int)(pChar->cPosi.y+pChar->cPosi.spriteSizeH+1))=='#')
+	if (getMapXY(pMap, (int)(pChar->cPosi.x), (int)(pChar->cPosi.y+pChar->cPosi.spriteSizeH+0.5))=='#' || 
+	    getMapXY(pMap, (int)(pChar->cPosi.x+pChar->cPosi.spriteSizeW), (int)(pChar->cPosi.y+pChar->cPosi.spriteSizeH+0.5))=='#')
 	{
 		pChar->floor = 1;
 	} 
@@ -193,53 +215,129 @@ void collisionMap (Character *pChar, Map *pMap)
 	
 }
 
-void action(Game *pGame, float power)
+void projectionChar(Game *pGame, float power)
 {
+	int idE = distanceEnemies(pGame);
+	printf("enemie ID = %d\n",idE);
 	if (pGame->gChar.attack != 1 && pGame->gChar.superAttack != 1)
 	{
-		pGame->gChar.cPosi.v_x+=power/5;
-		pGame->gChar.cPosi.v_y=-0.2;
+		if(pGame->gEnemies.eEnemy[idE].eChar.attack == 1)
+		{
+			pGame->gChar.cPosi.v_x+=power/5;
+			pGame->gChar.cPosi.v_y=-0.2;
+		}
 	}
 }
 
 void attack(Game *pGame)
 {
 	int i;
-	int e=0;
+
 	Character *pChar = getGameChar(pGame);
 	for(i=0;i<pGame->gEnemies.number;i++)
 	{
 		//printf("ATTACk  =  %d ",collision(&(pChar->cPosi),&(pGame->gEnemies.eEnemy[i].eChar.cPosi)));
-		if(collision(&(pChar->cPosi),&(pGame->gEnemies.eEnemy[i].eChar.cPosi))==2 )
+		if(collision(&(pChar->cPosi),&(pGame->gEnemies.eEnemy[i].eChar.cPosi))==2 && pGame->gChar.attack == 1)
 		{
-			if (e==0)
-			{
 				pGame->gEnemies.eEnemy[i].eChar.life -=30;
-				printf("Enemy %d HP ====== %d \n",i,pGame->gEnemies.eEnemy[i].eChar.life);
+				deadEnemy(&(pGame->gEnemies),i);
 				
 				//printf("SIZE = %f \n",pChar->cPosi.spriteSizeW);
-				e=1;
 
-			}
-			
-			
 		}
 		printf("SIZE = %f \n",pChar->cPosi.spriteSizeW);
 	}
 	
 }
 
+
 void superAttack(Game *pGame)
 {
 	Character *pChar = getGameChar(pGame);
 	Objects *pObjects = getGameObjects(pGame);
-
-	pObjects -> oObject[1].oPosi.x = pChar->cPosi.x;
-	pObjects -> oObject[1].oPosi.y =pChar->cPosi.y;
-	moveObjectR(&(pObjects -> oObject[1]));
-	
-	
-
+	if (pChar -> cPosi.direction == 0)
+	{
+		if(pObjects -> oObject[1].oPosi.x <0 && pObjects -> oObject[1].oPosi.y <0)
+		{
+			pObjects -> oObject[1].oPosi.x = pChar->cPosi.x;
+			pObjects -> oObject[1].oPosi.y =pChar->cPosi.y;
+			pObjects -> oObject[1].xS = pChar->cPosi.x;
+			pObjects -> oObject[1].yS =pChar->cPosi.y;
+			moveObjectR(&(pObjects -> oObject[1]));
+		}
+	}
+	else if (pChar -> cPosi.direction == 1)
+	{
+		if(pObjects -> oObject[1].oPosi.x <0 && pObjects -> oObject[1].oPosi.y <0)
+		{
+			pObjects -> oObject[1].oPosi.x = pChar->cPosi.x;
+			pObjects -> oObject[1].oPosi.y =pChar->cPosi.y;
+			pObjects -> oObject[1].xS = pChar->cPosi.x;
+			pObjects -> oObject[1].yS =pChar->cPosi.y;
+			moveObjectL(&(pObjects -> oObject[1]));
+		}
+	}
 }
+
+void superAttackDmg(Game *pGame)
+{
+	int i,j;
+	Objects *pObjects = getGameObjects(pGame);
+	
+	for (i=0;i<pObjects->number;i++)
+	{
+		for(j=0;j<pGame->gEnemies.number;j++)
+		{
+			if(collision(&(pObjects -> oObject[i].oPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) != 0)
+			{
+				printf("=============================================");
+				pGame->gEnemies.eEnemy[j].eChar.life -=60;
+				deadEnemy(&(pGame->gEnemies),j);
+				pObjects -> oObject[i].oPosi.x = -42;
+				pObjects -> oObject[i].oPosi.y = -42;
+				pObjects -> oObject[i].oPosi.v_y =0;
+				pObjects -> oObject[i].oPosi.v_x =0;
+				
+			}
+		}
+	}
+}
+
+
+void detect(Game *pGame)
+{	
+	Character *pChar = getGameChar(pGame);
+	int nearestE = distanceEnemies(pGame); /*l'enemie le plus proche*/
+	printf("LIFE = %d", pGame->gEnemies.eEnemy[nearestE].eChar.life);
+	if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) <= 10 && (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >0)
+	{
+		
+		if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
+		{
+			moveEnemyLeft(&(pGame->gEnemies), nearestE);
+		}
+		else
+		{
+			moveEnemyRight(&(pGame->gEnemies), nearestE);
+		}
+	}
+	else if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >= -10 && (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x)<0)
+	{
+		if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
+		{
+			moveEnemyRight(&(pGame->gEnemies), nearestE);
+		}
+		else
+		{
+			moveEnemyLeft(&(pGame->gEnemies), nearestE);
+		}
+	}
+	
+}
+
+
+
+
+
 
 

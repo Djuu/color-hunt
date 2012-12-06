@@ -24,20 +24,21 @@ float pathMap (Character *pChar, Map *pMap)
 	
 	for (i=0.01; i<=1; i+=0.01) 
 	{
-		for (k=0; k<pChar->cPosi.spriteSizeH; k+=0.01)
+		for (k=0; k<pChar->cPosi.spriteSizeH; k+=0.5)
 		{
-			/*for (l=0; l<pChar->cPosi.spriteSizeW; l+=0.5)
-			{*/
+			for (l=0; l<pChar->cPosi.spriteSizeW; l+=0.9)
+			{
+			
 				Position charPosition;
 				charPosition = getPosiChar(pChar);
 				posX = charPosition.x + i*charPosition.v_x;
 				posY = charPosition.y + i*charPosition.v_y;
 
 				posYd = charPosition.y + i*charPosition.v_y+k;
-				posXd = charPosition.x + i*charPosition.v_x+pChar->cPosi.spriteSizeW;
+				posXd = charPosition.x + i*charPosition.v_x+l;
 
 				posYr = charPosition.y + i*charPosition.v_y;
-				posXr = charPosition.x + i*charPosition.v_x+pChar->cPosi.spriteSizeW;
+				posXr = charPosition.x + i*charPosition.v_x+l;
 
 				posYl = charPosition.y + i*charPosition.v_y+k;
 				posXl = charPosition.x + i*charPosition.v_x;
@@ -55,6 +56,12 @@ float pathMap (Character *pChar, Map *pMap)
 				{
 					pChar -> air = 0;
 				}
+				
+				
+				
+
+				
+				
 				if(getMapXY(pMap, (int)posX, (int)posY)=='#' || getMapXY(pMap, (int)posXd, (int)posYd)=='#' 
 				|| getMapXY(pMap, (int)posXr, (int)posYr)=='#' || getMapXY(pMap, (int)posXl, (int)posYl)=='#') 
 				{
@@ -63,13 +70,8 @@ float pathMap (Character *pChar, Map *pMap)
 
 				}
 
-			//}
+			}
 		}
-			
-			
-		
-			
-			
 		
 	} 
 	return 1;

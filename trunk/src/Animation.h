@@ -37,4 +37,7 @@ void InitSprite (Sprites *pSprites,int id, int w,int h, int nbFrame, int reFrame
 void animSprite (Sprites* pSprites, int id, int loop, int dir);
 void displaySprite(Sprites *pSprites, SDL_Rect posi, SDL_Surface *screen);
 void freeSprite(Sprites *pSprites);
+void fire(SDL_Surface *pSurface);
+void displayGauge(SDL_Surface *pSurfaceBG, SDL_Surface *pSurface , SDL_Surface *screen, int value);
+
 #endif

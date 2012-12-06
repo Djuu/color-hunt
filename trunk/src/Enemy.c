@@ -57,7 +57,24 @@ void setManaEnemy (Enemies *pEnemies,int id, int nbMana)
 	pEnemies -> eEnemy[id].eChar.mana = nbMana;
 }
 
-void moveEnemy (Enemies *pEnemies,int id)
+void moveEnemyLeft (Enemies *pEnemies,int id)
 {
+	
 	pEnemies -> eEnemy[id].eChar.cPosi.v_x=-0.2;
+}
+void moveEnemyRight (Enemies *pEnemies,int id)
+{
+	
+	pEnemies -> eEnemy[id].eChar.cPosi.v_x=0.2;
+}
+
+void deadEnemy(Enemies *pEnemies,int id)
+{
+	if(pEnemies -> eEnemy[id].eChar.life <= 0)
+	{
+		pEnemies -> eEnemy[id].eChar.cPosi.x =-10;
+		pEnemies -> eEnemy[id].eChar.cPosi.y = -10;
+		pEnemies -> eEnemy[id].eChar.cPosi.v_y =0;
+		pEnemies -> eEnemy[id].eChar.cPosi.v_x =0;
+	}
 }
