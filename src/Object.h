@@ -9,6 +9,9 @@ typedef struct
 {
 	int type;
 	Position oPosi;
+	float xS;
+	float yS;
+	int state;
 }Object;
 
 typedef struct
@@ -25,5 +28,6 @@ void moveObjectR(Object *pObject);
 void moveObjectL(Object *pObject);
 
 void applySpeedObject(Object *pObject);
+
 
 #endif 

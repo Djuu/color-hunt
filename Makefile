@@ -14,7 +14,7 @@ $(endobj)main.o: $(endsrc)main.c $(endsrc)SDLGame.h
 $(endobj)Position.o:$(endsrc)Position.c $(endsrc)Position.h
 	gcc $(options) -c $(endsrc)Position.c $(ssdl) $(sttf) -o $(endobj)Position.o
 	
-$(endobj)Animation.o:$(endsrc)Animation.c $(endsrc)Animation.h
+$(endobj)Animation.o:$(endsrc)Animation.c $(endsrc)Animation.h 
 	gcc $(options) -c $(endsrc)Animation.c $(ssdl) $(sttf) -o $(endobj)Animation.o
 	
 $(endobj)Enemy.o:$(endsrc)Enemy.c $(endsrc)Enemy.h $(endsrc)Character.h

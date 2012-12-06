@@ -32,10 +32,16 @@ void controlKey2 (Game *pGame, const char key);
 void attack(Game *pGame);
 Objects *getGameObjects(Game *pGame);
 void superAttack(Game *pGame);
-
+void superAttackDmg(Game *pGame);
 /**
  Description : projection de pPosi1 par pPosi2 avec une force power
 */
-void action(Game *pGame, float power);
+void projectionChar(Game *pGame, float power);
+
+
+/**
+Retourn : id de l'ennemie le plus proche
+*/
+int distanceEnemies(Game *pGame);
 #endif
 
