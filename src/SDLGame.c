@@ -16,8 +16,6 @@ void initSDL(SdlGame *pSdlGame)
 {
 	
 	Game *pGame;
-	//int direction =0;
-	/*Déplacer la map*/
 	int i;
 	pSdlGame->scrollX=0;
 	pSdlGame->scrollY=0;
@@ -80,10 +78,6 @@ pSdlGame ->surfaceLifeBG = IMG_Load("data/lifeBg.png");
 		pSdlGame->surfaceLifeBG = IMG_Load("../data/lifeBg.png");
 	assert( pSdlGame->surfaceLifeBG!=NULL);
 
-	/*pSdlGame -> surfaceFire = IMG_Load("data/grass.png");
-	if (pSdlGame->surfaceFire==NULL)	
-		pSdlGame->surfaceFire = IMG_Load("../data/grass.png");
-	assert( pSdlGame->surfaceFire!=NULL);*/
 
 
 /*Initialisation des sprites*/
@@ -151,8 +145,6 @@ void sdlDisplay(SdlGame *pSdlGame)
 	
 	displayGauge(pSdlGame->surfaceLifeBG, pSdlGame->surfaceLife, pSdlGame->surfaceScreen, pSdlGame->pGame.gChar.life);
 	
-	/* Remplir l'écran de blanc */
-	//SDL_FillRect( pSdlGame->surfaceScreen, &pSdlGame->surfaceScreen->clip_rect, SDL_MapRGB( pSdlGame->surfaceScreen->format, 0xFF, 0xFF, 0xFF ));
 
 	
 	assert(getDimX(pMap)!=0);
@@ -190,14 +182,14 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
 		} 
 				
 	}
-	SDL_Rect rFire;
+	/*SDL_Rect rFire;
 	rFire.x=100;
-	rFire.y=100;
+	rFire.y=100;*/
 	
-	//SDL_BlitSurface(pSdlGame->surfaceFire, NULL,  pSdlGame->surfaceScreen, &rFire);
+	/*SDL_BlitSurface(pSdlGame->surfaceFire, NULL,  pSdlGame->surfaceScreen, &rFire);*/
 	
 	
-	//SDL_BlitSurface(pSdlGame->surfaceChar,NULL, pSdlGame->surfaceScreen, &posiChar);
+	/*SDL_BlitSurface(pSdlGame->surfaceChar,NULL, pSdlGame->surfaceScreen, &posiChar);*/
 	
 	for(k=0; k<pSdlGame -> pGame.gEnemies.number; k++)
 	{
@@ -269,10 +261,6 @@ void keyManagment(SdlGame *pSdlGame)
 			pSdlGame->pGame.gChar.projection = 2;
 		}
 	}
-/*printf("end = %d\n", pSdlGame->pSprites.aSprite[attackR].end);
-printf("end = %d\n", pSdlGame->pSprites.aSprite[attackL].end);
-printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFR].end);
-printf("end = %d\n", pSdlGame->pSprites.aSprite[attackFL].end);*/
 		
 		if(pSdlGame->pGame.gChar.projection == 0 && pSdlGame->pGame.gChar.attack ==0 && pSdlGame->pGame.gChar.superAttack == 0)
 		{
@@ -447,19 +435,18 @@ void loopSDL(SdlGame *pSdlGame)
 	pSdlGame->pKey.kShift = 0;
 	while(continueLoop==1)
 	{
-//	printf("attack = %d\n", pSdlGame->pGame.gChar.attack);
+
 		/*pSdlGame->rcSprite.x=getPosiX(&(pSdlGame->Game.perso));
 		pSdlGame->rcSprite.y=getPosiY(&(pSdlGame->Game.perso));*/
 		/*Position du sprite*/
 		
 		
-		//fire(pSdlGame->surfaceFire);
+		/*fire(pSdlGame->surfaceFire);*/
 		
 		
 		 /* Récupère l'horloge actuelle et la convertit en secondes */
 		currentClock = (float)clock()/(float)CLOCKS_PER_SEC;
 
-//	printf("frame = %d _______ position = %d _______ dirrection = %d\n", pSdlGame->pSprites.frame, pSdlGame->pSprites.position, pSdlGame->pSprites.direction);
 
 
 /* Evenement des touches */		
@@ -491,7 +478,7 @@ void loopSDL(SdlGame *pSdlGame)
 							{
 								pSdlGame->pSprites.frame=0;
 							}
-							pSdlGame->pGame.gChar.attack = 1;
+							
 							if (pSdlGame->pSprites.direction == 0)
 							{
 								pSdlGame->pSprites.aSprite[attackR].end=0;
@@ -510,7 +497,7 @@ void loopSDL(SdlGame *pSdlGame)
 							{
 								pSdlGame->pSprites.frame=0;
 							}
-							pSdlGame->pGame.gChar.superAttack = 1;
+							
 							if (pSdlGame->pSprites.direction == 0)
 							{
 								pSdlGame->pSprites.aSprite[attackFR].end=0;
@@ -591,8 +578,11 @@ if(pGame -> level != 1)
 			colisionSprite(pSdlGame);
 	 		collisionMap (pChar, pMap);
 	 	
-	 		detect(&(pSdlGame->pGame));
 	 		
+	 		attack(&(pSdlGame -> pGame));
+	 		superAttackDmg(&(pSdlGame -> pGame));
+	 		detect(&(pSdlGame->pGame));
+			
 			/*collision (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), &(pSdlGame->pGame.gMap));*/
 			gravity (&(pSdlGame->pGame.gChar));
 			for(k=0; k< pSdlGame->pGame.gEnemies.number; k++)
@@ -603,7 +593,6 @@ if(pGame -> level != 1)
 					gravity (&(pSdlGame->pGame.gEnemies.eEnemy[k].eChar));
 					collisionMap (&(pSdlGame->pGame.gEnemies.eEnemy[k].eChar), pMap);
 				}
-				//printf("Enemy %d HP ====== %d \n",k,pSdlGame->pGame.gEnemies.eEnemy[k].eChar.life);
 			}
 			
 			refreshDirection(&(pSdlGame->pGame.gChar.cPosi));
@@ -625,11 +614,7 @@ if(pGame -> level != 1)
 				pSdlGame->scrollX=0;
 			if (pSdlGame->scrollX+SCREEN_WIDTH>TAILLE_SPRITE*pMap->dimx-1)
 				pSdlGame->scrollX=TAILLE_SPRITE*pMap->dimx-SCREEN_WIDTH;
-		//	printf("======>%f<======", pSdlGame->pGame.gChar.cPosi.v_x);
-	//	for(k=0; k< pSdlGame->pGame.gEnemies.number; k++)
-	//	{
-			//printf("======> %d <=======\n ", collision(&(pSdlGame->pGame.gChar.cPosi),&(pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi)));
-
+		
 			keyManagment(pSdlGame);	
 			
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! A METTRE A L EXTERIEUR DE SDLGAME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/			

@@ -1,5 +1,5 @@
 #include "Game.h"
-
+#include <math.h>
 
 
 void initGame (Game *pGame, const char* Map)
@@ -112,7 +112,7 @@ void controlKey(Game *pGame, const char key)
 			}
 			break;
 		case 'd':
-			if(pGame->gChar.attack ==0 )
+			if(pGame->gChar.attack == 0)
 			{
 				if (pGame -> gChar.air != 2)
 				right (pGame);
@@ -122,9 +122,10 @@ void controlKey(Game *pGame, const char key)
 			jump (pGame);
 			break;		
 		case 'a':
-			attack(pGame);
+			pGame->gChar.attack = 1;
 			break;
 		case'A':
+			pGame->gChar.superAttack = 1;
 			superAttack(pGame);
 			break;
 	}
@@ -185,7 +186,7 @@ int distanceEnemies(Game *pGame)
 			{
 				id=i;
 			}
-			printf("id = %d__________diff = %f_________diffY = %f__________distance = %f\n", id, diff, diffY, distance);
+		
 			distance=diff;
 		}
 		
@@ -218,7 +219,6 @@ void collisionMap (Character *pChar, Map *pMap)
 void projectionChar(Game *pGame, float power)
 {
 	int idE = distanceEnemies(pGame);
-	printf("enemie ID = %d\n",idE);
 	if (pGame->gChar.attack != 1 && pGame->gChar.superAttack != 1)
 	{
 		if(pGame->gEnemies.eEnemy[idE].eChar.attack == 1)
@@ -232,20 +232,29 @@ void projectionChar(Game *pGame, float power)
 void attack(Game *pGame)
 {
 	int i;
-
 	Character *pChar = getGameChar(pGame);
+	if (pGame->gChar.attack == 0)
+	{			
+		pGame->gChar.domage = 1;
+	}
+	
 	for(i=0;i<pGame->gEnemies.number;i++)
 	{
-		//printf("ATTACk  =  %d ",collision(&(pChar->cPosi),&(pGame->gEnemies.eEnemy[i].eChar.cPosi)));
+		
 		if(collision(&(pChar->cPosi),&(pGame->gEnemies.eEnemy[i].eChar.cPosi))==2 && pGame->gChar.attack == 1)
 		{
+			
+			if (pGame->gChar.domage != 0)
+			{
+
 				pGame->gEnemies.eEnemy[i].eChar.life -=30;
 				deadEnemy(&(pGame->gEnemies),i);
-				
-				//printf("SIZE = %f \n",pChar->cPosi.spriteSizeW);
+				pGame->gChar.domage = 0;
+			}
 
 		}
-		printf("SIZE = %f \n",pChar->cPosi.spriteSizeW);
+		
+
 	}
 	
 }
@@ -255,6 +264,7 @@ void superAttack(Game *pGame)
 {
 	Character *pChar = getGameChar(pGame);
 	Objects *pObjects = getGameObjects(pGame);
+
 	if (pChar -> cPosi.direction == 0)
 	{
 		if(pObjects -> oObject[1].oPosi.x <0 && pObjects -> oObject[1].oPosi.y <0)
@@ -275,6 +285,7 @@ void superAttack(Game *pGame)
 			pObjects -> oObject[1].xS = pChar->cPosi.x;
 			pObjects -> oObject[1].yS =pChar->cPosi.y;
 			moveObjectL(&(pObjects -> oObject[1]));
+			
 		}
 	}
 }
@@ -283,57 +294,125 @@ void superAttackDmg(Game *pGame)
 {
 	int i,j;
 	Objects *pObjects = getGameObjects(pGame);
-	
+	if (pGame->gChar.superAttack == 0)
+	{			
+		pGame->gChar.superDomage = 1;
+
+	}
 	for (i=0;i<pObjects->number;i++)
 	{
 		for(j=0;j<pGame->gEnemies.number;j++)
 		{
-			if(collision(&(pObjects -> oObject[i].oPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) != 0)
+			if(collision(&(pObjects -> oObject[i].oPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) != 0 && pGame->gChar.superAttack == 0)
 			{
-				printf("=============================================");
-				pGame->gEnemies.eEnemy[j].eChar.life -=60;
-				deadEnemy(&(pGame->gEnemies),j);
-				pObjects -> oObject[i].oPosi.x = -42;
-				pObjects -> oObject[i].oPosi.y = -42;
-				pObjects -> oObject[i].oPosi.v_y =0;
-				pObjects -> oObject[i].oPosi.v_x =0;
-				
+				if (pGame->gChar.superDomage != 0)
+				{
+					pGame->gEnemies.eEnemy[j].eChar.life -=60;
+					deadEnemy(&(pGame->gEnemies),j);
+					pObjects -> oObject[i].oPosi.x = -42;
+					pObjects -> oObject[i].oPosi.y = -42;
+					pObjects -> oObject[i].oPosi.v_y =0;
+					pObjects -> oObject[i].oPosi.v_x =0;
+					pGame->gChar.superDomage = 0;
+				}				
 			}
 		}
 	}
 }
 
+void helpEnemy(Game *pGame)
+{
+	int i,j;
+	
+		for (i=0; i< pGame->gEnemies.number; i++)
+		{
+			if (pGame->gEnemies.eEnemy[i].panic==1)
+			{
+				for(j=0; j< pGame->gEnemies.number ; j++)
+				{
+					if (i!=j)
+					{
+						if(collision(&(pGame->gEnemies.eEnemy[i].eChar.cPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) != 0)
+						{
+							pGame->gEnemies.eEnemy[i].panic=-1;
+							pGame->gEnemies.eEnemy[i].idHelp = j;
+						}
+					}
+				}
+			}
+		}
+	
+	
+}
+
+/*S'applique lorsque qu'un énemie est en mode "rebel"*/
+int rebel (Game *pGame)
+{	
+	int i;
+	Character *pChar = getGameChar(pGame);
+	for (i=0; i< pGame->gEnemies.number; i++)
+	{
+			if (pGame->gEnemies.eEnemy[i].panic == -1 && pGame->gEnemies.eEnemy[i].eChar.life>0)
+			{
+				if ((pGame->gEnemies.eEnemy[i].eChar.cPosi.x - pChar->cPosi.x) >0)
+				{
+					moveEnemyLeft(&(pGame->gEnemies), i);
+					moveEnemyLeft(&(pGame->gEnemies), pGame->gEnemies.eEnemy[i].idHelp);
+					return i;
+				}
+				else if ((pGame->gEnemies.eEnemy[i].eChar.cPosi.x - pChar->cPosi.x)<0)
+				{
+					moveEnemyRight(&(pGame->gEnemies), i);
+					moveEnemyRight(&(pGame->gEnemies), pGame->gEnemies.eEnemy[i].idHelp);
+					return i;
+				}
+				
+			}
+	}
+	return -1;
+}
 
 void detect(Game *pGame)
 {	
 	Character *pChar = getGameChar(pGame);
-	int nearestE = distanceEnemies(pGame); /*l'enemie le plus proche*/
-	printf("LIFE = %d", pGame->gEnemies.eEnemy[nearestE].eChar.life);
-	if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) <= 10 && (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >0)
+	/*int nearestE = distanceEnemies(pGame);*/ /*l'enemie le plus proche*/
+	int nearestE;
+	int idPanic = rebel(pGame);
+	helpEnemy(pGame);
+	for(nearestE = 0; nearestE < pGame->gEnemies.number; nearestE++)
 	{
-		
-		if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
+		if (nearestE!=idPanic)
 		{
-			moveEnemyLeft(&(pGame->gEnemies), nearestE);
-		}
-		else
-		{
-			moveEnemyRight(&(pGame->gEnemies), nearestE);
-		}
-	}
-	else if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >= -10 && (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x)<0)
-	{
-		if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
-		{
-			moveEnemyRight(&(pGame->gEnemies), nearestE);
-		}
-		else
-		{
-			moveEnemyLeft(&(pGame->gEnemies), nearestE);
+			if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) <= 10 && (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >0) 
+			{
+				
+				if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
+				{
+					moveEnemyLeft(&(pGame->gEnemies), nearestE);
+				}
+				else
+				{
+					pGame->gEnemies.eEnemy[nearestE].panic=1;
+					moveEnemyRight(&(pGame->gEnemies), nearestE);
+				}
+			}
+			else if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >= -10  && (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x)<0)
+			{
+				if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
+				{
+					moveEnemyRight(&(pGame->gEnemies), nearestE);
+				}
+				else
+				{
+					moveEnemyLeft(&(pGame->gEnemies), nearestE);
+				}
+			}
 		}
 	}
 	
 }
+
+
 
 
 

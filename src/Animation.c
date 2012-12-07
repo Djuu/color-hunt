@@ -7,7 +7,6 @@ void InitSprite (Sprites *pSprites,int id, int w,int h, int nbFrame, int reFrame
 {
 	
 	pSprites->nbSprite =id+1; /*nombre de sprite*/
-	//pSprites->aSprite = calloc(id+1, sizeof(Sprite));
 	pSprites->aSprite[id].width = w;
 	pSprites->aSprite[id].height = h;
 	pSprites->direction = 0;
@@ -50,7 +49,6 @@ void animSprite (Sprites* pSprites, int id, int loop, int dir)
 	float clockCurrent =  (float)clock()/(float)CLOCKS_PER_SEC;
 	static float clockPrevious = 0.0;
 	float speedSprite=(1.0/(float)(pSprites->aSprite[id].nbFrame*2));
-  //  Uint8 *keystate = SDL_GetKeyState(NULL);
     pSprites->position = id;
     pSprites->direction = dir;
 
@@ -70,7 +68,6 @@ void animSprite (Sprites* pSprites, int id, int loop, int dir)
 				pSprites->frame = pSprites->aSprite[id].reFrame;
 			}
 		}
-//		printf("loop = %d\n", loop);
 		if(pSprites->aSprite[id].end==0 && loop == 1)
 		{
 	
@@ -97,7 +94,7 @@ void fillRandomPixels(SDL_Surface *pSurface,SDL_Rect *r)
    for(y = 0; y < r->h; y++) {
       ofs = (y + r->y) * pSurface->pitch;
       for(x = 0; x < r->w; x++, ofs++) {
-         buf[ofs + r->x] = rand() & 0xFF; // permet de faire clignoter les lignes
+         buf[ofs + r->x] = rand() & 0xFF; /* permet de faire clignoter les lignes*/
       }
    }
 
@@ -110,9 +107,9 @@ void fireInterpolate(SDL_Surface *pSurface)
    unsigned int pixel, ofs;
    unsigned char *buf;
 
-   SDL_LockSurface(pSurface); // pour pouvoir lire les pixels de SDL_Surface
+   SDL_LockSurface(pSurface); /* pour pouvoir lire les pixels de SDL_Surfac*/
 
-   buf = (unsigned char *)pSurface->pixels;  // on point vers les pixel de la surface
+   buf = (unsigned char *)pSurface->pixels;  /* on point vers les pixel de la surface*/
 
    for(y = 1; y < pSurface->h - 2; y++) {
       ofs = y * pSurface->pitch;
@@ -143,6 +140,13 @@ void fire(SDL_Surface *pSurface)
 	int firePoints = 50;
 	int fireSize = 8;
 	SDL_Color palette[256];
+	
+	unsigned char *buffer;
+	SDL_Rect r;
+	short fire[firePoints];
+	
+	
+	
 	for(i = 0; i < 64; i++)
 	{
       /* noir au rouge */
@@ -165,13 +169,9 @@ void fire(SDL_Surface *pSurface)
       palette[i + 192].g = 255;
       palette[i + 192].b = 255;
    }
-
+   
+   
 	SDL_SetColors(pSurface,palette,0,256);
-
-	unsigned char *buffer;
-
-	SDL_Rect r;
-	short fire[firePoints];
 	for(i = 0; i < firePoints; i++) 
 	{
 		fire[i] = pSurface->w;

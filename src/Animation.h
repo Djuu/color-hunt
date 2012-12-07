@@ -1,7 +1,5 @@
 #ifndef _ANIMATION
 #define _ANIMATION
-// #include <SDL/SDL_image.h>
-// #include <SDL/SDL_ttf.h>
 #include <SDL/SDL.h>
 
  

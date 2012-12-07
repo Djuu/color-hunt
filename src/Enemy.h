@@ -6,6 +6,8 @@
 typedef struct
 {
 	Character eChar;
+	int panic;
+	int idHelp;
 }Enemy;
 
 typedef struct
