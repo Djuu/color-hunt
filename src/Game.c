@@ -381,9 +381,13 @@ void detect(Game *pGame)
 	helpEnemy(pGame);
 	for(nearestE = 0; nearestE < pGame->gEnemies.number; nearestE++)
 	{
+
 		if (nearestE!=idPanic)
 		{
-			if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) <= 10 && (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >0) 
+			if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)>0 
+			&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)<2 
+			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) <= 10 
+			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >0) 
 			{
 				
 				if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
@@ -396,7 +400,10 @@ void detect(Game *pGame)
 					moveEnemyRight(&(pGame->gEnemies), nearestE);
 				}
 			}
-			else if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >= -10  && (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x)<0)
+			else if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)>0 
+			&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)<2 
+			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >= -10  
+			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x)<0)
 			{
 				if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
 				{
