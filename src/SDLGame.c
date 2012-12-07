@@ -295,7 +295,7 @@ void keyManagment(SdlGame *pSdlGame)
 		}
 
 	
-			if (pSdlGame->pKey.kCtrl == 1)
+			if (pSdlGame->pKey.kCtrlR == 1)
 			{  
 				pSdlGame->pGame.gChar.attack =1;
 				if (pSdlGame->pSprites.direction == 0)
@@ -372,7 +372,7 @@ void keyManagment(SdlGame *pSdlGame)
 			}
 			if (pSdlGame->pSprites.aSprite[attackR].end==1 && pSdlGame->pSprites.aSprite[attackL].end==1)
 			{
-				pSdlGame->pKey.kCtrl = 0;	
+				pSdlGame->pKey.kCtrlR = 0;	
 		
 				pSdlGame->pGame.gChar.attack = 0;
 			
@@ -390,6 +390,20 @@ void keyManagment(SdlGame *pSdlGame)
 			pSdlGame->pGame.gChar.projection=0;
 		}
 	*/	
+	if (pSdlGame->pKey.kCtrlL == 1)
+	{
+			
+			controlKey(&(pSdlGame->pGame), 'o');
+			
+	}
+	if (pSdlGame->pKey.kCtrlL == 0)
+	{
+			controlKey(&(pSdlGame->pGame), 'n');
+	}
+	if (pSdlGame->pKey.kUp ==1 && pSdlGame->pKey.kCtrlL == 1)
+	{
+		controlKey(&(pSdlGame->pGame), 'u');
+	}
 	
 
 	
@@ -431,7 +445,8 @@ void loopSDL(SdlGame *pSdlGame)
 	pSdlGame->pKey.kJump = 0;
 	pSdlGame->pKey.kUp = 0;
 	pSdlGame->pKey.kDown = 0;
-	pSdlGame->pKey.kCtrl = 0;
+	pSdlGame->pKey.kCtrlR = 0;
+	pSdlGame->pKey.kCtrlL = 0;
 	pSdlGame->pKey.kShift = 0;
 	while(continueLoop==1)
 	{
@@ -489,7 +504,7 @@ void loopSDL(SdlGame *pSdlGame)
 								pSdlGame->pSprites.aSprite[attackL].end=0;
 							}
 							
-							pSdlGame->pKey.kCtrl =1;
+							pSdlGame->pKey.kCtrlR =1;
 							
 							break;		
 						case SDLK_RSHIFT:
@@ -509,6 +524,16 @@ void loopSDL(SdlGame *pSdlGame)
 							
 							pSdlGame->pKey.kShift =1;
 							break;		
+						case SDLK_LCTRL:
+							if(pSdlGame->pKey.kCtrlL == 0)
+							{
+								pSdlGame->pKey.kCtrlL = 1;
+							}
+							else if(pSdlGame->pKey.kCtrlL == 1)
+							{
+								pSdlGame->pKey.kCtrlL = 0;	
+							}
+							break;	
 						case SDLK_ESCAPE:
 							continueLoop = 0;
 							break;
