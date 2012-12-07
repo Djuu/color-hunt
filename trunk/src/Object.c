@@ -6,7 +6,7 @@ void initObjects(Objects *pObjects, int num, int type)
 	int i = 0;
 	assert(num >= 0);
 	pObjects -> number = num;
-	//pObjects->oObject = calloc(pObjects -> number, sizeof(Object));
+	/*pObjects->oObject = calloc(pObjects -> number, sizeof(Object));*/
 	
 	for (i = 0; i< num; i++)
 	{

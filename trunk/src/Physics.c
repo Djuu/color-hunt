@@ -88,9 +88,8 @@ int collision(Position *pPosi1, Position *pPosi2)
 {
 
 	float i;
-	float k, l;
-	float posX, posY, posYd, posXd, posYr, posXr, posYl, posXl;
-	float posXe, posYe, posYde, posXde, posYre, posXre, posYle, posXle;
+	float posX, posY;
+	float posXe, posYe;
 	float sP1H = pPosi1->spriteSizeH;
 	float sP1W = pPosi1->spriteSizeW;
 	float sP2H = pPosi2->spriteSizeH;
@@ -103,30 +102,10 @@ int collision(Position *pPosi1, Position *pPosi2)
 			{
 					posX = pPosi1 -> x + i*pPosi1 -> v_x;
 					posY = pPosi1 -> y + i*pPosi1 -> v_y;
-
-					posYd = pPosi1 -> y + i*pPosi1 -> v_y+sP1H;
-					posXd = pPosi1 -> x + i*pPosi1 -> v_x+sP1W;
-
-					posYr = pPosi1 -> y + i*pPosi1 -> v_y;
-					posXr = pPosi1 -> x + i*pPosi1 -> v_x+sP1W;
-
-					posYl = pPosi1 -> y + i*pPosi1 -> v_y+sP1H;
-					posXl = pPosi1 -> x + i*pPosi1 -> v_x;
-				
-				
 			
-					
 					posXe = pPosi2 -> x + i*pPosi2 -> v_x;
 					posYe = pPosi2 -> y + i*pPosi2 -> v_y;
 
-					posYde = pPosi2 -> y + i*pPosi2 -> v_y+sP2H; 
-					posXde = pPosi2 -> x + i*pPosi2 -> v_x+sP2W;
-
-					posYre = pPosi2 -> y + i*pPosi2 -> v_y;
-					posXre = pPosi2 -> x + i*pPosi2 -> v_x+sP2W;
-
-					posYle = pPosi2 -> y + i*pPosi2 -> v_y+sP2H;
-					posXle = pPosi2 -> x + i*pPosi2 -> v_x;
 
 					sP1H-=0.01;
 					sP1W-=0.01;

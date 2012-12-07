@@ -15,6 +15,8 @@ typedef struct
 	int life, mana;
 	int attack, superAttack;
 	int projection;
+	int domage;
+	int superDomage;
 }Character;
 
 /**

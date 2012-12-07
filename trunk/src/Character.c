@@ -17,6 +17,8 @@ void initChar (Character *pChar)
 	pChar->cPosi.spriteSizeW =0;
 	pChar->cPosi.spriteSizeH =0;
 	pChar->cPosi.direction=0;
+	pChar -> domage = 0;
+	pChar -> superDomage = 0;
 }
 
 Position getPosiChar (const Character *pChar)
