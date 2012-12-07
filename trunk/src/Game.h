@@ -43,5 +43,8 @@ void projectionChar(Game *pGame, float power);
 Retourn : id de l'ennemie le plus proche
 */
 int distanceEnemies(Game *pGame);
+
+
+void flyMod(Game *pGame);
 #endif
 

@@ -94,7 +94,8 @@ void down(Game *pGame)
 
 void jump(Game *pGame)
 {
-	if(pGame->gChar.floor == 1)
+	Character *pChar = getGameChar(pGame);
+	if(pGame->gChar.floor == 1 && pChar->cPosi.v_grav != 0.01)
 	pGame->gChar.cPosi.v_y = -1;
 	
 }
@@ -117,6 +118,15 @@ void controlKey(Game *pGame, const char key)
 				if (pGame -> gChar.air != 2)
 				right (pGame);
 			}
+			break;
+		case 'o':
+				flyModOn(pGame);
+			break;
+		case 'n':
+				flyModOff(pGame);
+			break;
+		case 'u':
+				 flyUp(pGame); 
 			break;
 		case 's':
 			jump (pGame);
@@ -387,12 +397,14 @@ void detect(Game *pGame)
 			if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)>0 
 			&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)<2 
 			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) <= 10 
-			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >0) 
+			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >0 
+			)//&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pGame->gChar.cPosi.x)< 15) /*Si l'enemie s'eloigne de plus de 15, il perd la trace et il s'arret*/
 			{
 				
 				if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
 				{
-					moveEnemyLeft(&(pGame->gEnemies), nearestE);
+					
+						moveEnemyLeft(&(pGame->gEnemies), nearestE);
 				}
 				else
 				{
@@ -403,7 +415,8 @@ void detect(Game *pGame)
 			else if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)>0 
 			&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)<2 
 			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >= -10  
-			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x)<0)
+			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x)<0
+			)//&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pGame->gChar.cPosi.x)< 15)/*Si l'enemie s'eloigne de plus de 15, il perd la trace et il s'arret*/
 			{
 				if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
 				{
@@ -411,14 +424,35 @@ void detect(Game *pGame)
 				}
 				else
 				{
+					pGame->gEnemies.eEnemy[nearestE].panic=1;
 					moveEnemyLeft(&(pGame->gEnemies), nearestE);
 				}
 			}
+			/*else
+			{
+				pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.v_x = 0;
+			}*/
 		}
 	}
 	
 }
 
+
+void flyModOn(Game *pGame)
+{
+	Character *pChar = getGameChar(pGame);
+	pChar->cPosi.v_grav = 0.01;	
+}
+void flyModOff(Game *pGame)
+{
+	Character *pChar = getGameChar(pGame);
+	pChar->cPosi.v_grav = 0.08;	
+}
+
+void flyUp(Game *pGame)
+{
+		pGame->gChar.cPosi.v_y = -0.2;
+}
 
 
 

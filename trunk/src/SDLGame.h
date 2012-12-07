@@ -33,7 +33,8 @@ typedef struct
 	int kJump;
 	int kUp;
 	int kDown;
-	int kCtrl;
+	int kCtrlR;
+	int kCtrlL;
 	int kShift;
 }Key;
 
