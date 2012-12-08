@@ -69,10 +69,8 @@ void left(Game *pGame)
 
 void right(Game *pGame)
 {
-
 	Character *pChar = getGameChar(pGame);
 	pChar->cPosi.v_x=0.5;
-	
 }
 
 void up(Game *pGame)
@@ -106,18 +104,14 @@ void controlKey(Game *pGame, const char key)
 	switch(key)
 	{
 		case 'g':
-			if(pGame->gChar.attack ==0 )
-			{
-				if (pGame -> gChar.air != 1)
+				if (pGame -> gChar.air != 1 && pGame->gChar.attack ==0)
 				left (pGame);
-			}
 			break;
 		case 'd':
-			if(pGame->gChar.attack == 0)
-			{
-				if (pGame -> gChar.air != 2)
-				right (pGame);
-			}
+				if (pGame -> gChar.air != 2 && pGame->gChar.attack == 0)
+				{
+					right (pGame);
+				}
 			break;
 		case 'o':
 				flyModOn(pGame);
@@ -133,9 +127,11 @@ void controlKey(Game *pGame, const char key)
 			break;		
 		case 'a':
 			pGame->gChar.attack = 1;
+			pGame->gChar.cPosi.v_x = 0;
 			break;
 		case'A':
 			pGame->gChar.superAttack = 1;
+			pGame->gChar.cPosi.v_x = 0;
 			superAttack(pGame);
 			break;
 	}

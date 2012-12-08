@@ -34,7 +34,7 @@ void initSDL(SdlGame *pSdlGame)
 
 /*Background*/
   
-  SDL_Surface* temp = IMG_Load("data/bg.png");
+  SDL_Surface* temp = IMG_Load("data/bg1.jpg");
   pSdlGame->surfaceBG = SDL_DisplayFormat(temp);
 
 
@@ -206,7 +206,7 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
 
 void colisionSprite(SdlGame *pSdlGame)
 {
-	printf("position : %d, valeur = %d\n", pSdlGame->pSprites.position, pSdlGame->pSprites.aSprite[pSdlGame->pSprites.position].height);
+	/*printf("position : %d, valeur = %d\n", pSdlGame->pSprites.position, pSdlGame->pSprites.aSprite[pSdlGame->pSprites.position].height);*/
 	if (pSdlGame->pGame.gChar.floor == 1)	/*Si on n'est pas en l'air*/
 	{
 		pSdlGame->pGame.gChar.cPosi.spriteSizeW = (float)(pSdlGame->pSprites.aSprite[pSdlGame->pSprites.position].width)/(float)TAILLE_SPRITE;
@@ -453,7 +453,7 @@ void loopSDL(SdlGame *pSdlGame)
 	pSdlGame->pKey.kCtrlL = 0;
 	pSdlGame->pKey.kShift = 0;
 	
-	bgBW(pSdlGame->surfaceBG, 0.2); /*gestion de la saturation de l'arrière plan*/
+	bgBW(pSdlGame->surfaceBG, 1); /*gestion de la saturation de l'arrière plan*/
 
 	while(continueLoop==1)
 	{
@@ -461,7 +461,6 @@ void loopSDL(SdlGame *pSdlGame)
 		/*pSdlGame->rcSprite.x=getPosiX(&(pSdlGame->Game.perso));
 		pSdlGame->rcSprite.y=getPosiY(&(pSdlGame->Game.perso));*/
 		/*Position du sprite*/
-		
 		
 		/*fire(pSdlGame->surfaceFire);*/
 		
@@ -606,7 +605,7 @@ if(pGame -> level != 1)
 			/*collisionEnemies(&(pSdlGame->pGame.gChar),&(pSdlGame->pGame.gEnemies));*/
 			applySpeedObject(&(pSdlGame->pGame.gObjects.oObject[1]));
 			superAttackDmg(&(pSdlGame->pGame));
-			printf("OBJET .X : %f\n",pSdlGame->pGame.gObjects.oObject[1].oPosi.x);
+	/*		printf("OBJET .X : %f\n",pSdlGame->pGame.gObjects.oObject[1].oPosi.x);*/
 			colisionSprite(pSdlGame);
 	 		collisionMap (pChar, pMap);
 	 	
