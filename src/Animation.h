@@ -37,5 +37,5 @@ void displaySprite(Sprites *pSprites, SDL_Rect posi, SDL_Surface *screen);
 void freeSprite(Sprites *pSprites);
 void fire(SDL_Surface *pSurface);
 void displayGauge(SDL_Surface *pSurfaceBG, SDL_Surface *pSurface , SDL_Surface *screen, int value);
-
+void bgBW(SDL_Surface *pSurface, double saturation);
 #endif

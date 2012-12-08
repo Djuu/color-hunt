@@ -108,6 +108,10 @@ pSdlGame ->surfaceLifeBG = IMG_Load("data/lifeBg.png");
 	InitSprite (&(pSdlGame->pSpritesObject),0, 30, 56, 5, 0);
 	/*boule de feu gauche*/
 	InitSprite (&(pSdlGame->pSpritesObject),1, 30, 56, 5, 0);
+	
+	
+	
+
 }
 
 
@@ -131,7 +135,7 @@ void sdlDisplay(SdlGame *pSdlGame)
 	
 	/*Background*/
 	SDL_BlitSurface(pSdlGame->surfaceBG, NULL, pSdlGame->surfaceScreen, NULL);
-	
+
 	
 	posiChar.x = getPosiChar(pChar).x*TAILLE_SPRITE - pSdlGame->scrollX;
 	posiChar.y = getPosiChar(pChar).y*TAILLE_SPRITE- pSdlGame->scrollY;
@@ -448,6 +452,9 @@ void loopSDL(SdlGame *pSdlGame)
 	pSdlGame->pKey.kCtrlR = 0;
 	pSdlGame->pKey.kCtrlL = 0;
 	pSdlGame->pKey.kShift = 0;
+	
+	bgBW(pSdlGame->surfaceBG, 0.2); /*gestion de la saturation de l'arrière plan*/
+
 	while(continueLoop==1)
 	{
 
