@@ -1,5 +1,6 @@
 #include "Animation.h"
 #include <time.h>
+#include <math.h>
 #include <assert.h>
 
 
@@ -226,4 +227,112 @@ void displayGauge(SDL_Surface *pSurfaceBG, SDL_Surface *pSurface , SDL_Surface *
 		SDL_BlitSurface(pSurfaceBG,NULL, screen, &posiBG);
 		SDL_BlitSurface(pSurface,&posiM, screen, &posi);
 	
+}
+
+Uint32 getPixel(SDL_Surface *pSurface, int x, int y)
+{
+    int nbOctetPerPixel = pSurface->format->BytesPerPixel;
+    /*adresse du premier pixel de l'image*/
+    Uint8 *p = (Uint8 *)pSurface->pixels + y * pSurface->pitch + x * nbOctetPerPixel;
+    /*Gestion selon suivant le nombre d'octets par pixel */
+    switch(nbOctetPerPixel)
+    {
+        case 1:
+            return *p;
+        case 2:
+            return *(Uint16 *)p;
+        case 3:
+            /*Suivant l'architecture de la machine*/
+            if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+                return p[0] << 16 | p[1] << 8 | p[2];
+            else
+                return p[0] | p[1] << 8 | p[2] << 16;
+        case 4:
+            return *(Uint32 *)p;
+        default:
+            return 0; 
+    }
+}	
+
+void setPixel(SDL_Surface *pSurface, int x, int y, Uint32 pixel)
+{
+    int nbOctetPerPixel = pSurface->format->BytesPerPixel;
+	/*adresse du premier pixel de l'image*/
+    Uint8 *p = (Uint8 *)pSurface->pixels + y * pSurface->pitch + x * nbOctetPerPixel;
+    /*Gestion selon suivant le nombre d'octets par pixel */
+    switch(nbOctetPerPixel)
+    {
+        case 1:
+            *p = pixel;
+            break;
+
+        case 2:
+            *(Uint16 *)p = pixel;
+            break;
+
+        case 3:
+            /*Suivant l'architecture de la machine*/
+            if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+            {
+                p[0] = (pixel >> 16) & 0xff;
+                p[1] = (pixel >> 8) & 0xff;
+                p[2] = pixel & 0xff;
+            }
+            else
+            {
+                p[0] = pixel & 0xff;
+                p[1] = (pixel >> 8) & 0xff;
+                p[2] = (pixel >> 16) & 0xff;
+            }
+            break;
+
+        case 4:
+            *(Uint32 *)p = pixel;
+            break;
+    }
+}
+
+
+
+void bgBW(SDL_Surface *pSurface, double saturation)
+{
+	int x, y;
+	Uint32 pixel;
+	Uint8 red,green,blue;
+	Uint8 tmpR,tmpG,tmpB;
+	double a,b,c,d,e,f,g,h,i;
+	double RW = 0.3086; 
+	double RG = 0.6084; 
+	double RB = 0.0820; 
+
+	SDL_LockSurface(pSurface);
+
+	for(x=0; x<pSurface->w; x++)
+	{
+		for(y=0; y<pSurface->h; y++)
+		{
+				pixel = getPixel(pSurface, x, y);
+				SDL_GetRGB(pixel, pSurface->format, &red, &green, &blue);
+				a = (1 - saturation) * RW + saturation;
+				b = (1 - saturation) * RW;
+				c = (1 - saturation) * RW;
+				d = (1 - saturation) * RG;
+				e = (1 - saturation) * RG + saturation;
+				f = (1 - saturation) * RG;
+				g = (1 - saturation) * RB;
+				h = (1 - saturation) * RB;
+				i = (1 - saturation) * RB + saturation;
+
+				tmpR   = a*red + d*green + g*blue;
+				tmpG = b*red + e*green + h*blue;
+				tmpB  = c*red + f*green + i*blue;
+				
+				pixel = SDL_MapRGB(pSurface->format, tmpR, tmpG, tmpB);
+				
+				setPixel(pSurface, x, y, pixel); 
+		}
+		
+	}
+
+   SDL_UnlockSurface(pSurface);
 }
