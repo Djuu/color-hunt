@@ -24,6 +24,7 @@ typedef struct
 	int direction;
 	int frame; 
 	int position;
+	float clockPrevious;
 	
 }Sprites;
 

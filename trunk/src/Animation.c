@@ -18,6 +18,7 @@ void InitSprite (Sprites *pSprites,int id, int w,int h, int nbFrame, int reFrame
 	pSprites->aSprite[id].end=1;
 	pSprites->frame = 0;
 	pSprites->position = 16;
+	pSprites->clockPrevious =0.0;
 
 }
 void displaySprite(Sprites *pSprites, SDL_Rect posi, SDL_Surface *screen)
@@ -50,15 +51,14 @@ void DisplaySprite (Sprite* pSprite, SDL_Rect pos, int dir, SDL_Surface *screen)
 void animSprite (Sprites* pSprites, int id, int loop, int dir)
 {
 	float clockCurrent =  (float)clock()/(float)CLOCKS_PER_SEC;
-	static float clockPrevious = 0.0;
 	float speedSprite=(1.0/(float)(pSprites->aSprite[id].nbFrame*2));
     pSprites->position = id;
     pSprites->direction = dir;
 
-	if (clockCurrent-clockPrevious > speedSprite)
-	{
+	if (clockCurrent-pSprites->clockPrevious > speedSprite)
+	{ 
 			pSprites->frame++; 
-			clockPrevious=clockCurrent;
+			pSprites->clockPrevious=clockCurrent;
 	}
 		
 		

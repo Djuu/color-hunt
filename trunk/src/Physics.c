@@ -137,55 +137,75 @@ int collision(Position *pPosi1, Position *pPosi2)
 
 void stabilizeObject(Object *pObject)
 {
-
+	double teta =(pObject->oPosi.v_grav*30.0)*M_PI/180.0;
+	double alpha = pObject->angle*M_PI/180.0;
 	if (pObject->oPosi.floor == 1)
 	{
 			if (pObject->angle > 0 && pObject->angle < 90)
 			{
 				if(pObject->angle < 45)
 				{
-/*  !!!!!!!! */		pObject->oPosi.x +=  (pObject->oPosi.spriteSizeW - cos(pObject->angle) *pObject->oPosi.spriteSizeW)/55;
-					printf("resultat = %f\n", pObject->oPosi.spriteSizeH * cos(pObject->angle));
-					pObject->angle -=pObject->oPosi.v_grav*30;
+
+					pObject->oPosi.y +=  (pObject->oPosi.spriteSizeW/2.0)*(-cos(alpha -teta) + cos(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(sin(alpha-teta) - sin(alpha));
+					pObject->oPosi.x +=  (pObject->oPosi.spriteSizeW/2.0)*(-sin(alpha -teta) + sin(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(-cos(alpha-teta) + cos(alpha));
+					pObject->angle -=pObject->oPosi.v_grav*30.0;
 					
 				}
-				else 
+				else if (pObject->angle > 45)
 				{
-					pObject->angle ++;	
+					pObject->oPosi.x +=  (pObject->oPosi.spriteSizeW/2.0)*(-cos(alpha -teta) + cos(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(sin(alpha-teta) - sin(alpha));
+					pObject->oPosi.y +=  (pObject->oPosi.spriteSizeW/2.0)*(-sin(alpha -teta) + sin(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(-cos(alpha-teta) + cos(alpha));
+					pObject->angle +=pObject->oPosi.v_grav*30.0;
 				}
+		
 			}
 			else if (pObject->angle > 90 && pObject->angle < 180)
 			{
 				if(pObject->angle < 135)
 				{
-					pObject->angle --;
+					pObject->oPosi.y +=  (pObject->oPosi.spriteSizeW/2.0)*(-cos(alpha -teta) + cos(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(sin(alpha-teta) - sin(alpha));
+					pObject->oPosi.x +=  (pObject->oPosi.spriteSizeW/2.0)*(-sin(alpha -teta) + sin(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(-cos(alpha-teta) + cos(alpha));
+					pObject->angle -=pObject->oPosi.v_grav*30.0;
+					
 					
 				}
-				else 
+				else if (pObject->angle > 135)
 				{
-					pObject->angle ++;	
+					pObject->oPosi.x +=  (pObject->oPosi.spriteSizeW/2.0)*(-cos(alpha -teta) + cos(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(sin(alpha-teta) - sin(alpha));
+					pObject->oPosi.y +=  (pObject->oPosi.spriteSizeW/2.0)*(-sin(alpha -teta) + sin(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(-cos(alpha-teta) + cos(alpha));
+					pObject->angle +=pObject->oPosi.v_grav*30.0;
 				}
 			}
 			else if (pObject->angle > 180 && pObject->angle < 270)
 			{
-				if(pObject->angle < 125)
+				if(pObject->angle < 225)
 				{
-					pObject->angle --;
+					pObject->oPosi.y +=  (pObject->oPosi.spriteSizeW/2.0)*(-cos(alpha -teta) + cos(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(sin(alpha-teta) - sin(alpha));
+					pObject->oPosi.x +=  (pObject->oPosi.spriteSizeW/2.0)*(-sin(alpha -teta) + sin(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(-cos(alpha-teta) + cos(alpha));
+					pObject->angle -=pObject->oPosi.v_grav*30.0;
+					
 				}
-				else 
+				else if (pObject->angle > 225)
 				{
-					pObject->angle ++;	
+					pObject->oPosi.x +=  (pObject->oPosi.spriteSizeW/2.0)*(-cos(alpha -teta) + cos(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(sin(alpha-teta) - sin(alpha));
+					pObject->oPosi.y +=  (pObject->oPosi.spriteSizeW/2.0)*(-sin(alpha -teta) + sin(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(-cos(alpha-teta) + cos(alpha));
+					pObject->angle +=pObject->oPosi.v_grav*30.0;
 				}
 			}
 			else if (pObject->angle > 270 && pObject->angle < 360)
 			{
 				if(pObject->angle < 315)
 				{
-					pObject->angle --;
+					pObject->oPosi.y +=  (pObject->oPosi.spriteSizeW/2.0)*(-cos(alpha -teta) + cos(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(sin(alpha-teta) - sin(alpha));
+					pObject->oPosi.x +=  (pObject->oPosi.spriteSizeW/2.0)*(-sin(alpha -teta) + sin(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(-cos(alpha-teta) + cos(alpha));
+					pObject->angle -=pObject->oPosi.v_grav*30.0;
+					
 				}
-				else 
+				else if (pObject->angle > 315)
 				{
-					pObject->angle ++;	
+					pObject->oPosi.x +=  (pObject->oPosi.spriteSizeW/2.0)*(-cos(alpha -teta) + cos(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(sin(alpha-teta) - sin(alpha));
+					pObject->oPosi.y +=  (pObject->oPosi.spriteSizeW/2.0)*(-sin(alpha -teta) + sin(alpha)) + (pObject->oPosi.spriteSizeH/2.0)*(-cos(alpha-teta) + cos(alpha));
+					pObject->angle +=pObject->oPosi.v_grav*30.0;
 				}
 			}
 	}
