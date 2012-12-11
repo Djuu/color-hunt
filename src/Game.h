@@ -36,9 +36,9 @@ void superAttackDmg(Game *pGame);
 /**
  Description : projection de pPosi1 par pPosi2 avec une force power
 */
-void projectionChar(Game *pGame, float power);
 
 
+void enemyAttack(Game *pGame);
 /**
 Retourn : id de l'ennemie le plus proche
 */

@@ -8,6 +8,8 @@ typedef struct
 	Character eChar;
 	int panic;
 	int idHelp;
+	float powerProjection;
+	int stateAttack;
 }Enemy;
 
 typedef struct

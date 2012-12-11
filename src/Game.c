@@ -14,7 +14,7 @@ void initGame (Game *pGame, const char* Map)
 	
 		pGame->gObjects.oObject[2].oPosi.spriteSizeW = 5;
 		pGame->gObjects.oObject[2].oPosi.spriteSizeH=3;
-		pGame->gObjects.oObject[2].angle = 50;
+		pGame->gObjects.oObject[2].angle = 40;
 	
 	k=0;
 	pGame->level = 1;
@@ -81,8 +81,10 @@ void warpMap (Game *pGame)
 void initSpeedX(Game *pGame)
 {
 	Character *pChar = getGameChar(pGame);
-	pChar->cPosi.v_x=0;
-
+	if(pChar -> projection == 0)
+	{
+		pChar->cPosi.v_x=0;
+	}
 }
 
 void initSpeedY(Game *pGame)
@@ -256,17 +258,41 @@ void collisionMap (Position *pPosi, Map *pMap)
 	
 }
 
-void projectionChar(Game *pGame, float power)
+void projectionChar(Game *pGame, int nearest)
 {
-	int idE = distanceEnemies(pGame);
-	if (pGame->gChar.attack != 1 && pGame->gChar.superAttack != 1)
+	printf("projection = %d\n",pGame->gChar.projection);
+	if (pGame->gChar.projection==1)
 	{
-		if(pGame->gEnemies.eEnemy[idE].eChar.attack == 1)
+		if (pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.direction == 1)
 		{
-			pGame->gChar.cPosi.v_x+=power/5;
-			pGame->gChar.cPosi.v_y=-0.2;
+			if(pGame -> gEnemies.eEnemy[nearest].powerProjection<3)
+			{
+				pGame->gChar.cPosi.v_x-=pGame -> gEnemies.eEnemy[nearest].powerProjection/5;
+				pGame->gChar.cPosi.v_y=-0.2;
+				pGame -> gEnemies.eEnemy[nearest].powerProjection+=0.4;
+			}
+			else
+			{
+				pGame -> gEnemies.eEnemy[nearest].powerProjection=0;
+				pGame->gChar.projection=0;
+			}
+		}
+		if(pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.direction == 0)
+		{
+			if(pGame -> gEnemies.eEnemy[nearest].powerProjection<3)
+			{
+				pGame->gChar.cPosi.v_x+=pGame -> gEnemies.eEnemy[nearest].powerProjection/5;
+				pGame->gChar.cPosi.v_y=-0.2;
+				pGame -> gEnemies.eEnemy[nearest].powerProjection+=0.4;
+			}
+			else
+			{
+				pGame -> gEnemies.eEnemy[nearest].powerProjection=0;
+				pGame->gChar.projection=0;
+			}
 		}
 	}
+
 }
 
 void attack(Game *pGame)
@@ -339,14 +365,18 @@ void superAttackDmg(Game *pGame)
 		pGame->gChar.superDomage = 1;
 
 	}
+
 	for (i=0;i<pObjects->number;i++)
 	{
 		for(j=0;j<pGame->gEnemies.number;j++)
 		{
 			if(collision(&(pObjects -> oObject[i].oPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) != 0 && pGame->gChar.superAttack == 0)
 			{
+				
 				if (pGame->gChar.superDomage != 0)
 				{
+								
+
 					pGame->gEnemies.eEnemy[j].eChar.life -=60;
 					deadEnemy(&(pGame->gEnemies),j);
 					pObjects -> oObject[i].oPosi.x = -42;
@@ -466,6 +496,44 @@ void detect(Game *pGame)
 	}
 	
 }
+
+void enemyAttack(Game *pGame)
+{
+	int i;
+
+	int nearest = distanceEnemies(pGame);
+	printf("position = %f___attackState = %d \n",pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x, pGame->gEnemies.eEnemy[nearest].stateAttack);
+	if (fabs (pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x - pGame -> gChar.cPosi.x) < 3 && pGame -> gChar.attack !=1 && pGame -> gChar.superAttack != 1)
+	{
+		
+		pGame->gEnemies.eEnemy[nearest].stateAttack = 1;
+		
+	}
+	if (pGame->gEnemies.eEnemy[nearest].stateAttack == 1)
+	{
+		pGame -> gEnemies.eEnemy[nearest].eChar.attack = 1;
+	}
+	
+	if (pGame -> gEnemies.eEnemy[nearest].eChar.attack == 0)
+	{			
+		pGame -> gEnemies.eEnemy[nearest].eChar.domage = 1;
+	}
+	if (pGame->gEnemies.eEnemy[nearest].eChar.domage != 0)
+	{
+
+		if(collision(&(pGame->gChar.cPosi),&(pGame->gEnemies.eEnemy[nearest].eChar.cPosi))!=0 && pGame -> gEnemies.eEnemy[nearest].eChar.attack == 1)
+		{
+			pGame -> gChar.life -= 20;
+			pGame->gChar.projection = 1;
+			pGame -> gEnemies.eEnemy[nearest].eChar.domage = 0;
+		}
+		
+	}
+	projectionChar(pGame,nearest);
+	
+}
+
+
 
 
 

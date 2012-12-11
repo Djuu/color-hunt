@@ -15,6 +15,8 @@ void initEnemy(Enemies *pEnemies, int num)
 		pEnemies -> eEnemy[i].eChar.cPosi.spriteSizeH = 2.5;
 		pEnemies -> eEnemy[i].panic = 0;
 		pEnemies -> eEnemy[i].idHelp = 0;
+		pEnemies -> eEnemy[i].powerProjection = 0.0;
+		pEnemies -> eEnemy[i].stateAttack =0;
 		
 	}
 	
@@ -61,13 +63,17 @@ void setManaEnemy (Enemies *pEnemies,int id, int nbMana)
 
 void moveEnemyLeft (Enemies *pEnemies,int id)
 {
-	
-	pEnemies -> eEnemy[id].eChar.cPosi.v_x=-0.2;
+	if (pEnemies -> eEnemy[id].stateAttack == 0 && pEnemies -> eEnemy[id].eChar.attack == 0)
+	{
+		pEnemies -> eEnemy[id].eChar.cPosi.v_x=-0.2;
+	}
 }
 void moveEnemyRight (Enemies *pEnemies,int id)
 {
-	
-	pEnemies -> eEnemy[id].eChar.cPosi.v_x=0.2;
+	if (pEnemies -> eEnemy[id].stateAttack == 0 && pEnemies -> eEnemy[id].eChar.attack == 0)
+	{
+		pEnemies -> eEnemy[id].eChar.cPosi.v_x=0.2;
+	}
 }
 
 void deadEnemy(Enemies *pEnemies,int id)
