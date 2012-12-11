@@ -1,10 +1,12 @@
 #ifndef _OBJECT
 #define _OBJECT
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 
 #include "Position.h"
+
 typedef struct
 {
 	int type;
@@ -12,6 +14,7 @@ typedef struct
 	float xS;
 	float yS;
 	int state;
+	double angle;
 }Object;
 
 typedef struct

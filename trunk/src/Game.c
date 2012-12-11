@@ -1,5 +1,6 @@
-#include "Game.h"
 #include <math.h>
+
+#include "Game.h"
 
 
 void initGame (Game *pGame, const char* Map)
@@ -8,6 +9,13 @@ void initGame (Game *pGame, const char* Map)
 	initChar(&(pGame -> gChar));
 	initEnemy(&(pGame -> gEnemies), 5);
 	initObjects(&(pGame ->gObjects),10,1);
+	
+	
+	
+		pGame->gObjects.oObject[2].oPosi.spriteSizeW = 5;
+		pGame->gObjects.oObject[2].oPosi.spriteSizeH=3;
+		pGame->gObjects.oObject[2].angle = 50;
+	
 	k=0;
 	pGame->level = 1;
 	
@@ -25,9 +33,35 @@ void initGame (Game *pGame, const char* Map)
 					pGame->gEnemies.eEnemy[k].eChar.cPosi.y = j;
 					k++;
 				break;
+				case 'o':
+					pGame->gObjects.oObject[2].oPosi.x = i;
+					pGame->gObjects.oObject[2].oPosi.y = j;
+
+				break;
 			}	
 
 }
+
+void flyModOn(Game *pGame)
+{
+	Character *pChar = getGameChar(pGame);
+	pChar->cPosi.v_grav = 0.01;	
+}
+void flyModOff(Game *pGame)
+{
+	Character *pChar = getGameChar(pGame);
+	pChar->cPosi.v_grav = 0.08;	
+}
+
+void flyUp(Game *pGame)
+{
+		pGame->gChar.cPosi.v_y = -0.2;
+}
+
+
+
+
+
 
 void warpMap (Game *pGame)
 {
@@ -93,7 +127,7 @@ void down(Game *pGame)
 void jump(Game *pGame)
 {
 	Character *pChar = getGameChar(pGame);
-	if(pGame->gChar.floor == 1 && pChar->cPosi.v_grav != 0.01)
+	if(pGame->gChar.cPosi.floor == 1 && pChar->cPosi.v_grav != 0.01)
 	pGame->gChar.cPosi.v_y = -1;
 	
 }
@@ -104,11 +138,11 @@ void controlKey(Game *pGame, const char key)
 	switch(key)
 	{
 		case 'g':
-				if (pGame -> gChar.air != 1 && pGame->gChar.attack ==0)
+				if (pGame -> gChar.cPosi.air != 1 && pGame->gChar.attack ==0)
 				left (pGame);
 			break;
 		case 'd':
-				if (pGame -> gChar.air != 2 && pGame->gChar.attack == 0)
+				if (pGame -> gChar.cPosi.air != 2 && pGame->gChar.attack == 0)
 				{
 					right (pGame);
 				}
@@ -200,23 +234,23 @@ int distanceEnemies(Game *pGame)
 		return id;
 		
 }
-void collisionMap (Character *pChar, Map *pMap)
+void collisionMap (Position *pPosi, Map *pMap)
 {
 	
-	pChar->cPosi.v_y*=pathMap (pChar, pMap);
-	pChar->cPosi.v_x*=pathMap (pChar, pMap);
+	pPosi->v_y*=pathMap (pPosi, pMap);
+	pPosi->v_x*=pathMap (pPosi, pMap);
 	
-	pChar->cPosi.y+=pChar->cPosi.v_y;
-	pChar->cPosi.x+=pChar->cPosi.v_x;
+	pPosi->y+=pPosi->v_y;
+	pPosi->x+=pPosi->v_x;
 	
-	if (getMapXY(pMap, (int)(pChar->cPosi.x), (int)(pChar->cPosi.y+pChar->cPosi.spriteSizeH+0.5))=='#' || 
-	    getMapXY(pMap, (int)(pChar->cPosi.x+pChar->cPosi.spriteSizeW), (int)(pChar->cPosi.y+pChar->cPosi.spriteSizeH+0.5))=='#')
+	if (getMapXY(pMap, (int)(pPosi->x), (int)(pPosi->y+pPosi->spriteSizeH+0.5))=='#' || 
+	    getMapXY(pMap, (int)(pPosi->x+pPosi->spriteSizeW), (int)(pPosi->y+pPosi->spriteSizeH+0.5))=='#')
 	{
-		pChar->floor = 1;
+		pPosi->floor = 1;
 	} 
 	else
 	{
-		pChar->floor = 0;
+		pPosi->floor = 0;
 		
 	}
 	
@@ -432,27 +466,6 @@ void detect(Game *pGame)
 	}
 	
 }
-
-
-void flyModOn(Game *pGame)
-{
-	Character *pChar = getGameChar(pGame);
-	pChar->cPosi.v_grav = 0.01;	
-}
-void flyModOff(Game *pGame)
-{
-	Character *pChar = getGameChar(pGame);
-	pChar->cPosi.v_grav = 0.08;	
-}
-
-void flyUp(Game *pGame)
-{
-		pGame->gChar.cPosi.v_y = -0.2;
-}
-
-
-
-
 
 
 

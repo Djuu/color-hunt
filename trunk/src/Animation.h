@@ -1,7 +1,7 @@
 #ifndef _ANIMATION
 #define _ANIMATION
 #include <SDL/SDL.h>
-
+#include <SDL/SDL_mixer.h>
  
 
 
@@ -35,7 +35,11 @@ void InitSprite (Sprites *pSprites,int id, int w,int h, int nbFrame, int reFrame
 void animSprite (Sprites* pSprites, int id, int loop, int dir);
 void displaySprite(Sprites *pSprites, SDL_Rect posi, SDL_Surface *screen);
 void freeSprite(Sprites *pSprites);
-void fire(SDL_Surface *pSurface);
 void displayGauge(SDL_Surface *pSurfaceBG, SDL_Surface *pSurface , SDL_Surface *screen, int value);
 void bgBW(SDL_Surface *pSurface, double saturation);
+void rotationObject(SDL_Surface *pSurface, SDL_Rect positionBall, double *angle, float speed,  SDL_Surface *screen);
+void audioBG();
+void audioSward();
+void audioFireBall();
+void audioWind();
 #endif

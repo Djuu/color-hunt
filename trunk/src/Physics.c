@@ -1,9 +1,11 @@
-#include "Physics.h"
 #include <math.h>
-void gravity (Character *pChar)
+
+#include "Physics.h"
+
+void gravity (Position *pPosi)
 {
 	
-	pChar->cPosi.v_y += pChar->cPosi.v_grav;
+	pPosi->v_y += pPosi->v_grav;
 	
 
 }
@@ -13,7 +15,7 @@ void gravity (Character *pChar)
 Description : fonction interne qui identifie les cases que le personnage parcoure et renvoi une faleur en fonction de la distance qui seppare le personnage de "la case de collision" 
 Retourne : reel
 */
-float pathMap (Character *pChar, Map *pMap)
+float pathMap (Position *pPosi, Map *pMap)
 {
 	float i;
 	float k, l;
@@ -24,37 +26,35 @@ float pathMap (Character *pChar, Map *pMap)
 	
 	for (i=0.01; i<=1; i+=0.01) 
 	{
-		for (k=0; k<pChar->cPosi.spriteSizeH; k+=0.5)
+		for (k=0; k<pPosi->spriteSizeH; k+=0.5)
 		{
-			for (l=0; l<pChar->cPosi.spriteSizeW; l+=0.9)
+			for (l=0; l<pPosi->spriteSizeW; l+=0.9)
 			{
 			
-				Position charPosition;
-				charPosition = getPosiChar(pChar);
-				posX = charPosition.x + i*charPosition.v_x;
-				posY = charPosition.y + i*charPosition.v_y;
+				posX = pPosi->x + i*pPosi->v_x;
+				posY = pPosi->y + i*pPosi->v_y;
 
-				posYd = charPosition.y + i*charPosition.v_y+k;
-				posXd = charPosition.x + i*charPosition.v_x+l;
+				posYd = pPosi->y + i*pPosi->v_y+k;
+				posXd = pPosi->x + i*pPosi->v_x+l;
 
-				posYr = charPosition.y + i*charPosition.v_y;
-				posXr = charPosition.x + i*charPosition.v_x+l;
+				posYr = pPosi->y + i*pPosi->v_y;
+				posXr = pPosi->x + i*pPosi->v_x+l;
 
-				posYl = charPosition.y + i*charPosition.v_y+k;
-				posXl = charPosition.x + i*charPosition.v_x;
+				posYl = pPosi->y + i*pPosi->v_y+k;
+				posXl = pPosi->x + i*pPosi->v_x;
 			
 
 				if (getMapXY(pMap, (int)(posX-0.5), (int)posY)=='#' || getMapXY(pMap, (int)(posXl-0.5), (int)posYl)=='#')
 				{
-					pChar -> air = 1;
+					pPosi -> air = 1;
 				}
 				else if (getMapXY(pMap, (int)(posXd+0.5), (int)posYd)=='#' || getMapXY(pMap, (int)(posXr+0.5), (int)posYr)=='#')
 				{
-					pChar -> air = 2;
+					pPosi -> air = 2;
 				}
 				else 
 				{
-					pChar -> air = 0;
+					pPosi -> air = 0;
 				}
 				
 				
@@ -135,3 +135,58 @@ int collision(Position *pPosi1, Position *pPosi2)
 }
 
 
+void stabilizeObject(Object *pObject)
+{
+
+	if (pObject->oPosi.floor == 1)
+	{
+			if (pObject->angle > 0 && pObject->angle < 90)
+			{
+				if(pObject->angle < 45)
+				{
+/*  !!!!!!!! */		pObject->oPosi.x +=  (pObject->oPosi.spriteSizeW - cos(pObject->angle) *pObject->oPosi.spriteSizeW)/55;
+					printf("resultat = %f\n", pObject->oPosi.spriteSizeH * cos(pObject->angle));
+					pObject->angle -=pObject->oPosi.v_grav*30;
+					
+				}
+				else 
+				{
+					pObject->angle ++;	
+				}
+			}
+			else if (pObject->angle > 90 && pObject->angle < 180)
+			{
+				if(pObject->angle < 135)
+				{
+					pObject->angle --;
+					
+				}
+				else 
+				{
+					pObject->angle ++;	
+				}
+			}
+			else if (pObject->angle > 180 && pObject->angle < 270)
+			{
+				if(pObject->angle < 125)
+				{
+					pObject->angle --;
+				}
+				else 
+				{
+					pObject->angle ++;	
+				}
+			}
+			else if (pObject->angle > 270 && pObject->angle < 360)
+			{
+				if(pObject->angle < 315)
+				{
+					pObject->angle --;
+				}
+				else 
+				{
+					pObject->angle ++;	
+				}
+			}
+	}
+}
