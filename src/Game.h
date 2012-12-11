@@ -24,7 +24,7 @@ void initSpeedX(Game *pGame);
 void initSpeedY(Game *pGame);
 Enemies *getGameEnemies(Game *pGame);
 void warpMap (Game *pGame);
-void collisionMap (Character *pChar, Map *pMap);
+void collisionMap (Position *pPosi, Map *pMap);
 
 void down(Game *pGame);
 void up(Game *pGame);
@@ -46,5 +46,7 @@ int distanceEnemies(Game *pGame);
 
 
 void flyMod(Game *pGame);
+
+void detect(Game *pGame);
 #endif
 

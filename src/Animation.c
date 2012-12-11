@@ -1,8 +1,10 @@
-#include "Animation.h"
 #include <time.h>
 #include <math.h>
+#include <SDL/SDL_rotozoom.h>
 #include <assert.h>
+#include <math.h> 
 
+#include "Animation.h"
 
 void InitSprite (Sprites *pSprites,int id, int w,int h, int nbFrame, int reFrame)
 {
@@ -54,165 +56,33 @@ void animSprite (Sprites* pSprites, int id, int loop, int dir)
     pSprites->direction = dir;
 
 	if (clockCurrent-clockPrevious > speedSprite)
-		{
-				pSprites->frame++; 
-				clockPrevious=clockCurrent;
-		}
-
+	{
+			pSprites->frame++; 
+			clockPrevious=clockCurrent;
+	}
 		
 		
-		if (loop == 0)	
+	if (loop == 0)	
+	{
+		if(pSprites->frame >= (pSprites->aSprite[id].nbFrame))
 		{
-			if(pSprites->frame >= (pSprites->aSprite[id].nbFrame))
-			{
 				
-				pSprites->frame = pSprites->aSprite[id].reFrame;
-			}
+			pSprites->frame = pSprites->aSprite[id].reFrame;
 		}
-		if(pSprites->aSprite[id].end==0 && loop == 1)
+	}
+	if(pSprites->aSprite[id].end==0 && loop == 1)
+	{
+
+		if(pSprites->frame == pSprites->aSprite[id].nbFrame)
 		{
+			pSprites->aSprite[id].end=1;
 	
-			if(pSprites->frame == pSprites->aSprite[id].nbFrame)
-			{
-				pSprites->aSprite[id].end=1;
-		
-			}
 		}
-		
-		
-}
-
-
-void fillRandomPixels(SDL_Surface *pSurface,SDL_Rect *r)
-{
-   int x, y;
-   unsigned int ofs;
-   unsigned char *buf;
-
-   SDL_LockSurface(pSurface);
-
-   buf = (unsigned char *)pSurface->pixels;
-   for(y = 0; y < r->h; y++) {
-      ofs = (y + r->y) * pSurface->pitch;
-      for(x = 0; x < r->w; x++, ofs++) {
-         buf[ofs + r->x] = rand() & 0xFF; /* permet de faire clignoter les lignes*/
-      }
-   }
-
-   SDL_UnlockSurface(pSurface);
-}
-
-void fireInterpolate(SDL_Surface *pSurface)
-{
-   int x, y;
-   unsigned int pixel, ofs;
-   unsigned char *buf;
-
-   SDL_LockSurface(pSurface); /* pour pouvoir lire les pixels de SDL_Surfac*/
-
-   buf = (unsigned char *)pSurface->pixels;  /* on point vers les pixel de la surface*/
-
-   for(y = 1; y < pSurface->h - 2; y++) {
-      ofs = y * pSurface->pitch;
-      for(x = 1; x < pSurface->w - 1; x++) {
-      	ofs++;
-         pixel = (
-            buf[ofs - 1] +
-            buf[ofs] +
-            buf[ofs + 1] +
-            buf[ofs + pSurface->pitch - 1] +
-            buf[ofs + pSurface->pitch + 1] +
-            buf[ofs + pSurface->pitch*2 - 1] +
-            buf[ofs + pSurface->pitch*2] +
-            buf[ofs + pSurface->pitch*2 + 1]
-         ) >> 3;
-         buf[ofs] = pixel;
-      }
-   }
-
-   SDL_UnlockSurface(pSurface);
-}
-
-void fire(SDL_Surface *pSurface)
-{
-		
-	int i;
-	
-	int firePoints = 50;
-	int fireSize = 8;
-	SDL_Color palette[256];
-	
-	unsigned char *buffer;
-	SDL_Rect r;
-	short fire[firePoints];
-	
-	
-	
-	for(i = 0; i < 64; i++)
-	{
-      /* noir au rouge */
-      palette[i].r = i * 4;
-      palette[i].g = 0;
-      palette[i].b = 0;
-
-      /* rouge au jaune */
-      palette[i + 64].r = 255;
-      palette[i + 64].g = i * 4;
-      palette[i + 64].b = 0;
-
-      /* jaune au blanc */
-      palette[i + 128].r = 255;
-      palette[i + 128].g = 255;
-      palette[i + 128].b = i * 4;
-
-      /* on remplie avec le blanc */
-      palette[i + 192].r = 255;
-      palette[i + 192].g = 255;
-      palette[i + 192].b = 255;
-   }
-   
-   
-	SDL_SetColors(pSurface,palette,0,256);
-	for(i = 0; i < firePoints; i++) 
-	{
-		fire[i] = pSurface->w;
 	}
-	
-	SDL_LockSurface(pSurface);
-	buffer = pSurface -> pixels; /*on pointe les pixels de la surface*/
-	
-	r.x = 0;
-	r.y = pSurface->h - 4;
-	r.w = pSurface->w;
-	r.h = 3;
-	SDL_FillRect(pSurface,&r,0);
-	
-	
-	for(i = 0; i < firePoints; i++)
-	{
-	
-		if(rand() & 1){
-            fire[i] += rand() % 7;
-            if(fire[i] >= pSurface->w - fireSize)
-               fire[i] = (rand() % (pSurface->w - (fireSize << 1))) + fireSize;
-         } else {
-            fire[i] -= rand() % 7;
-            if(fire[i] <= fireSize)
-               fire[i] = (rand() % (pSurface->w - (fireSize << 1))) + fireSize;
-         }
-         
-		r.x = fire[i] - (fireSize/2);
-		r.y = pSurface->w - 3;
-		r.w = fireSize;
-		r.h = 3;
-		fillRandomPixels(pSurface,&r);
-	}
-	fireInterpolate(pSurface);
-	SDL_UnlockSurface(pSurface);
-
-	SDL_UpdateRect(pSurface,0,0,0,0);
-		 
+		
+		
 }
+
 
 
 void displayGauge(SDL_Surface *pSurfaceBG, SDL_Surface *pSurface , SDL_Surface *screen, int value)
@@ -335,4 +205,69 @@ void bgBW(SDL_Surface *pSurface, double saturation)
 	}
 
    SDL_UnlockSurface(pSurface);
+}
+
+void rotationObject(SDL_Surface *pSurface, SDL_Rect positionBall, double *angle, float speed, SDL_Surface *screen)
+{	
+	
+	float clockCurrent =  (float)clock()/(float)CLOCKS_PER_SEC;
+	static float clockPrevious = 0.0;
+	SDL_Surface *rotationBall;
+	SDL_Rect tempRect= {positionBall.x,positionBall.y,0,0};
+	float tempY;
+	/*if (clockCurrent-clockPrevious > speed)
+	{
+		(*angle)--;
+		
+		clockPrevious=clockCurrent;
+	}*/
+	/*if((*angle) == 360)
+		(*angle)=0;*/
+
+/*tempRect.x = 2 *cos(*(angle)) - 2*sin(*(angle));
+tempRect.y = 2 *sin(*(angle)) + 2*cos(*(angle));*/
+ 
+//tempRect.x =  sqrt( pow((positionBall.x-tempRect.x),2) + pow((positionBall.y-tempRect.y),2)) * cos((90)) + positionBall.x; 
+//tempRect.y =  sqrt( pow((positionBall.x-tempRect.x),2) + pow((positionBall.y-tempRect.y),2)) * sin((90)) + positionBall.y; 
+
+
+	rotationBall = rotozoomSurface(pSurface, (*angle), 1.0, 0);
+	tempRect.x -= (rotationBall->w -  pSurface->w);
+	tempRect.y -= (rotationBall->h -  pSurface->h);
+	SDL_BlitSurface(rotationBall,NULL, screen, &tempRect);	
+	SDL_FreeSurface(rotationBall);
+}
+
+void audioBG()
+{
+	Mix_Music *pMusic;
+	pMusic = Mix_LoadMUS("data/audio/bg.mp3");
+	Mix_PlayMusic(pMusic, -1);
+}
+
+void audioWind()
+{
+	Mix_Chunk *pSound;
+	pSound = Mix_LoadWAV("data/audio/wind.wav");
+	Mix_VolumeChunk(pSound, MIX_MAX_VOLUME/10);
+	Mix_PlayChannel(1, pSound, 0);
+//	Mix_FreeChunk(pSound);   /*!!!!!!!!!!!!!!!!!*/
+}
+
+void audioSward()
+{
+	Mix_Chunk *pSound;
+	pSound = Mix_LoadWAV("data/audio/sward.wav");
+	Mix_VolumeChunk(pSound, MIX_MAX_VOLUME/3);
+	Mix_PlayChannel(2, pSound, 0);
+//	Mix_FreeChunk(pSound);   /*!!!!!!!!!!!!!!!!!*/
+}
+
+void audioFireBall()
+{
+	Mix_Chunk *pSound;
+	pSound = Mix_LoadWAV("data/audio/fireball.wav");
+	Mix_VolumeChunk(pSound, MIX_MAX_VOLUME/3);
+	Mix_PlayChannel(3, pSound, 0);
+//	Mix_FreeChunk(pSound);   /*!!!!!!!!!!!!!!!!!*/
 }

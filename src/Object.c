@@ -12,6 +12,15 @@ void initObjects(Objects *pObjects, int num, int type)
 	{
 		initObject(&(pObjects -> oObject[i]));
 		pObjects ->oObject[i].type = type;
+		pObjects ->oObject[i].angle=0.0;
+		pObjects ->oObject[i].oPosi.v_x = 0;/*0.2*/
+		pObjects ->oObject[i].oPosi.v_y=0;
+		pObjects ->oObject[i].oPosi.x = -10;/*0.2*/
+		pObjects ->oObject[i].oPosi.y=-10;
+		pObjects ->oObject[i].oPosi.v_grav = 0.08;/*0.02*/
+		pObjects ->oObject[i].oPosi.floor=0;
+		pObjects ->oObject[i].oPosi.spriteSizeW = 0;/*0.2*/
+		pObjects ->oObject[i].oPosi.spriteSizeH=0;
 	}
 }
 
@@ -31,12 +40,12 @@ void initObject(Object *pObject)
 
 void moveObjectR(Object *pObject)
 {
-	pObject->oPosi.v_x = 0.3;
+	pObject->oPosi.v_x = 0.5;
 }
 
 void moveObjectL(Object *pObject)
 {
-	pObject->oPosi.v_x = -0.3;
+	pObject->oPosi.v_x = -0.5;
 }
 
 void applySpeedObject(Object *pObject)

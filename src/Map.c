@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <assert.h>
+
 #include "Map.h"
 
 void mapInit(Map *pMap,const char * Name)

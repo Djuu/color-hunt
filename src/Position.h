@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+
 #define SPRITE_SIZE 20
 
 typedef struct
@@ -15,6 +16,8 @@ typedef struct
 	float spriteSizeW;
 	float spriteSizeH;
 	int direction;
+	int floor;
+	int air;
 	
 
 }Position;

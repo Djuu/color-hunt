@@ -7,8 +7,8 @@ void initChar (Character *pChar)
 	pChar->cPosi.x = -10;/*0.2*/
 	pChar->cPosi.y=-10;
 	pChar->cPosi.v_grav = 0.08;/*0.02*/
-	pChar-> floor = 0;
-	pChar-> air = 0;
+	pChar-> cPosi.floor = 0;
+	pChar-> cPosi.air = 0;
 	pChar -> projection = 0;
 	setLife(pChar, 100);
 	setMana(pChar, 0);
