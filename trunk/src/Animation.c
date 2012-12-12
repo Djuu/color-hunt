@@ -57,7 +57,7 @@ void animSprite (Sprites* pSprites, int id, int loop, int dir)
 
 	if (clockCurrent-pSprites->clockPrevious > speedSprite)
 	{ 
-			pSprites->frame++; 
+			pSprites->frame++;
 			pSprites->clockPrevious=clockCurrent;
 	}
 		
@@ -70,13 +70,16 @@ void animSprite (Sprites* pSprites, int id, int loop, int dir)
 			pSprites->frame = pSprites->aSprite[id].reFrame;
 		}
 	}
+	printf("end = %d ______ \n",pSprites->aSprite[id].end);
 	if(pSprites->aSprite[id].end==0 && loop == 1)
 	{
-
+//printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaa   positionID = %d aaaaaaaaaaa\n",  pSprites->position);
+printf("frame = %d _______nbFrame = %d \n",  pSprites->frame , pSprites->aSprite[id].nbFrame);
 		if(pSprites->frame == pSprites->aSprite[id].nbFrame)
 		{
 			pSprites->aSprite[id].end=1;
-	
+			printf("bbbbbbbbbbbbbbbbbbbbbb   positionID = %d bbbbbbbbbbbbbbbbb\n",  pSprites->position);
+			pSprites->frame =0;
 		}
 	}
 		
@@ -210,25 +213,8 @@ void bgBW(SDL_Surface *pSurface, double saturation)
 void rotationObject(SDL_Surface *pSurface, SDL_Rect positionBall, double *angle, float speed, SDL_Surface *screen)
 {	
 	
-	float clockCurrent =  (float)clock()/(float)CLOCKS_PER_SEC;
-	static float clockPrevious = 0.0;
 	SDL_Surface *rotationBall;
 	SDL_Rect tempRect= {positionBall.x,positionBall.y,0,0};
-	float tempY;
-	/*if (clockCurrent-clockPrevious > speed)
-	{
-		(*angle)--;
-		
-		clockPrevious=clockCurrent;
-	}*/
-	/*if((*angle) == 360)
-		(*angle)=0;*/
-
-/*tempRect.x = 2 *cos(*(angle)) - 2*sin(*(angle));
-tempRect.y = 2 *sin(*(angle)) + 2*cos(*(angle));*/
- 
-//tempRect.x =  sqrt( pow((positionBall.x-tempRect.x),2) + pow((positionBall.y-tempRect.y),2)) * cos((90)) + positionBall.x; 
-//tempRect.y =  sqrt( pow((positionBall.x-tempRect.x),2) + pow((positionBall.y-tempRect.y),2)) * sin((90)) + positionBall.y; 
 
 
 	rotationBall = rotozoomSurface(pSurface, (*angle), 1.0, 0);

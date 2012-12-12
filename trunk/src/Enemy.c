@@ -18,6 +18,7 @@ void initEnemy(Enemies *pEnemies, int num)
 		pEnemies -> eEnemy[i].powerProjection = 0.0;
 		pEnemies -> eEnemy[i].stateAttack =0;
 		
+		
 	}
 	
 }

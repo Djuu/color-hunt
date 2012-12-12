@@ -74,3 +74,9 @@ void applySpeedObject(Object *pObject)
 	
 }
 
+Position getPosiObject (const Objects *pObjects, int id)
+{
+
+	return pObjects -> oObject[id].oPosi;
+}
+
