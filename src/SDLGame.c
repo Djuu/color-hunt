@@ -132,14 +132,15 @@ pSdlGame ->surfaceBall = IMG_Load("data/block.png");
 		
 		pSdlGame->pSpritesEnemy[k].source = pSdlGame->surfaceEnemies;
 		
-		/*Attend droite*/
-		InitSprite (&(pSdlGame->pSpritesEnemy[k]),1, 31, 38, 3, 0);
 		/*Attend gauche*/
 		InitSprite (&(pSdlGame->pSpritesEnemy[k]),0, 31, 38, 3, 0);
-		/*Cour vers la droite*/
-		InitSprite (&(pSdlGame->pSpritesEnemy[k]),3, 28, 42, 6, 0);
+		/*Attend droite*/
+		InitSprite (&(pSdlGame->pSpritesEnemy[k]),1, 31, 38, 3, 0);
 		/*Cour vers la gauche*/
 		InitSprite (&(pSdlGame->pSpritesEnemy[k]),2, 28, 42, 6, 0);
+		/*Cour vers la droite*/
+		InitSprite (&(pSdlGame->pSpritesEnemy[k]),3, 28, 42, 6, 0);
+		
 		/*Attaque gauche*/
 		InitSprite (&(pSdlGame->pSpritesEnemy[k]),4, 61, 63, 8, 0);
 		/*Attaque droite*/
@@ -489,25 +490,29 @@ void animEnemies(SdlGame *pSdlGame)
 		for(k=0; k< pSdlGame->pGame.gEnemies.number; k++)
 		{
 			
-			
+			printf("attackState = %d  ===== EnemiNB = %d ___ direction = %d\n", pSdlGame ->pGame.gEnemies.eEnemy[k].stateAttack, k, pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction);
 			if (pSdlGame ->pGame.gEnemies.eEnemy[k].stateAttack == 1)
 			{
 				if (pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction == 1)
 				{
+					printf("GAUAUPIUHGDOUYIGSODIS\n");
 					pSdlGame->pSpritesEnemy[k].aSprite[4].end = 0;
 				}
 				if (pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction == 0)
 				{
+					printf("AAUAUPIUHGDOUYIGSODIS\n");
 					pSdlGame->pSpritesEnemy[k].aSprite[5].end = 0;
 				}
 			}
 			if (pSdlGame->pSpritesEnemy[k].aSprite[4].end == 1 && pSdlGame->pSpritesEnemy[k].aSprite[5].end == 1)
 			{
-				pSdlGame ->pGame.gEnemies.eEnemy[k].stateAttack = 0;
-				pSdlGame ->pGame.gEnemies.eEnemy[k].eChar.attack = 0;
+				//pSdlGame ->pGame.gEnemies.eEnemy[k].stateAttack = 0;
+				//pSdlGame ->pGame.gEnemies.eEnemy[k].eChar.attack = 0;
+				
 			}
-	printf("end(4) = %d_____end(5)= %d\n", pSdlGame->pSpritesEnemy[k].aSprite[4].end, pSdlGame->pSpritesEnemy[k].aSprite[5].end);
-			printf("Enemie = %d, attack = %d\n",k,pSdlGame->pGame.gEnemies.eEnemy[k].eChar.attack );
+			
+		//	printf("end(4) = %d_____end(5)= %d\n", pSdlGame->pSpritesEnemy[k].aSprite[4].end, pSdlGame->pSpritesEnemy[k].aSprite[5].end);
+		//	printf("Enemie = %d, attack = %d\n",k,pSdlGame->pGame.gEnemies.eEnemy[k].eChar.attack );
 			if (pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.v_x <0 && pSdlGame->pGame.gEnemies.eEnemy[k].eChar.attack == 0)
 			{
 					animSprite (&(pSdlGame->pSpritesEnemy[k]), 2, 0, pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction);
@@ -524,14 +529,15 @@ void animEnemies(SdlGame *pSdlGame)
 			{
 				animSprite (&(pSdlGame->pSpritesEnemy[k]), 0, 0, pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction);
 			}		
-			if (pSdlGame->pGame.gEnemies.eEnemy[k].stateAttack == 1 && pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction == 1)
+			if (pSdlGame->pGame.gEnemies.eEnemy[k].stateAttack == 1 && pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction == 0)
 			{
 				animSprite (&(pSdlGame->pSpritesEnemy[k]), 5, 1, pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction);
 			}
-			if (pSdlGame->pGame.gEnemies.eEnemy[k].stateAttack == 1 && pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction == 0)
+			if (pSdlGame->pGame.gEnemies.eEnemy[k].stateAttack == 1 && pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction == 1)
 			{
 				animSprite (&(pSdlGame->pSpritesEnemy[k]), 4, 1, pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction);
 			}
+			
 		}	
 		
 		
@@ -743,19 +749,20 @@ if(pGame -> level != 1)
 			 
 			//audioWind(); /*son arrier plan "wind"*/
 			
-			for(l=0; l< pSdlGame->pGame.gObjects.number; l++)
-			{
-				collision(&(pSdlGame->pGame.gChar.cPosi),&(pSdlGame->pGame.gObjects.oObject[l].oPosi));
-			}
+
 			/*collisionEnemies(&(pSdlGame->pGame.gChar),&(pSdlGame->pGame.gEnemies));*/
 			applySpeedObject(&(pSdlGame->pGame.gObjects.oObject[1]));
 			superAttackDmg(&(pSdlGame -> pGame));
 	/*		printf("OBJET .X : %f\n",pSdlGame->pGame.gObjects.oObject[1].oPosi.x);*/
 			colisionSprite(pSdlGame);
-	 		collisionMap (&(pChar->cPosi), pMap);
-	 		
+			
+collisionObjects (&(pChar->cPosi), &(pGame -> gObjects));
+printf("v _ y (object) =%f\n",pChar->cPosi.v_x);
 
-	 		
+			collisionMap (&(pChar->cPosi), pMap);
+			printf("v _ y =%f (grave)\n",pChar->cPosi.v_x);
+
+
 	 		attack(&(pSdlGame -> pGame));
 	 		
 	 		detect(&(pSdlGame->pGame));
@@ -773,7 +780,7 @@ if(pGame -> level != 1)
 			{
 				if(pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.x >0 && pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.y >0)
 				{
-					pSdlGame->pGame.gEnemies.eEnemy[k].eChar.attack=0;
+				
 					gravity (&(pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi));
 					collisionMap (&(pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi), pMap);
 					refreshDirection(&(pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi));

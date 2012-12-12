@@ -31,6 +31,6 @@ void moveObjectR(Object *pObject);
 void moveObjectL(Object *pObject);
 
 void applySpeedObject(Object *pObject);
-
+Position getPosiObject (const Objects *pObjects, int id);
 
 #endif 

@@ -244,7 +244,7 @@ void collisionMap (Position *pPosi, Map *pMap)
 	
 	pPosi->y+=pPosi->v_y;
 	pPosi->x+=pPosi->v_x;
-	
+	printf("v _ y =%f\n",pPosi->v_y);
 	if (getMapXY(pMap, (int)(pPosi->x), (int)(pPosi->y+pPosi->spriteSizeH+0.5))=='#' || 
 	    getMapXY(pMap, (int)(pPosi->x+pPosi->spriteSizeW), (int)(pPosi->y+pPosi->spriteSizeH+0.5))=='#')
 	{
@@ -260,7 +260,7 @@ void collisionMap (Position *pPosi, Map *pMap)
 
 void projectionChar(Game *pGame, int nearest)
 {
-	printf("projection = %d\n",pGame->gChar.projection);
+	//printf("projection = %d\n",pGame->gChar.projection);
 	if (pGame->gChar.projection==1)
 	{
 		if (pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.direction == 1)
@@ -502,7 +502,7 @@ void enemyAttack(Game *pGame)
 	int i;
 
 	int nearest = distanceEnemies(pGame);
-	printf("position = %f___attackState = %d \n",pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x, pGame->gEnemies.eEnemy[nearest].stateAttack);
+	//printf("position = %f___attackState = %d \n",pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x, pGame->gEnemies.eEnemy[nearest].stateAttack);
 	if (fabs (pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x - pGame -> gChar.cPosi.x) < 3 && pGame -> gChar.attack !=1 && pGame -> gChar.superAttack != 1)
 	{
 		
