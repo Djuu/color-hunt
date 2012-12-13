@@ -70,7 +70,7 @@ void animSprite (Sprites* pSprites, int id, int loop, int dir)
 			pSprites->frame = pSprites->aSprite[id].reFrame;
 		}
 	}
-	printf("end = %d ______ \n",pSprites->aSprite[id].end);
+	
 	if(pSprites->aSprite[id].end==0 && loop == 1)
 	{
 //printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaa   positionID = %d aaaaaaaaaaa\n",  pSprites->position);

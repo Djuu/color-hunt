@@ -43,7 +43,7 @@ void enemyAttack(Game *pGame);
 Retourn : id de l'ennemie le plus proche
 */
 int distanceEnemies(Game *pGame);
-
+void collisionObjects (Position *pPosi, Objects *pObjects);
 
 void flyMod(Game *pGame);
 
