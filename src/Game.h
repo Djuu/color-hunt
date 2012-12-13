@@ -15,7 +15,7 @@ typedef struct
 }Game;
 
 /** Initialise le jeu */
-void initGame (Game *pGame, const char* Map);
+void initGame (Game *pGame, const char* pMap);
 /** Appel la fonction correspondant a la touche appelée */
 void controlKey (Game *pGame, const char key);
 Map *getGameMap (Game *pGame);
@@ -33,6 +33,8 @@ void attack(Game *pGame);
 Objects *getGameObjects(Game *pGame);
 void superAttack(Game *pGame);
 void superAttackDmg(Game *pGame);
+void right2(Game *pGame);
+void left2(Game *pGame);
 /**
  Description : projection de pPosi1 par pPosi2 avec une force power
 */

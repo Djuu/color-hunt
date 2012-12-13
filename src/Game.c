@@ -3,7 +3,7 @@
 #include "Game.h"
 
 
-void initGame (Game *pGame, const char* Map)
+void initGame (Game *pGame, const char* pMap)
 {
 	int i,j, k;
 	initChar(&(pGame -> gChar));
@@ -19,7 +19,7 @@ void initGame (Game *pGame, const char* Map)
 	k=0;
 	pGame->level = 1;
 	
-	mapInit(&(pGame -> gMap),Map);
+	mapInit(&(pGame -> gMap),pMap);
 	for (j=0;j<pGame->gMap.dimy;j++)
 		for(i=0;i<pGame->gMap.dimx;i++)
 			switch(pGame->gMap.tab[j][i])
@@ -70,11 +70,22 @@ void warpMap (Game *pGame)
 	int i,j;
 	for (j=0;j<pMap->dimy;j++)
 		for(i=0;i<pMap->dimx;i++)
-			switch(getMapXY(pMap, (int)(pChar->cPosi.x-0.5), (int)(pChar->cPosi.y-0.5)))
+			switch(getMapXY(pMap, (int)(pChar->cPosi.x), (int)(pChar->cPosi.y)))
 			{
 				case'2' : 
+					freeMap(pMap);
 					initGame(pGame,"Map/Map1.txt");
 					pGame->level = 2;
+				break;
+				case'3' :
+					freeMap(pMap);
+					initGame(pGame,"Map/Map2.txt");
+					pGame->level = 3;
+				break;
+				case'W' : 
+					freeMap(pMap);
+					initGame(pGame,"Map/WorldMap.txt");
+					pGame->level = 1;
 				break;
 			}
 }
@@ -109,6 +120,22 @@ void right(Game *pGame)
 	pChar->cPosi.v_x=0.5;
 }
 
+
+void left2(Game *pGame)
+{
+
+	Character *pChar = getGameChar(pGame);
+
+	pChar->cPosi.v_x=-0.5;
+	
+}
+
+void right2(Game *pGame)
+{
+	Character *pChar = getGameChar(pGame);
+	pChar->cPosi.v_x=0.5;
+}
+
 void up(Game *pGame)
 {
 
@@ -124,6 +151,7 @@ void down(Game *pGame)
 	pChar->cPosi.v_y=0.5;
 	
 }
+
 
 
 void jump(Game *pGame)
@@ -179,10 +207,10 @@ void controlKey2(Game *pGame, const char key)
 	switch(key)
 	{
 		case 'g':
-			left (pGame);
+			left2 (pGame);
 			break;
 		case 'd':
-			right (pGame);
+			right2 (pGame);
 			break;
 		case 'h':
 			up (pGame);
