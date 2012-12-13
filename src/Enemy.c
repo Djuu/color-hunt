@@ -64,17 +64,14 @@ void setManaEnemy (Enemies *pEnemies,int id, int nbMana)
 
 void moveEnemyLeft (Enemies *pEnemies,int id)
 {
-	if (pEnemies -> eEnemy[id].stateAttack == 0 && pEnemies -> eEnemy[id].eChar.attack == 0)
-	{
-		pEnemies -> eEnemy[id].eChar.cPosi.v_x=-0.2;
-	}
+	pEnemies -> eEnemy[id].eChar.cPosi.v_x=-0.2;
+
 }
 void moveEnemyRight (Enemies *pEnemies,int id)
 {
-	if (pEnemies -> eEnemy[id].stateAttack == 0 && pEnemies -> eEnemy[id].eChar.attack == 0)
-	{
-		pEnemies -> eEnemy[id].eChar.cPosi.v_x=0.2;
-	}
+
+	pEnemies -> eEnemy[id].eChar.cPosi.v_x=0.2;
+
 }
 
 void deadEnemy(Enemies *pEnemies,int id)

@@ -23,6 +23,6 @@ Description : application de la collision entre deux position
 int collision(Position *pPosi1, Position *pPosi2);
 
 void stabilizeObject(Object *pObject);
-void collisionObjects (Position *pPosi, Objects *pObjects);
+float pathObject (Position *pPosi, Objects *pObjects);
 
 #endif

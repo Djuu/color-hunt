@@ -1,5 +1,5 @@
 #include <math.h>
-
+#include <time.h>
 #include "Game.h"
 
 
@@ -7,7 +7,7 @@ void initGame (Game *pGame, const char* Map)
 {
 	int i,j, k;
 	initChar(&(pGame -> gChar));
-	initEnemy(&(pGame -> gEnemies), 5);
+	initEnemy(&(pGame -> gEnemies), 10);
 	initObjects(&(pGame ->gObjects),10,1);
 	
 	
@@ -129,7 +129,7 @@ void down(Game *pGame)
 void jump(Game *pGame)
 {
 	Character *pChar = getGameChar(pGame);
-	if(pGame->gChar.cPosi.floor == 1 && pChar->cPosi.v_grav != 0.01)
+	if((pGame->gChar.cPosi.floor == 1 && pChar->cPosi.v_grav != 0.01) || pathObject(&(pGame->gChar.cPosi), &(pGame->gObjects))!=1)
 	pGame->gChar.cPosi.v_y = -1;
 	
 }
@@ -244,7 +244,6 @@ void collisionMap (Position *pPosi, Map *pMap)
 	
 	pPosi->y+=pPosi->v_y;
 	pPosi->x+=pPosi->v_x;
-	printf("v _ y =%f\n",pPosi->v_y);
 	if (getMapXY(pMap, (int)(pPosi->x), (int)(pPosi->y+pPosi->spriteSizeH+0.5))=='#' || 
 	    getMapXY(pMap, (int)(pPosi->x+pPosi->spriteSizeW), (int)(pPosi->y+pPosi->spriteSizeH+0.5))=='#')
 	{
@@ -256,6 +255,13 @@ void collisionMap (Position *pPosi, Map *pMap)
 		
 	}
 	
+}
+
+void collisionObjects (Position *pPosi, Objects *pObjects)
+{
+	pPosi->v_y*=pathObject(pPosi, pObjects);
+	pPosi->v_x*=pathObject(pPosi, pObjects);
+
 }
 
 void projectionChar(Game *pGame, int nearest)
@@ -270,6 +276,7 @@ void projectionChar(Game *pGame, int nearest)
 				pGame->gChar.cPosi.v_x-=pGame -> gEnemies.eEnemy[nearest].powerProjection/5;
 				pGame->gChar.cPosi.v_y=-0.2;
 				pGame -> gEnemies.eEnemy[nearest].powerProjection+=0.4;
+				
 			}
 			else
 			{
@@ -502,19 +509,32 @@ void enemyAttack(Game *pGame)
 	int i;
 
 	int nearest = distanceEnemies(pGame);
-	//printf("position = %f___attackState = %d \n",pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x, pGame->gEnemies.eEnemy[nearest].stateAttack);
-	if (fabs (pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x - pGame -> gChar.cPosi.x) < 3 && pGame -> gChar.attack !=1 && pGame -> gChar.superAttack != 1)
+	srand(time(NULL)); 
+			/*printf("stateAttack = %d\n",pGame->gEnemies.eEnemy[nearest].stateAttack );
+			printf("attack = %d\n",pGame->gEnemies.eEnemy[nearest].eChar.attack);
+			printf("\n");
+			printf("\n");
+	*/
+	
+
+	
+	/*if (fabs (pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x - pGame -> gChar.cPosi.x) < 3 && pGame -> gChar.attack !=1 && pGame -> gChar.superAttack != 1)
 	{
 		
 		pGame->gEnemies.eEnemy[nearest].stateAttack = 1;
 		
-	}
-	if (pGame->gEnemies.eEnemy[nearest].stateAttack == 1)
+	}*/
+	
+	
+		printf("position = %f  ___attackState = %d  _____ attack =%d _______ Collision = %d\n",pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x, pGame->gEnemies.eEnemy[nearest].stateAttack, pGame->gEnemies.eEnemy[nearest].eChar.attack, collision(&(pGame->gChar.cPosi),&(pGame->gEnemies.eEnemy[nearest].eChar.cPosi)));
+	if (pGame -> gEnemies.eEnemy[nearest].eChar.attack == 1)
 	{
-		pGame -> gEnemies.eEnemy[nearest].eChar.attack = 1;
+			pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.v_x =0;
 	}
 	
-	if (pGame -> gEnemies.eEnemy[nearest].eChar.attack == 0)
+
+
+	if (pGame -> gEnemies.eEnemy[nearest].stateAttack  == 1)
 	{			
 		pGame -> gEnemies.eEnemy[nearest].eChar.domage = 1;
 	}
@@ -523,11 +543,22 @@ void enemyAttack(Game *pGame)
 
 		if(collision(&(pGame->gChar.cPosi),&(pGame->gEnemies.eEnemy[nearest].eChar.cPosi))!=0 && pGame -> gEnemies.eEnemy[nearest].eChar.attack == 1)
 		{
+
 			pGame -> gChar.life -= 20;
 			pGame->gChar.projection = 1;
 			pGame -> gEnemies.eEnemy[nearest].eChar.domage = 0;
 		}
 		
+	}
+	if (pGame->gEnemies.eEnemy[nearest].stateAttack == 1 && pGame->gChar.attack !=1)
+	{
+		int rd;
+		rd = rand()%2;
+		if (rd == 1)
+		{
+			pGame -> gEnemies.eEnemy[nearest].eChar.attack = 1;
+			pGame->gEnemies.eEnemy[nearest].stateAttack = 0; 
+		}
 	}
 	projectionChar(pGame,nearest);
 	
