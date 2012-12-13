@@ -365,35 +365,43 @@ void superAttack(Game *pGame)
 {
 	Character *pChar = getGameChar(pGame);
 	Objects *pObjects = getGameObjects(pGame);
-
-	if (pChar -> cPosi.direction == 0)
+	if(pChar ->mana >=consumedMana)
 	{
-		if(pObjects -> oObject[1].oPosi.x <0 && pObjects -> oObject[1].oPosi.y <0)
+		if (pChar -> cPosi.direction == 0)
 		{
-			pObjects -> oObject[1].oPosi.x = pChar->cPosi.x;
-			pObjects -> oObject[1].oPosi.y =pChar->cPosi.y;
-			pObjects -> oObject[1].xS = pChar->cPosi.x;
-			pObjects -> oObject[1].yS =pChar->cPosi.y;
-			moveObjectR(&(pObjects -> oObject[1]));
+			if(pObjects -> oObject[1].oPosi.x <0 && pObjects -> oObject[1].oPosi.y <0)
+			{
+				pObjects -> oObject[1].oPosi.x = pChar->cPosi.x;
+				pObjects -> oObject[1].oPosi.y =pChar->cPosi.y;
+				pObjects -> oObject[1].xS = pChar->cPosi.x;
+				pObjects -> oObject[1].yS =pChar->cPosi.y;
+				moveObjectR(&(pObjects -> oObject[1]));
+				pChar -> mana -=consumedMana;
+			}
 		}
-	}
-	else if (pChar -> cPosi.direction == 1)
-	{
-		if(pObjects -> oObject[1].oPosi.x <0 && pObjects -> oObject[1].oPosi.y <0)
+		else if (pChar -> cPosi.direction == 1)
 		{
-			pObjects -> oObject[1].oPosi.x = pChar->cPosi.x;
-			pObjects -> oObject[1].oPosi.y =pChar->cPosi.y;
-			pObjects -> oObject[1].xS = pChar->cPosi.x;
-			pObjects -> oObject[1].yS =pChar->cPosi.y;
-			moveObjectL(&(pObjects -> oObject[1]));
-			
+			if(pObjects -> oObject[1].oPosi.x <0 && pObjects -> oObject[1].oPosi.y <0)
+			{
+				pObjects -> oObject[1].oPosi.x = pChar->cPosi.x;
+				pObjects -> oObject[1].oPosi.y =pChar->cPosi.y;
+				pObjects -> oObject[1].xS = pChar->cPosi.x;
+				pObjects -> oObject[1].yS =pChar->cPosi.y;
+				moveObjectL(&(pObjects -> oObject[1]));
+				pChar -> mana -=consumedMana;
+				
+			}
 		}
 	}
 }
 
 void superAttackDmg(Game *pGame)
 {
-	int i,j;
+	int i=1;
+	int j;
+	Position ptemp;
+	ptemp.x=1;
+	ptemp.y=0;
 	Objects *pObjects = getGameObjects(pGame);
 	if (pGame->gChar.superAttack == 0)
 	{			
@@ -401,10 +409,12 @@ void superAttackDmg(Game *pGame)
 
 	}
 
-	for (i=0;i<pObjects->number;i++)
-	{
+	/*for (i=0;i<pObjects->number;i++)
+	{*/
+	
 		for(j=0;j<pGame->gEnemies.number;j++)
 		{
+			printf("+++++++++++++++++++++++++++++ COLLISION = %d, SUPPER = %d\n",collision(&(pObjects -> oObject[1].oPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)), pGame->gChar.superAttack);
 			if(collision(&(pObjects -> oObject[i].oPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) != 0 && pGame->gChar.superAttack == 0)
 			{
 				
@@ -421,7 +431,7 @@ void superAttackDmg(Game *pGame)
 					pGame->gChar.superDomage = 0;
 				}				
 			}
-		}
+		//}
 	}
 }
 
@@ -496,16 +506,25 @@ void detect(Game *pGame)
 			)//&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pGame->gChar.cPosi.x)< 15) /*Si l'enemie s'eloigne de plus de 15, il perd la trace et il s'arret*/
 			{
 				
-				if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
-				{
-					
-						moveEnemyLeft(&(pGame->gEnemies), nearestE);
-				}
-				else
-				{
-					pGame->gEnemies.eEnemy[nearestE].panic=1;
-					moveEnemyRight(&(pGame->gEnemies), nearestE);
-				}
+					if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
+					{
+						if(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x > pGame->gChar.cPosi.x+pGame->gChar.cPosi.spriteSizeW)
+						{
+							moveEnemyLeft(&(pGame->gEnemies), nearestE);
+						}
+							
+						else
+						{
+							pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.v_x=0;
+						}
+					}
+					else
+					{
+						pGame->gEnemies.eEnemy[nearestE].panic=1;
+						moveEnemyRight(&(pGame->gEnemies), nearestE);
+					}
+				
+				
 			}
 			else if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)>0 
 			&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)<2 
@@ -513,15 +532,24 @@ void detect(Game *pGame)
 			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x)<0
 			)//&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pGame->gChar.cPosi.x)< 15)/*Si l'enemie s'eloigne de plus de 15, il perd la trace et il s'arret*/
 			{
-				if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
-				{
-					moveEnemyRight(&(pGame->gEnemies), nearestE);
-				}
-				else
-				{
-					pGame->gEnemies.eEnemy[nearestE].panic=1;
-					moveEnemyLeft(&(pGame->gEnemies), nearestE);
-				}
+				
+					if (pGame->gEnemies.eEnemy[nearestE].eChar.life>30)
+					{
+						if(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x < pGame->gChar.cPosi.x)
+						{
+							moveEnemyRight(&(pGame->gEnemies), nearestE);
+						}
+						else
+						{
+							pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.v_x=0;
+						}
+					}
+					else
+					{
+						pGame->gEnemies.eEnemy[nearestE].panic=1;
+						moveEnemyLeft(&(pGame->gEnemies), nearestE);
+					}
+				
 			}
 			/*else
 			{
@@ -581,7 +609,7 @@ void enemyAttack(Game *pGame)
 	if (pGame->gEnemies.eEnemy[nearest].stateAttack == 1 && pGame->gChar.attack !=1)
 	{
 		int rd;
-		rd = rand()%2;
+		rd = rand()%3;
 		if (rd == 1)
 		{
 			pGame -> gEnemies.eEnemy[nearest].eChar.attack = 1;

@@ -153,27 +153,22 @@ int collision(Position *pPosi1, Position *pPosi2)
 	
 		for (i=0.01; i<=1.0; i+=0.01) 
 		{
-			while(sP1H>0 && sP1W>0 && sP2H>0 && sP2W>0)
-			{
-					posX = pPosi1 -> x + i*pPosi1 -> v_x+pPosi1->spriteSizeW;
-					posY = pPosi1 -> y + i*pPosi1 -> v_y+pPosi1->spriteSizeH;
+		
+					posX = pPosi1 -> x + i*pPosi1 -> v_x;
+					posY = pPosi1 -> y + i*pPosi1 -> v_y;
 			
-					posXe = pPosi2 -> x + i*pPosi2 -> v_x+pPosi2->spriteSizeW;
-					posYe = pPosi2 -> y + i*pPosi2 -> v_y+pPosi2->spriteSizeH;
+					posXe = pPosi2 -> x + i*pPosi2 -> v_x;
+					posYe = pPosi2 -> y + i*pPosi2 -> v_y;
 
 
-					sP1H-=0.01;
-					sP1W-=0.01;
-					sP2H-=0.01;
-					sP2W-=0.01;
 
 
-					 if ((posX > posXe && posX<posXe+sP2W+1) && (posY+sP1H>posYe && posY<posYe+sP2H))
+					 if ((posX > posXe && posX<posXe+pPosi2->spriteSizeW+1) && (posY+pPosi1->spriteSizeH>posYe && posY<posYe+pPosi2->spriteSizeH))
 					 {
 						return 1; /*si pPosi1 vient par la gauche*/
 					
 					}
-					if((posXe > posX && posXe < posX+sP1W+1) &&(posY+sP1H>posYe && posY<posYe+sP2H))
+					if((posXe > posX && posXe < posX+pPosi1->spriteSizeW) &&(posY+pPosi1->spriteSizeH>posYe && posY<posYe+pPosi2->spriteSizeH))
 					 {
 						return 2; /*si pPosi1 vient par la droite*/
 							
@@ -182,7 +177,7 @@ int collision(Position *pPosi1, Position *pPosi2)
 					
 					 
 					 
-				 }
+				 
 	
 		
 		}

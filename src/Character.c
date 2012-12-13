@@ -11,7 +11,7 @@ void initChar (Character *pChar)
 	pChar-> cPosi.air = 0;
 	pChar -> projection = 0;
 	setLife(pChar, 100);
-	setMana(pChar, 0);
+	setMana(pChar, 100);
 	pChar-> attack = 0;
 	pChar-> superAttack = 0;
 	pChar->cPosi.spriteSizeW =0;

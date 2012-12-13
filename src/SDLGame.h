@@ -67,6 +67,7 @@ typedef struct
 	SDL_Surface *surfaceLife;
 	SDL_Surface *surfaceFilter;
 	SDL_Surface *surfaceBall;
+	SDL_Surface *surfaceMana;
 	
 	SDL_Surface *surfaceCharMap;
 	SDL_Surface *surfaceBorder;

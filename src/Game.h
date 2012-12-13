@@ -5,6 +5,8 @@
 #include "Physics.h"
 #include "Enemy.h"
 
+#define consumedMana 20
+
 typedef struct
 {
 	Character gChar;
