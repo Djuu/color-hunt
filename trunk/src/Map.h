@@ -42,4 +42,7 @@ void setDimX(Map* , int);
 Description : donner une valeur à la taille verticale de la map 
 */
 void setDimY(Map* , int);
+
+
+void freeMap(Map* pMap);
 #endif

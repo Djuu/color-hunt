@@ -48,3 +48,10 @@ int getDimY(const Map* pMap)
 {
 	return pMap->dimy;
 }
+
+void freeMap(Map* pMap)
+{
+	int y;
+		for (y=0; y<pMap->dimy; y++)
+			free(pMap->tab[y]);	
+}

@@ -52,6 +52,7 @@ typedef struct
 	Sprites pSprites;
 	Sprites pSpritesObject;
 	Sprites *pSpritesEnemy;
+	Sprites pSpritesWorldMap;
 	Key pKey;
 /*	Anim pAnim;*/
 	SDL_Surface *surfaceScreen;
@@ -66,6 +67,38 @@ typedef struct
 	SDL_Surface *surfaceLife;
 	SDL_Surface *surfaceFilter;
 	SDL_Surface *surfaceBall;
+	
+	SDL_Surface *surfaceCharMap;
+	SDL_Surface *surfaceBorder;
+	SDL_Surface *surfaceMapEarth1;
+	SDL_Surface *surfaceMapEarth2;
+	SDL_Surface *surfaceMapGrass1;
+	SDL_Surface *surfaceMapGrass2;
+	SDL_Surface *surfaceMapGED;
+	SDL_Surface *surfaceMapGEDL;
+	SDL_Surface *surfaceMapGEDR;
+	SDL_Surface *surfaceMapGEL;
+	SDL_Surface *surfaceMapGER;
+	SDL_Surface *surfaceMapGEU;
+	SDL_Surface *surfaceMapGEUL;
+	SDL_Surface *surfaceMapGEUR;
+	
+	SDL_Surface *surfaceMapWater;
+	SDL_Surface *surfaceMapWaterD;
+	SDL_Surface *surfaceMapWaterL;
+	SDL_Surface *surfaceMapWaterR;
+	SDL_Surface *surfaceMapWaterU;
+	SDL_Surface *surfaceMapWaterCDL;
+	SDL_Surface *surfaceMapWaterCUL;
+	SDL_Surface *surfaceMapWaterCDR;
+	SDL_Surface *surfaceMapWaterCUR;
+	SDL_Surface *surfaceMapCDL;
+	SDL_Surface *surfaceMapCDR;
+	SDL_Surface *surfaceMapCUL;
+	SDL_Surface *surfaceMapCUR;
+	SDL_Surface *surfaceMapTree;
+	SDL_Surface *surfaceMapCastle;
+	
 	SDL_Rect rcSpPosi;
 	SDL_Rect rectScreen;
 	float scrollX;
