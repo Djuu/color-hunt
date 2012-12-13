@@ -11,8 +11,8 @@ void initEnemy(Enemies *pEnemies, int num)
 	for (i = 0; i< num; i++)
 	{
 		initChar(&(pEnemies -> eEnemy[i].eChar));
-		pEnemies -> eEnemy[i].eChar.cPosi.spriteSizeW = 1;
-		pEnemies -> eEnemy[i].eChar.cPosi.spriteSizeH = 2.5;
+		pEnemies -> eEnemy[i].eChar.cPosi.spriteSizeW = 0;
+		pEnemies -> eEnemy[i].eChar.cPosi.spriteSizeH = 0;
 		pEnemies -> eEnemy[i].panic = 0;
 		pEnemies -> eEnemy[i].idHelp = 0;
 		pEnemies -> eEnemy[i].powerProjection = 0.0;
