@@ -16,6 +16,7 @@ typedef struct
 	int state;
 	double angle;
 	int status;
+	
 }Object;
 
 typedef struct
