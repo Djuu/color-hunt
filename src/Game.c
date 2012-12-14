@@ -15,6 +15,10 @@ void initGame (Game *pGame, const char* pMap)
 		pGame->gObjects.oObject[2].oPosi.spriteSizeW = 5;
 		pGame->gObjects.oObject[2].oPosi.spriteSizeH=3;
 		pGame->gObjects.oObject[2].angle = 40;
+		
+		pGame->gObjects.oObject[3].oPosi.spriteSizeW = 5;
+		pGame->gObjects.oObject[3].oPosi.spriteSizeH=3;
+		pGame->gObjects.oObject[3].angle = 40;
 	
 	k=0;
 	pGame->level = 1;
@@ -156,10 +160,13 @@ void down(Game *pGame)
 
 void jump(Game *pGame)
 {
+	int i;
 	Character *pChar = getGameChar(pGame);
-	if((pGame->gChar.cPosi.floor == 1 && pChar->cPosi.v_grav != 0.01) || pathObject(&(pGame->gChar.cPosi), &(pGame->gObjects))!=1)
-	pGame->gChar.cPosi.v_y = -1;
-	
+	for (i=0 ; i<pGame->gObjects.number;i++)
+	{
+		if((pGame->gChar.cPosi.floor == 1 && pChar->cPosi.v_grav != 0.01) || collision(&(pGame->gChar.cPosi), &(pGame->gObjects.oObject[i]))==1)
+		pGame->gChar.cPosi.v_y = -1;
+	}
 }
 
 void controlKey(Game *pGame, const char key)
@@ -287,10 +294,23 @@ void collisionMap (Position *pPosi, Map *pMap)
 
 void collisionObjects (Position *pPosi, Objects *pObjects)
 {
-	pPosi->v_y*=pathObject(pPosi, pObjects);
-	pPosi->v_x*=pathObject(pPosi, pObjects);
-
+	int i;
+	for (i=0 ; i< pObjects->number;i++)
+	{
+		pPosi->v_y*=path(pPosi, &(pObjects->oObject[i].oPosi));
+		pPosi->v_x*=path(pPosi, &(pObjects->oObject[i].oPosi));
+	}
 }
+
+int collision(Position *pPosi1, Position *pPosi2)
+{
+	if(path(pPosi1,pPosi2) != 1)
+	{
+			return 1;
+	}
+	return 0;
+}
+
 
 void projectionChar(Game *pGame, int nearest)
 {
@@ -342,7 +362,7 @@ void attack(Game *pGame)
 	for(i=0;i<pGame->gEnemies.number;i++)
 	{
 		
-		if(collision(&(pChar->cPosi),&(pGame->gEnemies.eEnemy[i].eChar.cPosi))==2 && pGame->gChar.attack == 1)
+		if(collision(&(pChar->cPosi),&(pGame->gEnemies.eEnemy[i].eChar.cPosi))==1 && pGame->gChar.attack == 1)
 		{
 			
 			if (pGame->gChar.domage != 0)
@@ -367,9 +387,10 @@ void superAttack(Game *pGame)
 	Objects *pObjects = getGameObjects(pGame);
 	if(pChar ->mana >=consumedMana)
 	{
+		
 		if (pChar -> cPosi.direction == 0)
 		{
-			if(pObjects -> oObject[1].oPosi.x <0 && pObjects -> oObject[1].oPosi.y <0)
+			if(pObjects -> oObject[1].oPosi.x <0 && pObjects -> oObject[1].oPosi.y <0 && pGame->gObjects.oObject[1].status == 1)
 			{
 				pObjects -> oObject[1].oPosi.x = pChar->cPosi.x;
 				pObjects -> oObject[1].oPosi.y =pChar->cPosi.y;
@@ -381,7 +402,7 @@ void superAttack(Game *pGame)
 		}
 		else if (pChar -> cPosi.direction == 1)
 		{
-			if(pObjects -> oObject[1].oPosi.x <0 && pObjects -> oObject[1].oPosi.y <0)
+			if(pObjects -> oObject[1].oPosi.x <0 && pObjects -> oObject[1].oPosi.y <0 && pGame->gObjects.oObject[1].status == 1)
 			{
 				pObjects -> oObject[1].oPosi.x = pChar->cPosi.x;
 				pObjects -> oObject[1].oPosi.y =pChar->cPosi.y;
@@ -406,6 +427,7 @@ void superAttackDmg(Game *pGame)
 	if (pGame->gChar.superAttack == 0)
 	{			
 		pGame->gChar.superDomage = 1;
+		pGame->gObjects.oObject[1].status = 1;
 
 	}
 
@@ -415,7 +437,7 @@ void superAttackDmg(Game *pGame)
 		for(j=0;j<pGame->gEnemies.number;j++)
 		{
 			printf("+++++++++++++++++++++++++++++ COLLISION = %d, SUPPER = %d\n",collision(&(pObjects -> oObject[1].oPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)), pGame->gChar.superAttack);
-			if(collision(&(pObjects -> oObject[i].oPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) != 0 && pGame->gChar.superAttack == 0)
+			if(collision(&(pObjects -> oObject[1].oPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) ==1 && pGame->gObjects.oObject[1].status == 1)
 			{
 				
 				if (pGame->gChar.superDomage != 0)
@@ -429,6 +451,7 @@ void superAttackDmg(Game *pGame)
 					pObjects -> oObject[i].oPosi.v_y =0;
 					pObjects -> oObject[i].oPosi.v_x =0;
 					pGame->gChar.superDomage = 0;
+					pGame->gObjects.oObject[1].status = 0;
 				}				
 			}
 		//}
@@ -447,7 +470,7 @@ void helpEnemy(Game *pGame)
 				{
 					if (i!=j)
 					{
-						if(collision(&(pGame->gEnemies.eEnemy[i].eChar.cPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) != 0)
+						if(collision(&(pGame->gEnemies.eEnemy[i].eChar.cPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) == 0)
 						{
 							pGame->gEnemies.eEnemy[i].panic=-1;
 							pGame->gEnemies.eEnemy[i].idHelp = j;
@@ -486,10 +509,11 @@ int rebel (Game *pGame)
 	}
 	return -1;
 }
-
+		
 void detect(Game *pGame)
 {	
 	Character *pChar = getGameChar(pGame);
+	int k;
 	/*int nearestE = distanceEnemies(pGame);*/ /*l'enemie le plus proche*/
 	int nearestE;
 	int idPanic = rebel(pGame);
@@ -499,8 +523,8 @@ void detect(Game *pGame)
 
 		if (nearestE!=idPanic)
 		{
-			if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)>0 
-			&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)<2 
+			if (((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y+pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.spriteSizeH) - (pGame->gChar.cPosi.y))>0 
+			&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)<5
 			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) <= 10 
 			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >0 
 			)//&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pGame->gChar.cPosi.x)< 15) /*Si l'enemie s'eloigne de plus de 15, il perd la trace et il s'arret*/
@@ -526,8 +550,8 @@ void detect(Game *pGame)
 				
 				
 			}
-			else if ((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)>0 
-			&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)<2 
+			else if (((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y+pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.spriteSizeH) - (pGame->gChar.cPosi.y))>0 
+			&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y - pGame->gChar.cPosi.y)<5
 			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x) >= -10  
 			&& (pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pChar->cPosi.x)<0
 			)//&& fabs(pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.x - pGame->gChar.cPosi.x)< 15)/*Si l'enemie s'eloigne de plus de 15, il perd la trace et il s'arret*/
@@ -551,10 +575,15 @@ void detect(Game *pGame)
 					}
 				
 			}
-			/*else
+			
+			for(k=0; k<pGame->gEnemies.number; k++)
 			{
-				pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.v_x = 0;
-			}*/
+				if (fabs(pGame->gEnemies.eEnemy[k].eChar.cPosi.x - pChar->cPosi.x)>20)
+				{
+					pGame->gEnemies.eEnemy[k].eChar.cPosi.v_x = 0;
+				
+				}
+			}
 		}
 	}
 	
@@ -597,7 +626,7 @@ void enemyAttack(Game *pGame)
 	if (pGame->gEnemies.eEnemy[nearest].eChar.domage != 0)
 	{
 
-		if(collision(&(pGame->gChar.cPosi),&(pGame->gEnemies.eEnemy[nearest].eChar.cPosi))!=0 && pGame -> gEnemies.eEnemy[nearest].eChar.attack == 1)
+		if(collision(&(pGame->gChar.cPosi),&(pGame->gEnemies.eEnemy[nearest].eChar.cPosi))==1 && pGame -> gEnemies.eEnemy[nearest].eChar.attack == 1)
 		{
 
 			pGame -> gChar.life -= 20;

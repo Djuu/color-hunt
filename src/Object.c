@@ -19,6 +19,7 @@ void initObjects(Objects *pObjects, int num, int type)
 		pObjects ->oObject[i].oPosi.y=-10;
 		pObjects ->oObject[i].oPosi.v_grav = 0.08;/*0.02*/
 		pObjects ->oObject[i].oPosi.floor=0;
+		pObjects ->oObject[i].status = 0;
 
 	}
 }

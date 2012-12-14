@@ -3,13 +3,13 @@
 #include <SDL/SDL.h>
 #include <assert.h>
 
-#include "SDLGame.h"
+#include "Menu.h"
 
 int main(int argc, char *argv[])
 {
 
 
-	SdlGame pSdlGame;	
+	SdlGame pSdlGame;
 	initSDL(&pSdlGame);
 	loopSDL(&pSdlGame);
 	/*freeSdl(&pSdlGame);*/

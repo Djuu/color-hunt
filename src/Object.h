@@ -15,6 +15,7 @@ typedef struct
 	float yS;
 	int state;
 	double angle;
+	int status;
 }Object;
 
 typedef struct

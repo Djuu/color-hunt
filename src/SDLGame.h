@@ -54,6 +54,14 @@ typedef struct
 	Sprites *pSpritesEnemy;
 	Sprites pSpritesWorldMap;
 	Key pKey;
+	int choiceMenu;
+	int confirmMenu;
+	
+/*Menu*/
+	SDL_Surface *surfaceStart;
+	SDL_Surface *surfaceExit;
+	SDL_Surface *surfaceMenuBG;
+	
 /*	Anim pAnim;*/
 	SDL_Surface *surfaceScreen;
 	SDL_Surface *surfaceChar;
@@ -69,6 +77,7 @@ typedef struct
 	SDL_Surface *surfaceBall;
 	SDL_Surface *surfaceMana;
 	
+	SDL_Surface *surfaceMapBG;
 	SDL_Surface *surfaceCharMap;
 	SDL_Surface *surfaceBorder;
 	SDL_Surface *surfaceMapEarth1;
@@ -121,5 +130,6 @@ Paramétre : sdlJeu :DR
 Variables locales : continueBoucle, rafraichissement,tempGauche,tempDroite : entier
 */
 void loopSDL(SdlGame*);
+
 
 #endif
