@@ -36,7 +36,7 @@ void InitSprite (Sprites *pSprites,int id, int w,int h, int nbFrame, int reFrame
 void animSprite (Sprites* pSprites, int id, int loop, int dir);
 void displaySprite(Sprites *pSprites, SDL_Rect posi, SDL_Surface *screen);
 void freeSprite(Sprites *pSprites);
-void displayGauge(SDL_Surface *pSurfaceBG, SDL_Surface *pSurface , SDL_Surface *screen, int value);
+void displayGauge(SDL_Surface *pSurfaceBG, SDL_Surface *pSurfaceLife , SDL_Surface * pSurfaceMana , SDL_Surface *screen, int life , int mana);
 void bgBW(SDL_Surface *pSurface, double saturation);
 void rotationObject(SDL_Surface *pSurface, SDL_Rect positionBall, double *angle, float speed,  SDL_Surface *screen);
 void audioBG();

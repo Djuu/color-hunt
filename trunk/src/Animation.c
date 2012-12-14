@@ -88,18 +88,27 @@ printf("frame = %d _______nbFrame = %d \n",  pSprites->frame , pSprites->aSprite
 
 
 
-void displayGauge(SDL_Surface *pSurfaceBG, SDL_Surface *pSurface , SDL_Surface *screen, int value)
+void displayGauge(SDL_Surface *pSurfaceBG, SDL_Surface *pSurfaceLife , SDL_Surface * pSurfaceMana , SDL_Surface *screen, int life , int mana)
 {
-		SDL_Rect posiBG, posi, posiM;
-		posiBG.x = screen->w/30;
+		SDL_Rect posiBG, posiLife, posiLifeN , posiManaN, posiMana;
+		posiBG.x = screen->w/20;
 		posiBG.y = screen->h/20;
-		posi.x = posiBG.x+5;
-		posi.y = posiBG.y+10;
-		posiM.x = pSurface->w - ((float)(pSurface->w)/100.0)*value;
-		posiM.y=0;
+		
+		posiLife.x = posiBG.x+8;
+		posiLife.y = posiBG.y+2;
+		
+		posiMana.x = posiBG.x+8;
+		posiMana.y = posiBG.y+8;
+		
+		posiLifeN.x = pSurfaceLife->w - ((float)(pSurfaceLife->w)/100.0)*life;
+		posiLifeN.y=0;
+		
+		posiManaN.x = pSurfaceMana->w - ((float)(pSurfaceMana->w)/100.0)*mana;
+		posiManaN.y=0;
+		
 		SDL_BlitSurface(pSurfaceBG,NULL, screen, &posiBG);
-		SDL_BlitSurface(pSurface,&posiM, screen, &posi);
-	
+		SDL_BlitSurface(pSurfaceLife,&posiLifeN, screen, &posiLife);
+		SDL_BlitSurface(pSurfaceMana,&posiManaN, screen, &posiMana);
 }
 
 Uint32 getPixel(SDL_Surface *pSurface, int x, int y)
@@ -199,7 +208,7 @@ void bgBW(SDL_Surface *pSurface, double saturation)
 				tmpR   = a*red + d*green + g*blue;
 				tmpG = b*red + e*green + h*blue;
 				tmpB  = c*red + f*green + i*blue;
-				
+				//printf("tmpR = %d __ tmpG =%d __ tmpB = %d\n", tmpR, tmpG, tmpB);
 				pixel = SDL_MapRGB(pSurface->format, tmpR, tmpG, tmpB);
 				
 				setPixel(pSurface, x, y, pixel); 

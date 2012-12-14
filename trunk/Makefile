@@ -37,7 +37,6 @@ $(endobj)Map.o: $(endsrc)Map.c $(endsrc)Map.h
 
 $(endobj)SDLGame.o: $(endsrc)SDLGame.c $(endsrc)SDLGame.h $(endsrc)Game.h $(endsrc)Animation.h
 	gcc $(options) -c $(endsrc)SDLGame.c $(ssdl) $(sttf) -o $(endobj)SDLGame.o
-
 		
 $(endbin)main: $(endobj)main.o $(endobj)SDLGame.o $(endobj)Character.o $(endobj)Game.o $(endobj)Map.o $(endobj)Enemy.o $(endobj)Position.o $(endobj)Object.o $(endobj)Physics.o  $(endobj)Animation.o
 	gcc $(endobj)main.o $(endobj)SDLGame.o $(endobj)Character.o $(endobj)Game.o $(endobj)Map.o $(endobj)Enemy.o $(endobj)Position.o $(endobj)Object.o $(endobj)Physics.o $(endobj)Animation.o $(ssdl) $(sttf) -o $(endbin)main

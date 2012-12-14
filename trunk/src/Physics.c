@@ -78,48 +78,44 @@ float pathMap (Position *pPosi, Map *pMap)
 }
 
 
-float pathObject (Position *pPosi, Objects *pObjects)
+int path(Position *pPosi1, Position *pPosi2)
 {
 	float i;
 	float k, l, m ;
 	float posX, posY, posYd, posXd, posYr, posXr, posYl, posXl;
 	float oPosX, oPosY, oPosYd, oPosXd, oPosYr, oPosXr, oPosYl, oPosXl;
-	Position objectPosi ;
-
-	for(m=0; m<pObjects->number; m++)
-	{	
-		objectPosi = getPosiObject (pObjects, m);
+	
 		for (i=0.01; i<=1.0; i+=0.01) 
 		{
 
 				
 					
-				posX = pPosi->x + i*pPosi->v_x;
-				posY = pPosi->y + i*pPosi->v_y;
+				posX = pPosi1->x + i*pPosi1->v_x;
+				posY = pPosi1->y + i*pPosi1->v_y;
 
-				posYd = pPosi->y + i*pPosi->v_y+pPosi->spriteSizeH;
-				posXd = pPosi->x + i*pPosi->v_x+pPosi->spriteSizeW;
+				posYd = pPosi1->y + i*pPosi1->v_y+pPosi1->spriteSizeH;
+				posXd = pPosi1->x + i*pPosi1->v_x+pPosi1->spriteSizeW;
 
-				posYr = pPosi->y + i*pPosi->v_y;
-				posXr = pPosi->x + i*pPosi->v_x+pPosi->spriteSizeH;
+				posYr = pPosi1->y + i*pPosi1->v_y;
+				posXr = pPosi1->x + i*pPosi1->v_x+pPosi1->spriteSizeH;
 
-				posYl = pPosi->y + i*pPosi->v_y+pPosi->spriteSizeH;
-				posXl = pPosi->x + i*pPosi->v_x;
+				posYl = pPosi1->y + i*pPosi1->v_y+pPosi1->spriteSizeH;
+				posXl = pPosi1->x + i*pPosi1->v_x;
 						
 						
 						
 						
-				oPosX = objectPosi.x + i*objectPosi.v_x;
-				oPosY = objectPosi.y + i*objectPosi.v_y;
+				oPosX = pPosi2->x + i*pPosi2->v_x;
+				oPosY = pPosi2->y + i*pPosi2->v_y;
 
-				oPosYd = objectPosi.y + i*objectPosi.v_y+objectPosi.spriteSizeH;
-				oPosXd = objectPosi.x + i*objectPosi.v_x+objectPosi.spriteSizeW;
+				oPosYd = pPosi2->y + i*pPosi2->v_y+pPosi2->spriteSizeH;
+				oPosXd = pPosi2->x + i*pPosi2->v_x+pPosi2->spriteSizeW;
 
-				oPosYr = objectPosi.y + i*objectPosi.v_y;
-				oPosXr = objectPosi.x + i*objectPosi.v_x+objectPosi.spriteSizeW;
+				oPosYr = pPosi2->y + i*pPosi2->v_y;
+				oPosXr = pPosi2->x + i*pPosi2->v_x+pPosi2->spriteSizeW;
 
-				oPosYl = objectPosi.y + i*objectPosi.v_y+objectPosi.spriteSizeH;
-				oPosXl = objectPosi.x + i*objectPosi.v_x;
+				oPosYl = pPosi2->y + i*pPosi2->v_y+pPosi2->spriteSizeH;
+				oPosXl = pPosi2->x + i*pPosi2->v_x;
 				
 				
 				if((oPosX < posXr+0.1 && posX-0.1 < oPosXr) && (posY<oPosYd && oPosY<posYd))
@@ -130,7 +126,7 @@ float pathObject (Position *pPosi, Objects *pObjects)
 				}
 
 		} 
-	}
+	
 	return 1;
 }
 
@@ -138,7 +134,7 @@ float pathObject (Position *pPosi, Objects *pObjects)
 /*
 Description : fonction interne qui identifie les cases que le personnage parcoure et renvoi une valeur en fonction de la distance qui seppare le personnage de l'ennemie
 Retourne : reel
-*/
+
 int collision(Position *pPosi1, Position *pPosi2)
 {
 
@@ -165,12 +161,12 @@ int collision(Position *pPosi1, Position *pPosi2)
 
 					 if ((posX > posXe && posX<posXe+pPosi2->spriteSizeW+1) && (posY+pPosi1->spriteSizeH>posYe && posY<posYe+pPosi2->spriteSizeH))
 					 {
-						return 1; /*si pPosi1 vient par la gauche*/
+						return 1; //si pPosi1 vient par la gauche
 					
 					}
 					if((posXe > posX && posXe < posX+pPosi1->spriteSizeW) &&(posY+pPosi1->spriteSizeH>posYe && posY<posYe+pPosi2->spriteSizeH))
 					 {
-						return 2; /*si pPosi1 vient par la droite*/
+						return 2; //si pPosi1 vient par la droite
 							
 					 }
 					  
@@ -182,7 +178,7 @@ int collision(Position *pPosi1, Position *pPosi2)
 		
 		}
 		return 0;
-}
+}*/
 
 
 void stabilizeObject(Object *pObject)

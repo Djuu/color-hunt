@@ -9,8 +9,6 @@ const int CHAR_SPRITE_H =54;
 const int SCREEN_WIDTH =800;
 const int SCREEN_HEIGHT =600;
 
-SDL_Surface *SDL_load_image(const char* filename );
-void SDL_apply_surface( SDL_Surface* source, SDL_Surface* destination, int x, int y);
 
 void initSDL(SdlGame *pSdlGame)
 {
@@ -22,25 +20,49 @@ void initSDL(SdlGame *pSdlGame)
 	pSdlGame->scrollY=0;
 	
 	pGame = &(pSdlGame -> pGame);
-
-	initGame(pGame,"Map/WorldMap.txt");
-
-	pSdlGame->rectScreen.x=0;
-	pSdlGame->rectScreen.y=0;
+	pSdlGame ->confirmMenu = 0;
+	pSdlGame ->choiceMenu = 1;
 
 	SDL_Init(SDL_INIT_VIDEO);
 	pSdlGame -> surfaceScreen = SDL_SetVideoMode(SCREEN_WIDTH,SCREEN_HEIGHT,32, SDL_HWSURFACE|SDL_DOUBLEBUF);/*|SDL_FULLSCREEN);*/
 	SDL_WM_SetCaption( "ColorHunt", NULL );
+	
 	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) 
 	{
 	  printf("%s", Mix_GetError());
 	}
+	initGame(pGame,"Map/WorldMap.txt");
+	
+	
+/*MENU*/
+
+	/*Background*/
+	SDL_Surface* tempMenu = IMG_Load("data/image/menuBG.jpg");
+	pSdlGame ->surfaceMenuBG = SDL_DisplayFormat(tempMenu);
+	assert( pSdlGame->surfaceMenuBG!=NULL);
+	
+	SDL_Surface* tempWMap = IMG_Load("data/image/BGWorldMap.png");
+	pSdlGame ->surfaceMapBG= SDL_DisplayFormat(tempWMap);
+	assert( pSdlGame->surfaceMapBG!=NULL);
+
+	pSdlGame ->surfaceStart = IMG_Load("data/image/startButton.png");
+	if (pSdlGame ->surfaceStart==NULL)	
+		pSdlGame ->surfaceStart = IMG_Load("../data/image/startButton.png");
+	assert( pSdlGame ->surfaceStart!=NULL);
+	
+	pSdlGame ->surfaceExit = IMG_Load("data/image/exitButton.png");
+	if (pSdlGame ->surfaceExit==NULL)	
+		pSdlGame ->surfaceExit = IMG_Load("../data/image/exitButton.png");
+	assert( pSdlGame ->surfaceExit!=NULL);	
+	
+	
+	
 	
 /*Background*/
   
-  SDL_Surface* temp = IMG_Load("data/image/bg1.jpg");
-  pSdlGame->surfaceBG = SDL_DisplayFormat(temp);
-
+	SDL_Surface* temp = IMG_Load("data/image/bg1.jpg");
+	pSdlGame->surfaceBG = SDL_DisplayFormat(temp);
+	assert( pSdlGame->surfaceBG!=NULL);
 
 	pSdlGame -> surfaceChar =  IMG_Load("data/image/hero4.png");
 	if (pSdlGame->surfaceChar ==NULL)
@@ -70,14 +92,14 @@ pSdlGame -> surfaceFireBall = IMG_Load("data/image/fireBall.png");
 		pSdlGame->surfaceFireBall = IMG_Load("../data/image/fireBall.png");
 	assert( pSdlGame->surfaceFireBall!=NULL);
 
-pSdlGame -> surfaceLife = IMG_Load("data/image/life.png");
+pSdlGame -> surfaceLife = IMG_Load("data/image/lifeGauge.png");
 	if (pSdlGame->surfaceLife==NULL)	
-		pSdlGame->surfaceLife = IMG_Load("../data/image/life.png");
+		pSdlGame->surfaceLife = IMG_Load("../data/image/lifeGauge.png");
 	assert( pSdlGame->surfaceLife!=NULL);
 	
-pSdlGame -> surfaceMana = IMG_Load("data/image/life.png");
+pSdlGame -> surfaceMana = IMG_Load("data/image/manaGauge.png");
 	if (pSdlGame->surfaceMana==NULL)	
-		pSdlGame->surfaceMana = IMG_Load("../data/image/life.png");
+		pSdlGame->surfaceMana = IMG_Load("../data/image/manaGauge.png");
 	assert( pSdlGame->surfaceMana!=NULL);
 
 pSdlGame ->surfaceLifeBG = IMG_Load("data/image/lifeBg.png");
@@ -277,18 +299,18 @@ pSdlGame ->surfaceMapTree = IMG_Load("data/image/Tree.png");
 		pSdlGame->pSpritesEnemy[k].source = pSdlGame->surfaceEnemies;
 		
 		/*Attend gauche*/
-		InitSprite (&(pSdlGame->pSpritesEnemy[k]),0, 31, 40, 3, 0);
+		InitSprite (&(pSdlGame->pSpritesEnemy[k]),0, 31, 52, 3, 0);
 		/*Attend droite*/
-		InitSprite (&(pSdlGame->pSpritesEnemy[k]),1, 31, 40, 3, 0);
+		InitSprite (&(pSdlGame->pSpritesEnemy[k]),1, 31, 52, 3, 0);
 		/*Cour vers la gauche*/
-		InitSprite (&(pSdlGame->pSpritesEnemy[k]),2, 28, 40, 6, 0);
+		InitSprite (&(pSdlGame->pSpritesEnemy[k]),2, 28, 52, 6, 0);
 		/*Cour vers la droite*/
-		InitSprite (&(pSdlGame->pSpritesEnemy[k]),3, 28, 40, 6, 0);
+		InitSprite (&(pSdlGame->pSpritesEnemy[k]),3, 28, 52, 6, 0);
 		
 		/*Attaque gauche*/
-		InitSprite (&(pSdlGame->pSpritesEnemy[k]),4, 61, 40, 8, 0);
+		InitSprite (&(pSdlGame->pSpritesEnemy[k]),4, 61, 52, 8, 0);
 		/*Attaque droite*/
-		InitSprite (&(pSdlGame->pSpritesEnemy[k]),5, 61, 40, 8, 0);
+		InitSprite (&(pSdlGame->pSpritesEnemy[k]),5, 61, 52, 8, 0);
 	}
 	
 	pSdlGame->pSpritesWorldMap.source = pSdlGame -> surfaceCharMap;
@@ -321,7 +343,8 @@ void sdlDisplay(SdlGame *pSdlGame)
 	Map *pMap=getGameMap(pGame);
 	SDL_Rect posiEnemy,posiChar, posiFireBall;
 	/*Position posiEnemy;*/
-	
+if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)	
+{
 	if(pGame -> level != 1)
 	{
 	/*Background*/
@@ -345,8 +368,7 @@ void sdlDisplay(SdlGame *pSdlGame)
 		displaySprite(&(pSdlGame->pSpritesEnemy[k]), posiEnemy, pSdlGame->surfaceScreen);
 	}
 	
-	displayGauge(pSdlGame->surfaceLifeBG, pSdlGame->surfaceLife, pSdlGame->surfaceScreen, pSdlGame->pGame.gChar.life);
-	displayGauge(pSdlGame->surfaceLifeBG, pSdlGame->surfaceMana, pSdlGame->surfaceScreen, pSdlGame->pGame.gChar.mana);
+	displayGauge(pSdlGame->surfaceLifeBG, pSdlGame->surfaceLife , pSdlGame->surfaceMana, pSdlGame->surfaceScreen, pSdlGame->pGame.gChar.life,pSdlGame->pGame.gChar.mana);
 	
 	
 	SDL_Rect positionBall;
@@ -398,7 +420,7 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
 else
 {
 		/*Background*/
-	SDL_BlitSurface(pSdlGame->surfaceBG, NULL, pSdlGame->surfaceScreen, NULL);
+	SDL_BlitSurface(pSdlGame->surfaceMapBG, NULL, pSdlGame->surfaceScreen, NULL);
 
 	
 	
@@ -606,6 +628,22 @@ else
 	displaySprite(&(pSdlGame->pSpritesWorldMap), posiChar, pSdlGame->surfaceScreen);
 		
 	
+	}
+}
+else
+{
+	SDL_BlitSurface(pSdlGame->surfaceMenuBG,NULL, pSdlGame->surfaceScreen, NULL);
+	
+		SDL_Rect positionStart;
+		positionStart.x = 0;
+		positionStart.y = 0;
+		SDL_BlitSurface(pSdlGame->surfaceStart,NULL, pSdlGame->surfaceScreen, &positionStart);
+		
+		SDL_Rect positionExit;
+		positionExit.x = 0;
+		positionExit.y = 200;
+		SDL_BlitSurface(pSdlGame->surfaceExit,NULL, pSdlGame->surfaceScreen, &positionExit);
+	
 }
 	/*SDL_Rect rFilter;
 	rFilter.x=100;
@@ -646,7 +684,7 @@ void colisionSprite(SdlGame *pSdlGame)
 			pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.spriteSizeW = 2;
 		}
 	//	printf("&&&&&&&&&&&&&&&&&&&&&&&&&&& TAILLE = %f\n", (float)(((pSdlGame->pSpritesEnemy[k].aSprite[pSdlGame->pSpritesEnemy[k].position].height)/(float)TAILLE_SPRITE)+0.5));
-		pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.spriteSizeH = 2;//(float)(((pSdlGame->pSpritesEnemy[k].aSprite[pSdlGame->pSpritesEnemy[k].position].height)/(float)TAILLE_SPRITE)+0.5);
+		pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.spriteSizeH = (float)(((pSdlGame->pSpritesEnemy[k].aSprite[pSdlGame->pSpritesEnemy[k].position].height)/(float)TAILLE_SPRITE));
 	}
 }
 
@@ -917,31 +955,51 @@ void animEnemies(SdlGame *pSdlGame)
 				animSprite (&(pSdlGame->pSpritesEnemy[k]), 0, 0, pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction);
 			}		
 			
-
+//pSdlGame ->pGame.gEnemies.eEnemy[k].eChar.cPosi.x - pSdlGame ->pGame.gChar.cPosi.x)< 0
+			if(pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.x < pSdlGame->pGame.gChar.cPosi.x && pSdlGame->pSpritesEnemy[k].direction == 1)
+			{
+				pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction = 0;
+				pSdlGame->pSpritesEnemy[k].aSprite[4].end =1;
+				pSdlGame->pSpritesEnemy[k].aSprite[5].end =1;
+			}
+			if (pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.x > pSdlGame->pGame.gChar.cPosi.x && pSdlGame->pSpritesEnemy[k].direction == 1)
+			{
+				pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction = 1;
+				pSdlGame->pSpritesEnemy[k].aSprite[4].end =1;
+				pSdlGame->pSpritesEnemy[k].aSprite[5].end =1;
+			}
+			
 			if ((pSdlGame->pGame.gEnemies.eEnemy[k].stateAttack == 0 && pSdlGame ->pGame.gEnemies.eEnemy[k].eChar.attack == 1 
-			&& (pSdlGame ->pGame.gEnemies.eEnemy[k].eChar.cPosi.x - pSdlGame ->pGame.gChar.cPosi.x)< 0)
+			&& (pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction == 0))
 			|| pSdlGame->pSpritesEnemy[k].aSprite[5].end == 0)
 			{
 				pSdlGame->pSpritesEnemy[k].aSprite[5].end = 0;
-				animSprite (&(pSdlGame->pSpritesEnemy[k]), 5, 1, 1);
+				animSprite (&(pSdlGame->pSpritesEnemy[k]), 5, 1, 0);
 			}
 			if ((pSdlGame->pGame.gEnemies.eEnemy[k].stateAttack == 0  && pSdlGame ->pGame.gEnemies.eEnemy[k].eChar.attack == 1 
-			&& (pSdlGame ->pGame.gEnemies.eEnemy[k].eChar.cPosi.x - pSdlGame ->pGame.gChar.cPosi.x)> 0)
+			&& (pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.direction == 1))
 			|| pSdlGame->pSpritesEnemy[k].aSprite[4].end == 0)
 			{
 				pSdlGame->pSpritesEnemy[k].aSprite[4].end = 0;
-				animSprite (&(pSdlGame->pSpritesEnemy[k]), 4, 1, 0);
+				animSprite (&(pSdlGame->pSpritesEnemy[k]), 4, 1, 1);
 			}
 			
-		}	
+				
+			
+			}
+			
+	
 		
 		
 }
 
 void loopSDL(SdlGame *pSdlGame)
 {
+
+
 	int k,l, m;
 	SDL_Event event;
+	SDL_Event eventMenu;
 	int continueLoop=1;
 	int refresh=1;
 	int temp;
@@ -982,11 +1040,56 @@ void loopSDL(SdlGame *pSdlGame)
 	audioBG();
 	audioWind();
 	
-	
-	while(continueLoop==1)
+while(continueLoop == 1)
+{	
+	printf("LOOP \n");
+	if (pSdlGame ->confirmMenu !=1)
 	{
-
-
+	while (SDL_PollEvent(&event))
+		{
+			switch(event.type)
+			{
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym)
+					{
+						case SDLK_UP:
+							if (pSdlGame -> choiceMenu == 2)
+							{
+								pSdlGame -> choiceMenu =1;
+								
+							}
+							break;
+						case SDLK_DOWN:
+							if (pSdlGame -> choiceMenu == 1)
+							{
+								pSdlGame -> choiceMenu = 2;
+								
+							}
+							break;	
+						case SDLK_RETURN:
+							pSdlGame ->confirmMenu = 1;
+							
+							break;
+							
+						case SDLK_ESCAPE:
+							continueLoop = 0;
+							break;
+						default:
+						break;
+					}
+			}
+			
+		}
+	}
+	printf("choice = %d, confirm = %d\n",pSdlGame -> choiceMenu , pSdlGame ->confirmMenu);
+	if(pSdlGame -> choiceMenu == 2 && pSdlGame ->confirmMenu==1)
+	{
+			continueLoop =0;
+	}
+	if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
+	{
+	printf("GAME \n");
+	refresh = 0;
 		/*pSdlGame->rcSprite.x=getPosiX(&(pSdlGame->Game.perso));
 		pSdlGame->rcSprite.y=getPosiY(&(pSdlGame->Game.perso));*/
 		/*Position du sprite*/
@@ -1084,7 +1187,7 @@ void loopSDL(SdlGame *pSdlGame)
 							}
 							break;	
 						case SDLK_ESCAPE:
-							continueLoop = 0;
+							pSdlGame ->confirmMenu=0;
 							break;
 						default:
 							break;
@@ -1123,7 +1226,8 @@ void loopSDL(SdlGame *pSdlGame)
 							
 							break;
 						case SDLK_ESCAPE:
-							continueLoop = 0;
+
+							pSdlGame ->confirmMenu =0;
 							break;
 						default:
 							break;
@@ -1273,52 +1377,32 @@ if(pGame -> level != 1)
 		
 		
 		}
-				
-	}
-		
-					
 		if (refresh==1)
 		{
 			
 		    /* on affiche le Game sur le buffer caché */
 		    sdlDisplay(pSdlGame);
-
+	printf("DISPLAY \n");
 		    /* on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle) */
 		    SDL_Flip( pSdlGame->surfaceScreen);
-		    
-		}
+		} 
+				
+	}
+		
+		
+	}
+				
+		
+		    /* on affiche le Game sur le buffer caché */
+		    sdlDisplay(pSdlGame);
+	printf("DISPLAY \n");
+		    /* on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle) */
+		    SDL_Flip( pSdlGame->surfaceScreen);
+		   
+	
 		
 	}
 }
-
-SDL_Surface *SDL_load_image(const char* filename )
-{
-	/* Temporary storage for the image that's loaded */
-	SDL_Surface* loadedImage = NULL;
-
-	/* The optimized image that will be used */
-	SDL_Surface* optimizedImage = NULL;
-
-	/* Load the image */
-	loadedImage = SDL_LoadBMP( filename );
-
-	/* If nothing went wrong in loading the image */
-	if ( loadedImage != NULL )
-	{
-		/* Create an optimized image */
-		optimizedImage = SDL_DisplayFormat( loadedImage );
-
-		/* Free the old image */
-		SDL_FreeSurface( loadedImage );
-	}
-
-	/* Return the optimized image */
-	return optimizedImage;
-}
-
-
-
-
 
 
 void freeSdl(SdlGame *pSdlGame)

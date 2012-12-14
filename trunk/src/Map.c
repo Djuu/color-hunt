@@ -8,7 +8,6 @@
 void mapInit(Map *pMap,const char * Name)
 {
 	int x, y;
-	
 	FILE *f = fopen(Name,"r");
   	if (f == NULL)
 	{
@@ -22,9 +21,12 @@ void mapInit(Map *pMap,const char * Name)
 		pMap->tab[y] = (char *)malloc(sizeof(char)*pMap->dimx);
 
 	for(y=0;y<pMap->dimy;++y)
+	{
 		for(x=0;x<pMap->dimx;++x)
+		{
 			fscanf(f,"%c",&(pMap->tab[y][x]));
-	
+		}
+	}	
 	
 	fclose(f);
 }

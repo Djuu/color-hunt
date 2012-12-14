@@ -27,6 +27,7 @@ void initSpeedY(Game *pGame);
 Enemies *getGameEnemies(Game *pGame);
 void warpMap (Game *pGame);
 void collisionMap (Position *pPosi, Map *pMap);
+int collision(Position *pPosi1, Position *pPosi2);
 
 void down(Game *pGame);
 void up(Game *pGame);
