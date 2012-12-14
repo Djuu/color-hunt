@@ -111,6 +111,11 @@ pSdlGame ->surfaceBall = IMG_Load("data/image/block.png");
 	if (pSdlGame->surfaceBall==NULL)	
 		pSdlGame->surfaceBall = IMG_Load("../data/image/block.png");
 	assert( pSdlGame->surfaceBall!=NULL);
+	
+pSdlGame ->surfaceBall2 = IMG_Load("data/image/block.png");
+	if (pSdlGame->surfaceBall2==NULL)	
+		pSdlGame->surfaceBall2 = IMG_Load("../data/image/block.png");
+	assert( pSdlGame->surfaceBall2!=NULL);
 
 pSdlGame -> surfaceCharMap =  IMG_Load("data/image/charMap.png");
 	if (pSdlGame->surfaceCharMap ==NULL)
@@ -372,11 +377,19 @@ if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
 	
 	
 	SDL_Rect positionBall;
+	
+	SDL_Rect positionBall2;
 	positionBall.x = pSdlGame->pGame.gObjects.oObject[2].oPosi.x*TAILLE_SPRITE- pSdlGame->scrollX;
 	positionBall.y = pSdlGame->pGame.gObjects.oObject[2].oPosi.y*TAILLE_SPRITE- pSdlGame->scrollY;
 	
 	rotationObject(pSdlGame->surfaceBall, positionBall, &(pSdlGame->pGame.gObjects.oObject[2].angle), 0.01, pSdlGame->surfaceScreen);
 	stabilizeObject(&(pSdlGame->pGame.gObjects.oObject[2]));
+	
+	positionBall2.x = pSdlGame->pGame.gObjects.oObject[3].oPosi.x*TAILLE_SPRITE- pSdlGame->scrollX;
+	positionBall2.y = pSdlGame->pGame.gObjects.oObject[3].oPosi.y*TAILLE_SPRITE- pSdlGame->scrollY;
+	
+	rotationObject(pSdlGame->surfaceBall2, positionBall2, &(pSdlGame->pGame.gObjects.oObject[3].angle), 0.01, pSdlGame->surfaceScreen);
+	stabilizeObject(&(pSdlGame->pGame.gObjects.oObject[3]));
 	//printf("x = %d, y= %d\n", positionBall.x, positionBall.y);
 	//printf("angle = %f\n",pSdlGame->pGame.gObjects.oObject[2].angle);
 
@@ -1042,7 +1055,7 @@ void loopSDL(SdlGame *pSdlGame)
 	
 while(continueLoop == 1)
 {	
-	printf("LOOP \n");
+	//printf("LOOP \n");
 	if (pSdlGame ->confirmMenu !=1)
 	{
 	while (SDL_PollEvent(&event))
@@ -1081,14 +1094,14 @@ while(continueLoop == 1)
 			
 		}
 	}
-	printf("choice = %d, confirm = %d\n",pSdlGame -> choiceMenu , pSdlGame ->confirmMenu);
+	//printf("choice = %d, confirm = %d\n",pSdlGame -> choiceMenu , pSdlGame ->confirmMenu);
 	if(pSdlGame -> choiceMenu == 2 && pSdlGame ->confirmMenu==1)
 	{
 			continueLoop =0;
 	}
 	if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
 	{
-	printf("GAME \n");
+	//printf("GAME \n");
 	refresh = 0;
 		/*pSdlGame->rcSprite.x=getPosiX(&(pSdlGame->Game.perso));
 		pSdlGame->rcSprite.y=getPosiY(&(pSdlGame->Game.perso));*/
@@ -1272,13 +1285,19 @@ if(pGame -> level != 1)
 			
 			collisionObjects (&(pChar->cPosi), &(pGame -> gObjects));
 
+			printf("ANGLE = %f", pSdlGame->pGame.gObjects.oObject[3].angle);
+			
+			collisionObjects (&(pGame -> gObjects.oObject[2].oPosi), &(pGame -> gObjects));
+			
 			collisionMap (&(pChar->cPosi), pMap);
 			enemyAttack(&(pSdlGame -> pGame));
-			printf("DIRECTION HERO = %d, V_Xhero = %d _____ ATTACK = %d\n",pSdlGame->pGame.gChar.cPosi.direction,pSdlGame->pGame.gChar.cPosi.v_x, pSdlGame->pGame.gChar.attack);
+			//printf("DIRECTION HERO = %d, V_Xhero = %d _____ ATTACK = %d\n",pSdlGame->pGame.gChar.cPosi.direction,pSdlGame->pGame.gChar.cPosi.v_x, pSdlGame->pGame.gChar.attack);
 			/*collision (&(pSdlGame->pGame.gEnemies.eEnemy[1].eChar), &(pSdlGame->pGame.gMap));*/
 			gravity (&(pSdlGame->pGame.gChar.cPosi));
 			collisionMap (&(pSdlGame->pGame.gObjects.oObject[2].oPosi), pMap);
+						collisionMap (&(pSdlGame->pGame.gObjects.oObject[3].oPosi), pMap);
 			gravity (&(pSdlGame->pGame.gObjects.oObject[2].oPosi));
+			gravity (&(pSdlGame->pGame.gObjects.oObject[3].oPosi));
 			
 			//printf("v_y = %f\n", pSdlGame->pGame.gObjects.oObject[2].oPosi.v_y);
 
@@ -1382,7 +1401,7 @@ if(pGame -> level != 1)
 			
 		    /* on affiche le Game sur le buffer caché */
 		    sdlDisplay(pSdlGame);
-	printf("DISPLAY \n");
+	//printf("DISPLAY \n");
 		    /* on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle) */
 		    SDL_Flip( pSdlGame->surfaceScreen);
 		} 
@@ -1395,7 +1414,7 @@ if(pGame -> level != 1)
 		
 		    /* on affiche le Game sur le buffer caché */
 		    sdlDisplay(pSdlGame);
-	printf("DISPLAY \n");
+	//printf("DISPLAY \n");
 		    /* on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle) */
 		    SDL_Flip( pSdlGame->surfaceScreen);
 		   

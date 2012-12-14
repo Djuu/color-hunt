@@ -85,7 +85,7 @@ int path(Position *pPosi1, Position *pPosi2)
 	float posX, posY, posYd, posXd, posYr, posXr, posYl, posXl;
 	float oPosX, oPosY, oPosYd, oPosXd, oPosYr, oPosXr, oPosYl, oPosXl;
 	
-		for (i=0.01; i<=1.0; i+=0.01) 
+		for (i=0.001; i<=1.0; i+=0.001) 
 		{
 
 				
@@ -118,10 +118,10 @@ int path(Position *pPosi1, Position *pPosi2)
 				oPosXl = pPosi2->x + i*pPosi2->v_x;
 				
 				
-				if((oPosX < posXr+0.1 && posX-0.1 < oPosXr) && (posY<oPosYd && oPosY<posYd))
+				if((oPosX < posXr && posX < oPosXr) && (posY<oPosYd && oPosY<posYd))
 				{
 				
-					return i-0.01;
+					return i-0.001;
 
 				}
 

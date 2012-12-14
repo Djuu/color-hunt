@@ -13,14 +13,15 @@ void initGame (Game *pGame, const char* pMap)
 	
 	
 		pGame->gObjects.oObject[2].oPosi.spriteSizeW = 5;
-		pGame->gObjects.oObject[2].oPosi.spriteSizeH=3;
+		pGame->gObjects.oObject[2].oPosi.spriteSizeH=2.5;
 		pGame->gObjects.oObject[2].angle = 40;
 		
 		pGame->gObjects.oObject[3].oPosi.spriteSizeW = 5;
-		pGame->gObjects.oObject[3].oPosi.spriteSizeH=3;
+		pGame->gObjects.oObject[3].oPosi.spriteSizeH=2.5;
 		pGame->gObjects.oObject[3].angle = 40;
 	
 	k=0;
+	int l = 2;
 	pGame->level = 1;
 	
 	mapInit(&(pGame -> gMap),pMap);
@@ -37,10 +38,10 @@ void initGame (Game *pGame, const char* pMap)
 					pGame->gEnemies.eEnemy[k].eChar.cPosi.y = j;
 					k++;
 				break;
-				case 'o':
-					pGame->gObjects.oObject[2].oPosi.x = i;
-					pGame->gObjects.oObject[2].oPosi.y = j;
-
+				case 'O':
+					pGame->gObjects.oObject[l].oPosi.x = i;
+					pGame->gObjects.oObject[l].oPosi.y = j;
+					l++;
 				break;
 			}	
 
@@ -294,12 +295,19 @@ void collisionMap (Position *pPosi, Map *pMap)
 
 void collisionObjects (Position *pPosi, Objects *pObjects)
 {
-	int i;
-	for (i=0 ; i< pObjects->number;i++)
-	{
+	int i=3;
+	//for (i=0 ; i< pObjects->number;i++)
+	//{
+	printf("Object 3 : %d\n",pObjects->oObject[3].oPosi.floor);
+		printf("Object 2 : %d\n",pObjects->oObject[2].oPosi.floor);
+		if(path(pPosi, &(pObjects->oObject[i].oPosi)) != 1)
+		{
+			pPosi->floor = 1;
+		}
 		pPosi->v_y*=path(pPosi, &(pObjects->oObject[i].oPosi));
 		pPosi->v_x*=path(pPosi, &(pObjects->oObject[i].oPosi));
-	}
+		
+	//}
 }
 
 int collision(Position *pPosi1, Position *pPosi2)
@@ -436,7 +444,7 @@ void superAttackDmg(Game *pGame)
 	
 		for(j=0;j<pGame->gEnemies.number;j++)
 		{
-			printf("+++++++++++++++++++++++++++++ COLLISION = %d, SUPPER = %d\n",collision(&(pObjects -> oObject[1].oPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)), pGame->gChar.superAttack);
+			//printf("+++++++++++++++++++++++++++++ COLLISION = %d, SUPPER = %d\n",collision(&(pObjects -> oObject[1].oPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)), pGame->gChar.superAttack);
 			if(collision(&(pObjects -> oObject[1].oPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) ==1 && pGame->gObjects.oObject[1].status == 1)
 			{
 				
@@ -611,7 +619,7 @@ void enemyAttack(Game *pGame)
 	}*/
 	
 	
-		printf("position = %f  ___attackState = %d  _____ attack =%d _______ Collision = %d\n",pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x, pGame->gEnemies.eEnemy[nearest].stateAttack, pGame->gEnemies.eEnemy[nearest].eChar.attack, collision(&(pGame->gChar.cPosi),&(pGame->gEnemies.eEnemy[nearest].eChar.cPosi)));
+		//printf("position = %f  ___attackState = %d  _____ attack =%d _______ Collision = %d\n",pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x, pGame->gEnemies.eEnemy[nearest].stateAttack, pGame->gEnemies.eEnemy[nearest].eChar.attack, collision(&(pGame->gChar.cPosi),&(pGame->gEnemies.eEnemy[nearest].eChar.cPosi)));
 	if (pGame -> gEnemies.eEnemy[nearest].eChar.attack == 1)
 	{
 			pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.v_x =0;

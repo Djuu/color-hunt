@@ -74,11 +74,11 @@ void animSprite (Sprites* pSprites, int id, int loop, int dir)
 	if(pSprites->aSprite[id].end==0 && loop == 1)
 	{
 //printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaa   positionID = %d aaaaaaaaaaa\n",  pSprites->position);
-printf("frame = %d _______nbFrame = %d \n",  pSprites->frame , pSprites->aSprite[id].nbFrame);
+//printf("frame = %d _______nbFrame = %d \n",  pSprites->frame , pSprites->aSprite[id].nbFrame);
 		if(pSprites->frame == pSprites->aSprite[id].nbFrame)
 		{
 			pSprites->aSprite[id].end=1;
-			printf("bbbbbbbbbbbbbbbbbbbbbb   positionID = %d bbbbbbbbbbbbbbbbb\n",  pSprites->position);
+			//printf("bbbbbbbbbbbbbbbbbbbbbb   positionID = %d bbbbbbbbbbbbbbbbb\n",  pSprites->position);
 			pSprites->frame =0;
 		}
 	}
