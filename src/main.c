@@ -3,7 +3,7 @@
 #include <SDL/SDL.h>
 #include <assert.h>
 
-#include "Menu.h"
+#include "SDLGame.h"
 
 int main(int argc, char *argv[])
 {

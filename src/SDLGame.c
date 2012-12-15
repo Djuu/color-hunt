@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <time.h>
-
+#include <math.h>
+#include <SDL/SDL_ttf.h>
 #include "SDLGame.h"
 
 const int TAILLE_SPRITE= 20;
@@ -18,12 +19,19 @@ void initSDL(SdlGame *pSdlGame)
 	int i;
 	pSdlGame->scrollX=0;
 	pSdlGame->scrollY=0;
-	
+	pSdlGame->dialogue =0;
 	pGame = &(pSdlGame -> pGame);
 	pSdlGame ->confirmMenu = 0;
 	pSdlGame ->choiceMenu = 1;
+	pSdlGame ->choiceDialogue = 1;
+	pSdlGame ->confirmDialogue = 0;
 
 	SDL_Init(SDL_INIT_VIDEO);
+	if(TTF_Init() == -1)
+	{
+		fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
+		exit(EXIT_FAILURE);
+	}
 	pSdlGame -> surfaceScreen = SDL_SetVideoMode(SCREEN_WIDTH,SCREEN_HEIGHT,32, SDL_HWSURFACE|SDL_DOUBLEBUF);/*|SDL_FULLSCREEN);*/
 	SDL_WM_SetCaption( "ColorHunt", NULL );
 	
@@ -33,7 +41,12 @@ void initSDL(SdlGame *pSdlGame)
 	}
 	initGame(pGame,"Map/WorldMap.txt");
 	
-	
+		pSdlGame ->font = TTF_OpenFont("data/fonts/times.ttf", 20);
+	if (pSdlGame ->font == NULL)
+	{
+		printf("Erreur de chargement de police ! \n");
+		exit(1);
+	}
 /*MENU*/
 
 	/*Background*/
@@ -263,6 +276,16 @@ pSdlGame ->surfaceMapTree = IMG_Load("data/image/Tree.png");
 	assert( pSdlGame->surfaceMapTree!=NULL);
 
 
+pSdlGame ->surfaceDial = IMG_Load("data/image/dialogue.png");
+	if (pSdlGame->surfaceDial==NULL)	
+		pSdlGame->surfaceDial = IMG_Load("../data/image/dialogue.png");
+	assert( pSdlGame->surfaceDial!=NULL);
+	
+pSdlGame ->surfaceKing = IMG_Load("data/image/king.png");
+	if (pSdlGame->surfaceKing==NULL)	
+		pSdlGame->surfaceKing = IMG_Load("../data/image/king.png");
+	assert( pSdlGame->surfaceDial!=NULL);
+
 /*Initialisation des sprites*/
 	pSdlGame->pSprites.source = pSdlGame -> surfaceChar; /*incrementation du sprite global*/
 	/*Cour vers la droite*/
@@ -344,6 +367,7 @@ void sdlDisplay(SdlGame *pSdlGame)
 	
 	Game *pGame = &(pSdlGame->pGame);
 	Character *pChar= getGameChar(pGame);
+	Character *pPnj= getGamePnj(pGame);
 	Enemies *pEnemies = getGameEnemies(pGame);
 	Map *pMap=getGameMap(pGame);
 	SDL_Rect posiEnemy,posiChar, posiFireBall;
@@ -414,17 +438,17 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
 			switch (pSdlGame->pGame.gMap.tab[j][i])
 			{
 				case '#':
-				positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
-			positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
 					SDL_BlitSurface(pSdlGame->surfaceEarth,NULL, pSdlGame->surfaceScreen, &positionTile);
-				break;
+					break;
 				case '%':
-				positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
-			positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
 					SDL_BlitSurface(pSdlGame->surfaceGrass,NULL, pSdlGame->surfaceScreen, &positionTile);
-				break;
-				
-			
+					break;
+				default:
+					break;
 			}
 		} 
 				
@@ -613,12 +637,24 @@ else
 					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
 					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
 					SDL_BlitSurface(pSdlGame->surfaceMapGrass1,NULL, pSdlGame->surfaceScreen, &positionTile);
-					break;				
+					break;
+					
+					case 'K':
+					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+					SDL_BlitSurface(pSdlGame->surfaceMapGrass1,NULL, pSdlGame->surfaceScreen, &positionTile);
+					break;
+					
+											
 					
 					
 				}
 			}
 		}
+		/*Position du Pnj*/
+		SDL_Rect posiPnj;
+		posiPnj.x = getPosiChar(pPnj).x*TAILLE_SPRITE - pSdlGame->scrollX;
+		posiPnj.y = getPosiChar(pPnj).y*TAILLE_SPRITE - pSdlGame->scrollY;
 		/*Blit objets*/
 		for (i=xmin;i<xmax;++i)
 		{
@@ -631,6 +667,10 @@ else
 					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
 					SDL_BlitSurface(pSdlGame->surfaceMapCastle,NULL, pSdlGame->surfaceScreen, &positionTile);
 					break;	
+					
+					case 'K':
+					SDL_BlitSurface(pSdlGame->surfaceKing,NULL, pSdlGame->surfaceScreen, &posiPnj);
+					break;
 				}
 			}
 		}
@@ -639,8 +679,27 @@ else
 	posiChar.y = getPosiChar(pChar).y*TAILLE_SPRITE - pSdlGame->scrollY;
 
 	displaySprite(&(pSdlGame->pSpritesWorldMap), posiChar, pSdlGame->surfaceScreen);
+	if(pSdlGame->dialogue == 1)
+	{
+		/*Position et blit du dialogue*/
+		SDL_Rect positionDial;
+		positionDial.x = 0;
+		positionDial.y = SCREEN_HEIGHT - SCREEN_HEIGHT/2.5;
+		SDL_BlitSurface(pSdlGame->surfaceDial, NULL, pSdlGame->surfaceScreen, &positionDial);
 		
-	
+		SDL_Rect positionText1;
+		positionText1.x = positionDial.x+20;
+		positionText1.y = positionDial.y+50;
+		SDL_BlitSurface(pSdlGame->surfaceText1, NULL, pSdlGame->surfaceScreen, &positionText1);
+		SDL_Rect positionText2;
+		positionText2.x = positionDial.x+20;
+		positionText2.y = positionDial.y+80;
+		SDL_BlitSurface(pSdlGame->surfaceText2, NULL, pSdlGame->surfaceScreen, &positionText2);
+		SDL_Rect positionText3;
+		positionText3.x = positionDial.x+20;
+		positionText3.y = positionDial.y+110;
+		SDL_BlitSurface(pSdlGame->surfaceText3, NULL, pSdlGame->surfaceScreen, &positionText3);
+	}
 	}
 }
 else
@@ -656,6 +715,8 @@ else
 		positionExit.x = 0;
 		positionExit.y = 200;
 		SDL_BlitSurface(pSdlGame->surfaceExit,NULL, pSdlGame->surfaceScreen, &positionExit);
+		
+		
 	
 }
 	/*SDL_Rect rFilter;
@@ -686,6 +747,10 @@ void colisionSprite(SdlGame *pSdlGame)
 	pSdlGame->pGame.gChar.cPosi.spriteSizeH = (float)(pSdlGame->pSprites.aSprite[pSdlGame->pSprites.position].height)/(float)TAILLE_SPRITE;
 	
 	
+	pSdlGame->pGame.gPnj.cPosi.spriteSizeW = (float)(pSdlGame->pSprites.aSprite[pSdlGame->pSprites.position].height)/(float)TAILLE_SPRITE;
+	pSdlGame->pGame.gPnj.cPosi.spriteSizeH = (float)(pSdlGame->pSprites.aSprite[pSdlGame->pSprites.position].height)/(float)TAILLE_SPRITE;
+
+	
 	for(k=0; k< pSdlGame->pGame.gEnemies.number; k++)
 	{
 		if (pSdlGame->pGame.gEnemies.eEnemy[k].eChar.cPosi.floor == 1)	
@@ -704,26 +769,49 @@ void colisionSprite(SdlGame *pSdlGame)
 
 void keyManagment2(SdlGame *pSdlGame)
 {
-	if(pSdlGame->pKey.kLeft==1)
+	if(pSdlGame->dialogue == 0)
 	{
-		controlKey2(&(pSdlGame->pGame), 'g');
-		animSprite (&(pSdlGame->pSpritesWorldMap), 3, 0, 0);
+		if(pSdlGame->pKey.kLeft==1)
+		{
+			controlKey2(&(pSdlGame->pGame), 'g');
+			animSprite (&(pSdlGame->pSpritesWorldMap), 3, 0, 0);
+		}
+		if(pSdlGame->pKey.kRight==1)
+		{
+			controlKey2(&(pSdlGame->pGame), 'd');
+			animSprite (&(pSdlGame->pSpritesWorldMap), 1, 0, 0);
+		}
+		if (pSdlGame->pKey.kUp ==1)
+		{
+			controlKey2(&(pSdlGame->pGame), 'h');
+			animSprite (&(pSdlGame->pSpritesWorldMap), 0, 0, 0);
+		}
+		if (pSdlGame->pKey.kDown ==1)
+		{
+			controlKey2(&(pSdlGame->pGame), 'b');
+			animSprite (&(pSdlGame->pSpritesWorldMap), 2, 0, 0);
+		}
 	}
-	if(pSdlGame->pKey.kRight==1)
+	else if (pSdlGame->dialogue == 0) 
 	{
-		controlKey2(&(pSdlGame->pGame), 'd');
-		animSprite (&(pSdlGame->pSpritesWorldMap), 1, 0, 0);
+		if(pSdlGame->pKey.kLeft==1)
+		{
+			if (pSdlGame -> choiceDialogue == 2)
+			{
+				pSdlGame -> choiceDialogue =1;
+				
+			}
+		}
+		if(pSdlGame->pKey.kRight==1)
+		{
+			if (pSdlGame -> choiceDialogue == 1)
+			{
+				pSdlGame -> choiceDialogue = 2;
+				
+			}
+		}
 	}
-	if (pSdlGame->pKey.kUp ==1)
-	{
-		controlKey2(&(pSdlGame->pGame), 'h');
-		animSprite (&(pSdlGame->pSpritesWorldMap), 0, 0, 0);
-	}
-	if (pSdlGame->pKey.kDown ==1)
-	{
-		controlKey2(&(pSdlGame->pGame), 'b');
-		animSprite (&(pSdlGame->pSpritesWorldMap), 2, 0, 0);
-	}
+	
 	if(pSdlGame->pKey.kLeft==0 && pSdlGame->pKey.kRight==0)
 	{
 		initSpeedX(&(pSdlGame->pGame));
@@ -734,6 +822,7 @@ void keyManagment2(SdlGame *pSdlGame)
 		initSpeedY(&(pSdlGame->pGame));
 		
 	}
+
 	
 
 }
@@ -1006,6 +1095,40 @@ void animEnemies(SdlGame *pSdlGame)
 		
 }
 
+void dialogueSpeak(SdlGame *pSdlGame)
+{
+	SDL_Color color = {0, 0, 0};
+	char dialTab[1000];
+	discutionDialogue(&(pSdlGame->pTree), dialTab);
+	char dialTab1[80];
+	char dialTab2[80];
+	char dialTab3[80];
+	int i;
+	int j=0;
+	for(i=0;i<=78; i++)
+	{
+			dialTab1[j] = dialTab[i];
+			j++;
+	}
+	dialTab1[j]='\0';
+	pSdlGame->surfaceText1 = TTF_RenderText_Blended(pSdlGame->font,dialTab1, color);
+	j=0;
+	for(i=79;i<=156; i++)
+	{
+			dialTab2[j] = dialTab[i];
+			j++;
+	}
+	dialTab2[j]='\0';
+	pSdlGame->surfaceText2 = TTF_RenderText_Blended(pSdlGame->font,dialTab2, color);
+	j=0;
+	for(i=157;i<=235; i++)
+	{
+			dialTab3[j] = dialTab[i];
+			j++;
+	}
+	dialTab3[j]='\0';
+	pSdlGame->surfaceText3 = TTF_RenderText_Blended(pSdlGame->font,dialTab3, color);
+}
 void loopSDL(SdlGame *pSdlGame)
 {
 
@@ -1019,6 +1142,7 @@ void loopSDL(SdlGame *pSdlGame)
 	int temp2;
 	Game *pGame = &(pSdlGame->pGame);
 	Character *pChar= getGameChar(pGame);
+	Character *pPnj= getGamePnj(pGame);
 	Map *pMap=getGameMap(pGame);
 	int tempCol;
 	tempCol=0;
@@ -1055,7 +1179,9 @@ void loopSDL(SdlGame *pSdlGame)
 	
 while(continueLoop == 1)
 {	
+	
 	//printf("LOOP \n");
+	initDialogue(&(pSdlGame->pTree));
 	if (pSdlGame ->confirmMenu !=1)
 	{
 	while (SDL_PollEvent(&event))
@@ -1392,9 +1518,15 @@ if(pGame -> level != 1)
 			
 			if(((temp2 > SCREEN_HEIGHT*3/4  && pChar->cPosi.v_y >0) || (temp2 < SCREEN_HEIGHT*1/4 && pChar->cPosi.v_y <0) )&& temp2 >0 && temp2<SCREEN_HEIGHT)
 				pSdlGame->scrollY+=pChar->cPosi.v_y*TAILLE_SPRITE;
+			if(pSdlGame->dialogue == 1)
+			{
+				dialogueSpeak(pSdlGame);
+			}
 			
-		
-		
+			if(collision(&(pChar->cPosi), &(pPnj->cPosi))==1)
+			{
+					pSdlGame->dialogue = 1;
+			}
 		}
 		if (refresh==1)
 		{

@@ -10,6 +10,7 @@
 typedef struct
 {
 	Character gChar;
+	Character gPnj;
 	Enemies gEnemies;
 	Map gMap;
 	Objects gObjects;
@@ -28,7 +29,7 @@ Enemies *getGameEnemies(Game *pGame);
 void warpMap (Game *pGame);
 void collisionMap (Position *pPosi, Map *pMap);
 int collision(Position *pPosi1, Position *pPosi2);
-
+Character *getGamePnj(Game *pGame);
 void down(Game *pGame);
 void up(Game *pGame);
 void controlKey2 (Game *pGame, const char key);

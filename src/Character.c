@@ -14,8 +14,8 @@ void initChar (Character *pChar)
 	setMana(pChar, 100);
 	pChar-> attack = 0;
 	pChar-> superAttack = 0;
-	pChar->cPosi.spriteSizeW =0;
-	pChar->cPosi.spriteSizeH =0;
+	pChar->cPosi.spriteSizeW = 0;
+	pChar->cPosi.spriteSizeH = 0;
 	pChar->cPosi.direction=0;
 	pChar -> domage = 0;
 	pChar -> superDomage = 0;
