@@ -1,13 +1,13 @@
 #ifndef _SDLGAME
 #define _SDLGAME
-
-#include <SDL/SDL_image.h>
 #include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
+#include <SDL/SDL_ttf.h>
 
 #include "Game.h"
 #include "Animation.h"
-
+#include "Dialogue.h"
 
 
 /*Direction du sprite*/
@@ -54,8 +54,12 @@ typedef struct
 	Sprites *pSpritesEnemy;
 	Sprites pSpritesWorldMap;
 	Key pKey;
+	Tree pTree;
 	int choiceMenu;
 	int confirmMenu;
+	int choiceDialogue;
+	int confirmDialogue;
+	int dialogue;
 	
 /*Menu*/
 	SDL_Surface *surfaceStart;
@@ -77,6 +81,15 @@ typedef struct
 	SDL_Surface *surfaceBall;
 	SDL_Surface *surfaceBall2;
 	SDL_Surface *surfaceMana;
+	
+	SDL_Surface *surfaceKing;
+	
+	SDL_Surface *surfaceText1;/*ligne 1*/
+	SDL_Surface *surfaceText2;/*ligne 2*/
+	SDL_Surface *surfaceText3;/*ligne 3*/
+	
+	SDL_Surface *surfaceDial;
+	TTF_Font *font;
 	
 	SDL_Surface *surfaceMapBG;
 	SDL_Surface *surfaceCharMap;

@@ -12,14 +12,16 @@ void initGame (Game *pGame, const char* pMap)
 	
 	
 	
-		pGame->gObjects.oObject[2].oPosi.spriteSizeW = 5;
-		pGame->gObjects.oObject[2].oPosi.spriteSizeH=2.5;
-		pGame->gObjects.oObject[2].angle = 40;
-		
-		pGame->gObjects.oObject[3].oPosi.spriteSizeW = 5;
-		pGame->gObjects.oObject[3].oPosi.spriteSizeH=2.5;
-		pGame->gObjects.oObject[3].angle = 40;
+	pGame->gObjects.oObject[2].oPosi.spriteSizeW = 5;
+	pGame->gObjects.oObject[2].oPosi.spriteSizeH=2.5;
+	pGame->gObjects.oObject[2].angle = 40;
 	
+	pGame->gObjects.oObject[3].oPosi.spriteSizeW = 5;
+	pGame->gObjects.oObject[3].oPosi.spriteSizeH=2.5;
+	pGame->gObjects.oObject[3].angle = 40;
+	
+	//pGame->gPnj.cPosi.spriteSizeW = 1;
+	//pGame->gPnj.cPosi.spriteSizeH = 1;
 	k=0;
 	int l = 2;
 	pGame->level = 1;
@@ -32,6 +34,10 @@ void initGame (Game *pGame, const char* pMap)
 				case 'C':
 					pGame->gChar.cPosi.x = i;
 					pGame->gChar.cPosi.y = j;
+				break;
+				case 'K':
+					pGame->gPnj.cPosi.x = i;
+					pGame->gPnj.cPosi.y = j;
 				break;
 				case 'E':
 					pGame->gEnemies.eEnemy[k].eChar.cPosi.x = i;
@@ -237,6 +243,11 @@ Map *getGameMap(Game *pGame)
 Character *getGameChar(Game *pGame)
 {
 	return &(pGame -> gChar);
+}
+
+Character *getGamePnj(Game *pGame)
+{
+	return &(pGame -> gPnj);
 }
 
 Objects *getGameObjects(Game *pGame)
@@ -478,7 +489,7 @@ void helpEnemy(Game *pGame)
 				{
 					if (i!=j)
 					{
-						if(collision(&(pGame->gEnemies.eEnemy[i].eChar.cPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) == 0)
+						if(collision(&(pGame->gEnemies.eEnemy[i].eChar.cPosi),&(pGame->gEnemies.eEnemy[j].eChar.cPosi)) == 1)
 						{
 							pGame->gEnemies.eEnemy[i].panic=-1;
 							pGame->gEnemies.eEnemy[i].idHelp = j;
@@ -528,7 +539,7 @@ void detect(Game *pGame)
 	helpEnemy(pGame);
 	for(nearestE = 0; nearestE < pGame->gEnemies.number; nearestE++)
 	{
-
+		printf ("Panic = %d\n",pGame->gEnemies.eEnemy[nearestE].panic);
 		if (nearestE!=idPanic)
 		{
 			if (((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y+pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.spriteSizeH) - (pGame->gChar.cPosi.y))>0 
