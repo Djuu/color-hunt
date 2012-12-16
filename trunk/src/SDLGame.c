@@ -31,7 +31,6 @@ void initSDL(SdlGame *pSdlGame)
 	pSdlGame->flyMode =0;
 	
 	
-	affichageArborescent((pSdlGame->pTree));
 	SDL_Init(SDL_INIT_VIDEO);
 	if(TTF_Init() == -1)
 	{
@@ -79,11 +78,11 @@ void initSDL(SdlGame *pSdlGame)
 	
 /*Background*/
   
-	SDL_Surface* temp = IMG_Load("data/image/bg1.jpg");
+SDL_Surface* temp = IMG_Load("data/image/bg1.jpg");
 	pSdlGame->surfaceBG = SDL_DisplayFormat(temp);
 	assert( pSdlGame->surfaceBG!=NULL);
 
-	pSdlGame -> surfaceChar =  IMG_Load("data/image/hero4.png");
+pSdlGame -> surfaceChar =  IMG_Load("data/image/hero4.png");
 	if (pSdlGame->surfaceChar ==NULL)
 		pSdlGame->surfaceChar =  IMG_Load("../data/image/hero4.png");
 	assert( pSdlGame->surfaceChar!=NULL);
@@ -91,12 +90,18 @@ void initSDL(SdlGame *pSdlGame)
 	/*Surface de tableau d'ennemie*/
 	pSdlGame -> pSpritesEnemy = (Sprites*)malloc(pSdlGame -> pGame.gEnemies.number * sizeof(Sprites));
 
-	pSdlGame -> surfaceEnemies = IMG_Load("data/image/SpriteEnemy.png");
+pSdlGame -> surfaceEnemies = IMG_Load("data/image/SpriteEnemy.png");
 		if (pSdlGame->surfaceEnemies ==NULL)
 			pSdlGame->surfaceEnemies = IMG_Load("../data/image/SpriteEnemy.png");
 		assert( pSdlGame->surfaceEnemies!=NULL);
-	
-	pSdlGame -> surfaceEarth = IMG_Load("data/image/grass2.png");
+
+pSdlGame -> surfaceFireBall = IMG_Load("data/image/fireBall.png");
+        if (pSdlGame->surfaceFireBall==NULL)    
+                pSdlGame->surfaceFireBall = IMG_Load("../data/image/fireBall.png");
+        assert( pSdlGame->surfaceFireBall!=NULL);
+        
+      	
+pSdlGame -> surfaceEarth = IMG_Load("data/image/grass2.png");
 	if (pSdlGame->surfaceEarth==NULL)	
 		pSdlGame->surfaceEarth = IMG_Load("../data/image/grass2.png");
 	assert( pSdlGame->surfaceEarth!=NULL);
@@ -311,10 +316,6 @@ pSdlGame ->surfaceKing = IMG_Load("data/image/king.png");
 	InitSprite (&(pSdlGame->pSprites),attackFR, 52, 56, 11, 0);
 	/*attaque feu gauche*/
 	InitSprite (&(pSdlGame->pSprites),attackFL, 52, 56, 11, 0);
-	/*boule de feu droit*/
-	InitSprite (&(pSdlGame->pSprites),fireBallR, 30, 56, 5, 0);
-	/*boule de feu gauche*/
-	InitSprite (&(pSdlGame->pSprites),fireBallL, 30, 56, 5, 0);
 	/*Attend droite*/
 	InitSprite (&(pSdlGame->pSprites),stayR, 52, 56, 7, 0);
 	/*Attend gauche*/
@@ -329,7 +330,11 @@ pSdlGame ->surfaceKing = IMG_Load("data/image/king.png");
 	InitSprite (&(pSdlGame->pSprites),flyL, 40, 58, 6, 0);
 
 	
-
+	pSdlGame->pSpritesObject.source = pSdlGame -> surfaceFireBall; /*incrementation du sprite global*/
+	/*boule de feu droit*/
+	InitSprite (&(pSdlGame->pSpritesObject),0, 30, 56, 5, 0);
+	/*boule de feu gauche*/
+	InitSprite (&(pSdlGame->pSpritesObject),1, 30, 56, 5, 0);
 	
 	
 
@@ -400,7 +405,7 @@ if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
 	posiFireBall.x = pSdlGame->pGame.gObjects.oObject[1].oPosi.x*TAILLE_SPRITE- pSdlGame->scrollX;
 	posiFireBall.y = pSdlGame->pGame.gObjects.oObject[1].oPosi.y*TAILLE_SPRITE- pSdlGame->scrollY;
 	
-	displaySprite(&(pSdlGame->pSprites), posiFireBall, pSdlGame->surfaceScreen);
+	displaySprite(&(pSdlGame->pSpritesObject), posiFireBall, pSdlGame->surfaceScreen);
 	
 	for(k=0; k<pSdlGame -> pGame.gEnemies.number; k++)
 	{
@@ -968,13 +973,13 @@ void keyManagment(SdlGame *pSdlGame)
 				if (pSdlGame->pSprites.direction == 0)
 				{
 					
-					animSprite (&(pSdlGame->pSprites), fireBallR, 0, pSdlGame->pGame.gChar.cPosi.direction);
+					animSprite (&(pSdlGame->pSpritesObject), fireBallR, 0, pSdlGame->pGame.gChar.cPosi.direction);
 					
 				}
 				if (pSdlGame->pSprites.direction == 1)
 				{
 					
-					animSprite (&(pSdlGame->pSprites), fireBallL, 0, pSdlGame->pGame.gChar.cPosi.direction);
+					animSprite (&(pSdlGame->pSpritesObject), fireBallL, 0, pSdlGame->pGame.gChar.cPosi.direction);
 					
 				}
 			}
