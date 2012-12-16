@@ -1,0 +1,8 @@
+2.0 Bonjour et bienvenu dans le monde "ColorHunt". Les mechants ont detruit les couleurs de notre monde merveillieux. Est tu pres a nous aider pour sortir notre monde de l'obscurite?#
+1.0 Tres bien c'est parti pour sauver "ColorHunt"!#
+0.5 &ok&#
+1.5 &ok&#
+3.0 Es tu sur de ta decision ?#
+3.5 Tres bien alors c'est parti pour sauver "ColorHunt"!#
+2.5 &exit&#
+$
