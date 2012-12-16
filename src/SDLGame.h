@@ -17,8 +17,6 @@
 #define attackL		3
 #define attackFR	4
 #define attackFL	5
-#define fireBallR	6
-#define fireBallL	7
 #define KOR			8
 #define KOL			9
 #define stayR 		10
@@ -26,7 +24,8 @@
 #define flyR 		12
 #define flyL 		13
 
-
+#define fireBallR       0
+#define fireBallL       1
 
 
 typedef struct
@@ -51,7 +50,7 @@ typedef struct
 {
 	Game pGame;
 	Sprites pSprites;
-	Sprites pSpritesObjects;
+	Sprites pSpritesObject;
 	Sprites *pSpritesEnemy;
 	Sprites pSpritesWorldMap;
 	Key pKey;
