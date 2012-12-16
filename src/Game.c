@@ -642,6 +642,16 @@ void enemyAttack(Game *pGame)
 	{			
 		pGame -> gEnemies.eEnemy[nearest].eChar.domage = 1;
 	}
+	if (pGame->gEnemies.eEnemy[nearest].stateAttack == 1 && pGame->gChar.attack !=1)
+	{
+		int rd;
+		rd = rand()%2;
+		if (rd == 0)
+		{
+			pGame -> gEnemies.eEnemy[nearest].eChar.attack = 1;
+			pGame->gEnemies.eEnemy[nearest].stateAttack = 0; 
+		}
+	}
 	if (pGame->gEnemies.eEnemy[nearest].eChar.domage != 0)
 	{
 
@@ -654,16 +664,7 @@ void enemyAttack(Game *pGame)
 		}
 		
 	}
-	if (pGame->gEnemies.eEnemy[nearest].stateAttack == 1 && pGame->gChar.attack !=1)
-	{
-		int rd;
-		rd = rand()%3;
-		if (rd == 1)
-		{
-			pGame -> gEnemies.eEnemy[nearest].eChar.attack = 1;
-			pGame->gEnemies.eEnemy[nearest].stateAttack = 0; 
-		}
-	}
+	
 	projectionChar(pGame,nearest);
 	
 }
