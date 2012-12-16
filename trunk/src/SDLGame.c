@@ -25,7 +25,13 @@ void initSDL(SdlGame *pSdlGame)
 	pSdlGame ->choiceMenu = 1;
 	pSdlGame ->choiceDialogue = 1;
 	pSdlGame ->confirmDialogue = 0;
-
+	pSdlGame->choiceSpeech = 2.0;
+	initDialogue(&(pSdlGame->pTree)); /*Initialisation de l'arbre de dialogue*/
+	
+	
+	
+	
+	affichageArborescent((pSdlGame->pTree));
 	SDL_Init(SDL_INIT_VIDEO);
 	if(TTF_Init() == -1)
 	{
@@ -280,6 +286,16 @@ pSdlGame ->surfaceDial = IMG_Load("data/image/dialogue.png");
 	if (pSdlGame->surfaceDial==NULL)	
 		pSdlGame->surfaceDial = IMG_Load("../data/image/dialogue.png");
 	assert( pSdlGame->surfaceDial!=NULL);
+	
+pSdlGame ->surfaceDialYes = IMG_Load("data/image/grass2.png");
+	if (pSdlGame->surfaceDialYes==NULL)	
+		pSdlGame->surfaceDialYes = IMG_Load("../data/image/grass2.png");
+	assert( pSdlGame->surfaceDialYes!=NULL);
+
+pSdlGame ->surfaceDialNo = IMG_Load("data/image/grass4.png");
+	if (pSdlGame->surfaceDialNo==NULL)	
+		pSdlGame->surfaceDialNo = IMG_Load("../data/image/grass4.png");
+	assert( pSdlGame->surfaceDialNo!=NULL);	
 	
 pSdlGame ->surfaceKing = IMG_Load("data/image/king.png");
 	if (pSdlGame->surfaceKing==NULL)	
@@ -679,7 +695,7 @@ else
 	posiChar.y = getPosiChar(pChar).y*TAILLE_SPRITE - pSdlGame->scrollY;
 
 	displaySprite(&(pSdlGame->pSpritesWorldMap), posiChar, pSdlGame->surfaceScreen);
-	if(pSdlGame->dialogue == 1)
+	if(pSdlGame->dialogue == 2)
 	{
 		/*Position et blit du dialogue*/
 		SDL_Rect positionDial;
@@ -699,6 +715,17 @@ else
 		positionText3.x = positionDial.x+20;
 		positionText3.y = positionDial.y+110;
 		SDL_BlitSurface(pSdlGame->surfaceText3, NULL, pSdlGame->surfaceScreen, &positionText3);
+		
+		/*Bouttons*/
+		SDL_Rect positionDialYes;
+		positionDialYes.x = (pSdlGame->surfaceDial->w-100)/4;
+		positionDialYes.y = positionDial.y+(pSdlGame->surfaceDial->h - (pSdlGame->surfaceDial->h)/4);
+		SDL_BlitSurface(pSdlGame->surfaceDialYes, NULL, pSdlGame->surfaceScreen, &positionDialYes);
+		
+		SDL_Rect positionDialNo;
+		positionDialNo.x = (pSdlGame->surfaceDial->w-100) - (pSdlGame->surfaceDial->w-100)/4;
+		positionDialNo.y = positionDial.y+(pSdlGame->surfaceDial->h - (pSdlGame->surfaceDial->h)/4);
+		SDL_BlitSurface(pSdlGame->surfaceDialNo, NULL, pSdlGame->surfaceScreen, &positionDialNo);
 	}
 	}
 }
@@ -792,13 +819,13 @@ void keyManagment2(SdlGame *pSdlGame)
 			animSprite (&(pSdlGame->pSpritesWorldMap), 2, 0, 0);
 		}
 	}
-	else if (pSdlGame->dialogue == 0) 
+	else if (pSdlGame->dialogue == 2) 
 	{
 		if(pSdlGame->pKey.kLeft==1)
 		{
 			if (pSdlGame -> choiceDialogue == 2)
 			{
-				pSdlGame -> choiceDialogue =1;
+				pSdlGame -> choiceDialogue = 1;
 				
 			}
 		}
@@ -810,7 +837,24 @@ void keyManagment2(SdlGame *pSdlGame)
 				
 			}
 		}
+		if(pSdlGame->pKey.kReturn == 1 && pSdlGame -> choiceDialogue == 1)
+		{
+			pSdlGame->dialogue = 1;
+			pSdlGame->confirmDialogue = 1;
+		}
+		else if(pSdlGame->pKey.kReturn == 1 && pSdlGame -> choiceDialogue == 2)
+		{
+			pSdlGame->dialogue = 1;
+			pSdlGame->confirmDialogue = 1;
+		}
+		if (pSdlGame -> choiceDialogue == 0 && (pSdlGame->pKey.kRight==1 || pSdlGame->pKey.kLeft==1))
+		{
+			pSdlGame -> choiceDialogue = 1;
+		}
+		
+		
 	}
+	//printf ("CHOIX DIAL = %d, CONFIRMDIAL = %f , SPEECH = %f\n", pSdlGame -> choiceDialogue, pSdlGame->confirmDialogue, pSdlGame->choiceSpeech);
 	
 	if(pSdlGame->pKey.kLeft==0 && pSdlGame->pKey.kRight==0)
 	{
@@ -1090,44 +1134,139 @@ void animEnemies(SdlGame *pSdlGame)
 			
 			}
 			
-	
-		
-		
+}
+void dialogueAction(SdlGame *pSdlGame, int loop)
+{
+	printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+		if (strcmp(discutionDialogue(&(pSdlGame->pTree), pSdlGame->choiceSpeech), "&exit&")==1)
+		{
+			exit(1);
+			loop=0;
+		}
+		if(strcmp(discutionDialogue(&(pSdlGame->pTree), pSdlGame->choiceSpeech), "&ok&")==0)
+		{
+				pSdlGame->dialogue = 0;
+		}
 }
 
-void dialogueSpeak(SdlGame *pSdlGame)
+void dialogueSpeak(SdlGame *pSdlGame, float choice)
 {
+
 	SDL_Color color = {0, 0, 0};
-	char dialTab[1000];
-	discutionDialogue(&(pSdlGame->pTree), dialTab);
-	char dialTab1[80];
-	char dialTab2[80];
-	char dialTab3[80];
-	int i;
+	char dialTab[300];
+	int k=0;
+	while(discutionDialogue(&(pSdlGame->pTree), choice)[k]!='\0')
+	{
+		dialTab[k]=discutionDialogue(&(pSdlGame->pTree), choice)[k];
+		k++;
+	}
+	dialTab[k] = '\0';
+	printf("%s\n",dialTab);
+	printf("%d\n",k);
+	//printf("%s",discutionDialogue(&(pSdlGame->pTree), 0.0));
+
+	int i=0;
 	int j=0;
-	for(i=0;i<=78; i++)
+	int l=0;
+	int p=0;
+	int q=0;
+	int r=0;
+	int s=0;
+	while (dialTab[p]!='\0')
 	{
-			dialTab1[j] = dialTab[i];
-			j++;
+		if (k<79)
+		{
+			char dialTab1[k];
+			if(i<=k)
+			{
+					dialTab1[i] = dialTab[i];
+					i++;
+				
+			}
+			if(i==k)
+			{
+				dialTab1[i]='\0';
+				printf("Dial1 = %s\n", dialTab1);
+				pSdlGame->surfaceText1 = TTF_RenderText_Blended(pSdlGame->font,dialTab1, color);
+				pSdlGame->surfaceText2 = TTF_RenderText_Blended(pSdlGame->font,"", color);
+				pSdlGame->surfaceText3 = TTF_RenderText_Blended(pSdlGame->font,"", color);
+			}
+		}
+		else if (k<156)
+		{
+			char dialTab1[79];
+			char dialTab2[k-79];
+			if(j<=78)
+			{
+					dialTab1[j] = dialTab[j];
+					j++;
+			}
+			if(j==79)
+			{
+				dialTab1[j]='\0';
+				pSdlGame->surfaceText1 = TTF_RenderText_Blended(pSdlGame->font,dialTab1, color);
+			}
+			if(j>78 && j<=k)
+			{
+					dialTab2[q] = dialTab[j];
+					q++;
+			}
+			if(j==k+1)
+			{
+				dialTab2[q]='\0';
+				pSdlGame->surfaceText2 = TTF_RenderText_Blended(pSdlGame->font,dialTab2, color);
+				pSdlGame->surfaceText3 = TTF_RenderText_Blended(pSdlGame->font,"", color);
+			}
+		}
+		else if (k<235)
+		{
+			char dialTab1[79];
+			char dialTab2[79];
+			char dialTab3[k-155];
+			if(l<=78)
+			{
+					dialTab1[l] = dialTab[l];
+					l++;
+
+			}
+			if(l==79)
+			{
+				dialTab1[l]='\0';
+				printf("ICI 1\n");
+				pSdlGame->surfaceText1 = TTF_RenderText_Blended(pSdlGame->font,dialTab1, color);
+			}
+			if(l>78 && l<=156)
+			{
+					dialTab2[r] = dialTab[l];
+					l++;
+					r++;
+					
+			}
+			if(l==157)
+			{
+				dialTab2[r]='\0';
+				printf("ICI 2\n");
+				pSdlGame->surfaceText2 = TTF_RenderText_Blended(pSdlGame->font,dialTab2, color);
+			}
+			
+			if(l>156 && l<=k)
+			{
+					dialTab3[s] = dialTab[l];
+					l++;
+					s++;
+				
+			}
+			if (l==k+1)
+			{
+				dialTab3[s]='\0';
+				printf("ICI 3\n");
+				pSdlGame->surfaceText3 = TTF_RenderText_Blended(pSdlGame->font,dialTab3, color);
+			}
+		}
+		p++;
 	}
-	dialTab1[j]='\0';
-	pSdlGame->surfaceText1 = TTF_RenderText_Blended(pSdlGame->font,dialTab1, color);
-	j=0;
-	for(i=79;i<=156; i++)
-	{
-			dialTab2[j] = dialTab[i];
-			j++;
-	}
-	dialTab2[j]='\0';
-	pSdlGame->surfaceText2 = TTF_RenderText_Blended(pSdlGame->font,dialTab2, color);
-	j=0;
-	for(i=157;i<=235; i++)
-	{
-			dialTab3[j] = dialTab[i];
-			j++;
-	}
-	dialTab3[j]='\0';
-	pSdlGame->surfaceText3 = TTF_RenderText_Blended(pSdlGame->font,dialTab3, color);
+
+	
 }
 void loopSDL(SdlGame *pSdlGame)
 {
@@ -1171,17 +1310,18 @@ void loopSDL(SdlGame *pSdlGame)
 	pSdlGame->pKey.kCtrlR = 0;
 	pSdlGame->pKey.kCtrlL = 0;
 	pSdlGame->pKey.kShift = 0;
+	pSdlGame->pKey.kReturn = 0;
 	
 	bgBW(pSdlGame->surfaceBG, 1); /*gestion de la saturation de l'arrière plan*/
 
 	audioBG();
 	audioWind();
-	
+
 while(continueLoop == 1)
 {	
-	
+	dialogueAction(pSdlGame,continueLoop);	
 	//printf("LOOP \n");
-	initDialogue(&(pSdlGame->pTree));
+	
 	if (pSdlGame ->confirmMenu !=1)
 	{
 	while (SDL_PollEvent(&event))
@@ -1325,6 +1465,10 @@ while(continueLoop == 1)
 								pSdlGame->pKey.kCtrlL = 0;	
 							}
 							break;	
+						case SDLK_RETURN:
+							pSdlGame->pKey.kReturn = 1;
+							
+							break;
 						case SDLK_ESCAPE:
 							pSdlGame ->confirmMenu=0;
 							break;
@@ -1362,7 +1506,10 @@ while(continueLoop == 1)
 							
 							break;
 						case SDLK_RSHIFT:
-							
+							break;						
+						case SDLK_RETURN:
+							pSdlGame->pKey.kReturn = 0;
+							pSdlGame->confirmDialogue =0;
 							break;
 						case SDLK_ESCAPE:
 
@@ -1373,7 +1520,7 @@ while(continueLoop == 1)
 					}
 					break;
 				default:
-							break;
+					break;
 			}
 			
 		
@@ -1410,8 +1557,6 @@ if(pGame -> level != 1)
 			colisionSprite(pSdlGame);
 			
 			collisionObjects (&(pChar->cPosi), &(pGame -> gObjects));
-
-			printf("ANGLE = %f", pSdlGame->pGame.gObjects.oObject[3].angle);
 			
 			collisionObjects (&(pGame -> gObjects.oObject[2].oPosi), &(pGame -> gObjects));
 			
@@ -1518,14 +1663,28 @@ if(pGame -> level != 1)
 			
 			if(((temp2 > SCREEN_HEIGHT*3/4  && pChar->cPosi.v_y >0) || (temp2 < SCREEN_HEIGHT*1/4 && pChar->cPosi.v_y <0) )&& temp2 >0 && temp2<SCREEN_HEIGHT)
 				pSdlGame->scrollY+=pChar->cPosi.v_y*TAILLE_SPRITE;
-			if(pSdlGame->dialogue == 1)
+		
+			if(pSdlGame->dialogue == 1 && pSdlGame->confirmDialogue == 1)
 			{
-				dialogueSpeak(pSdlGame);
+				dialogueSpeak(pSdlGame, searchElement(pSdlGame->choiceSpeech, pSdlGame ->pTree, pSdlGame -> choiceDialogue, pSdlGame->confirmDialogue));
+				pSdlGame->choiceSpeech = searchElement(pSdlGame->choiceSpeech, pSdlGame ->pTree, pSdlGame -> choiceDialogue, pSdlGame->confirmDialogue );
+				pSdlGame->dialogue = 2;
+				pSdlGame->confirmDialogue =0;
+				pSdlGame->choiceDialogue = 0;
 			}
+			else if (pSdlGame->choiceSpeech == 2.0 && pSdlGame->dialogue == 1)
+			{
+				dialogueSpeak(pSdlGame,pSdlGame->choiceSpeech);
+				pSdlGame->dialogue = 2;
+				pSdlGame->confirmDialogue = 0;
+			}
+
 			
-			if(collision(&(pChar->cPosi), &(pPnj->cPosi))==1)
+			
+			if(collision(&(pChar->cPosi), &(pPnj->cPosi))==1 && pSdlGame->dialogue != 2)
 			{
 					pSdlGame->dialogue = 1;
+
 			}
 		}
 		if (refresh==1)

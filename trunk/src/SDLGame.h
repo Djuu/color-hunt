@@ -39,6 +39,7 @@ typedef struct
 	int kCtrlR;
 	int kCtrlL;
 	int kShift;
+	int kReturn;
 }Key;
 
 /*typedef struct
@@ -60,7 +61,8 @@ typedef struct
 	int choiceDialogue;
 	int confirmDialogue;
 	int dialogue;
-	
+	float choiceSpeech;
+
 /*Menu*/
 	SDL_Surface *surfaceStart;
 	SDL_Surface *surfaceExit;
@@ -83,12 +85,14 @@ typedef struct
 	SDL_Surface *surfaceMana;
 	
 	SDL_Surface *surfaceKing;
-	
+
+/*Dialogue*/
 	SDL_Surface *surfaceText1;/*ligne 1*/
 	SDL_Surface *surfaceText2;/*ligne 2*/
 	SDL_Surface *surfaceText3;/*ligne 3*/
-	
 	SDL_Surface *surfaceDial;
+	SDL_Surface *surfaceDialYes;
+	SDL_Surface *surfaceDialNo;
 	TTF_Font *font;
 	
 	SDL_Surface *surfaceMapBG;

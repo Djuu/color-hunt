@@ -20,8 +20,8 @@ void initGame (Game *pGame, const char* pMap)
 	pGame->gObjects.oObject[3].oPosi.spriteSizeH=2.5;
 	pGame->gObjects.oObject[3].angle = 40;
 	
-	//pGame->gPnj.cPosi.spriteSizeW = 1;
-	//pGame->gPnj.cPosi.spriteSizeH = 1;
+	pGame->gPnj.cPosi.spriteSizeW = 1;
+	pGame->gPnj.cPosi.spriteSizeH = 1;
 	k=0;
 	int l = 2;
 	pGame->level = 1;
