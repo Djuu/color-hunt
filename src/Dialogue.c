@@ -78,49 +78,6 @@ static void insertEleInUnderTree(float e, Node ** ppN, Tree *pTree)
 }
 
 
-
-
-
-
-
-
-
-static void affichageArborescent_par_niveau (Node *pN, int niv) {
-	int i;
-	if (pN==NULL) {
-		for (i=0; i<4*niv; i++) {
-			putchar (' ');
-		}
-		printf("NULL\n");
-	}
-	else {
-		affichageArborescent_par_niveau(pN->ls, niv+1);
-		for (i=0; i<4*niv; i++) {
-			putchar (' ');
-		}
-		printf("%f",pN->info);
-		printf("\n");
-		affichageArborescent_par_niveau(pN->rs, niv+1);
-		
-	}
-}
-
-void affichageArborescent(Tree A) {
-	affichageArborescent_par_niveau(A.adRoot, 0);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 float searchElement(float e, Tree pTree, int choice, int confirm)
 {	
 	Node * temp;

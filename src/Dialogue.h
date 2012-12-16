@@ -41,7 +41,6 @@ void insertElement(float e, Tree *pTree);
 
 
 float searchElement(float e, Tree pTree, int choice, int confirm);
-void affichageArborescent(Tree A);
 
 void initDialogue(Tree *pTree);
 char *discutionDialogue(Tree *pTree, float choice);
