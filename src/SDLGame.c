@@ -28,7 +28,7 @@ void initSDL(SdlGame *pSdlGame)
 	pSdlGame->choiceSpeech = 2.0;
 	initDialogue(&(pSdlGame->pTree)); /*Initialisation de l'arbre de dialogue*/
 	
-	
+	pSdlGame->flyMode =0;
 	
 	
 	affichageArborescent((pSdlGame->pTree));
@@ -105,11 +105,6 @@ pSdlGame -> surfaceGrass = IMG_Load("data/image/grass4.png");
 	if (pSdlGame->surfaceGrass==NULL)	
 		pSdlGame->surfaceGrass = IMG_Load("../data/image/grass4.png");
 	assert( pSdlGame->surfaceGrass!=NULL);
-	
-pSdlGame -> surfaceFireBall = IMG_Load("data/image/fireBall.png");
-	if (pSdlGame->surfaceFireBall==NULL)	
-		pSdlGame->surfaceFireBall = IMG_Load("../data/image/fireBall.png");
-	assert( pSdlGame->surfaceFireBall!=NULL);
 
 pSdlGame -> surfaceLife = IMG_Load("data/image/lifeGauge.png");
 	if (pSdlGame->surfaceLife==NULL)	
@@ -305,9 +300,9 @@ pSdlGame ->surfaceKing = IMG_Load("data/image/king.png");
 /*Initialisation des sprites*/
 	pSdlGame->pSprites.source = pSdlGame -> surfaceChar; /*incrementation du sprite global*/
 	/*Cour vers la droite*/
-	InitSprite (&(pSdlGame->pSprites),right, 52, 54, 31, 15);	
+	InitSprite (&(pSdlGame->pSprites),right, 52, 56, 31, 15);	
 	/*Cour vers la gauche*/
-	InitSprite (&(pSdlGame->pSprites),left, 52, 54, 31, 15);
+	InitSprite (&(pSdlGame->pSprites),left, 52, 56, 31, 15);
 	/*attaque epee droite*/
 	InitSprite (&(pSdlGame->pSprites),attackR, 98, 56, 17, 0);
 	/*attaque epee gauche*/
@@ -316,24 +311,25 @@ pSdlGame ->surfaceKing = IMG_Load("data/image/king.png");
 	InitSprite (&(pSdlGame->pSprites),attackFR, 52, 56, 11, 0);
 	/*attaque feu gauche*/
 	InitSprite (&(pSdlGame->pSprites),attackFL, 52, 56, 11, 0);
-	/*Attend droite*/
-	InitSprite (&(pSdlGame->pSprites),stayR, 52, 54, 7, 0);
-	/*Attend gauche*/
-	InitSprite (&(pSdlGame->pSprites),stayL, 52, 54, 7, 0);
-	/*KO droit*/
-	InitSprite (&(pSdlGame->pSprites),KOR, 52, 45, 5, 5);
-	/*KO gauche*/
-	InitSprite (&(pSdlGame->pSprites),KOL, 52, 45, 5, 0);
-	/*Saut droite up*/
-	/*InitSprite (&(pSdlGame->pSprites),jumpUpR, 54, 55, 8, 8);*/
-	/*Saut droite down*/
-	/*InitSprite (&(pSdlGame->pSprites),jumpDownR, 52, 50, 8, 8);*/
-	
-	pSdlGame->pSpritesObject.source = pSdlGame -> surfaceFireBall; /*incrementation du sprite global*/
 	/*boule de feu droit*/
-	InitSprite (&(pSdlGame->pSpritesObject),0, 30, 56, 5, 0);
+	InitSprite (&(pSdlGame->pSprites),fireBallR, 30, 56, 5, 0);
 	/*boule de feu gauche*/
-	InitSprite (&(pSdlGame->pSpritesObject),1, 30, 56, 5, 0);
+	InitSprite (&(pSdlGame->pSprites),fireBallL, 30, 56, 5, 0);
+	/*Attend droite*/
+	InitSprite (&(pSdlGame->pSprites),stayR, 52, 56, 7, 0);
+	/*Attend gauche*/
+	InitSprite (&(pSdlGame->pSprites),stayL, 52, 56, 7, 0);
+	/*KO droit*/
+	InitSprite (&(pSdlGame->pSprites),KOR, 52, 56, 5, 5);
+	/*KO gauche*/
+	InitSprite (&(pSdlGame->pSprites),KOL, 52, 56, 5, 0);
+	/*fly droit*/
+	InitSprite (&(pSdlGame->pSprites),flyR, 40, 56, 6, 0);
+	/*fly gauche*/
+	InitSprite (&(pSdlGame->pSprites),flyL, 40, 58, 6, 0);
+
+	
+
 	
 	
 
@@ -380,7 +376,7 @@ void sdlDisplay(SdlGame *pSdlGame)
 	int i,j, k;
 	int xmin,xmax,ymin,ymax;
 	SDL_Rect positionTile;
-	
+	printf("POSITION_Sprite = %d\n", pSdlGame -> pSprites.position);
 	Game *pGame = &(pSdlGame->pGame);
 	Character *pChar= getGameChar(pGame);
 	Character *pPnj= getGamePnj(pGame);
@@ -404,7 +400,7 @@ if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
 	posiFireBall.x = pSdlGame->pGame.gObjects.oObject[1].oPosi.x*TAILLE_SPRITE- pSdlGame->scrollX;
 	posiFireBall.y = pSdlGame->pGame.gObjects.oObject[1].oPosi.y*TAILLE_SPRITE- pSdlGame->scrollY;
 	
-	displaySprite(&(pSdlGame->pSpritesObject), posiFireBall, pSdlGame->surfaceScreen);
+	displaySprite(&(pSdlGame->pSprites), posiFireBall, pSdlGame->surfaceScreen);
 	
 	for(k=0; k<pSdlGame -> pGame.gEnemies.number; k++)
 	{
@@ -875,14 +871,13 @@ void keyManagment(SdlGame *pSdlGame)
 {
 	int i;
 
-			
 		if(pSdlGame->pGame.gChar.projection == 0 && pSdlGame->pGame.gChar.attack ==0 && pSdlGame->pGame.gChar.superAttack == 0)
 		{
 			
 			if(pSdlGame->pKey.kLeft==1)
 			{
 
-				if(pSdlGame->pGame.gChar.attack == 0 && pSdlGame->pGame.gChar.superAttack == 0)
+				if(pSdlGame->pGame.gChar.attack == 0 && pSdlGame->pGame.gChar.superAttack == 0 && pSdlGame->flyMode == 0)
 				{
 					animSprite (&(pSdlGame->pSprites), left, 0, pSdlGame->pGame.gChar.cPosi.direction);
 				}
@@ -893,8 +888,9 @@ void keyManagment(SdlGame *pSdlGame)
 			{
 				
 
-				if(pSdlGame->pGame.gChar.attack == 0 && pSdlGame->pGame.gChar.superAttack == 0)
+				if(pSdlGame->pGame.gChar.attack == 0 && pSdlGame->pGame.gChar.superAttack == 0 && pSdlGame->flyMode == 0)
 				{
+					
 					animSprite (&(pSdlGame->pSprites), right, 0, pSdlGame->pGame.gChar.cPosi.direction);
 				}
 				controlKey(&(pSdlGame->pGame), 'd');
@@ -919,13 +915,14 @@ void keyManagment(SdlGame *pSdlGame)
 					{
 						animSprite (&(pSdlGame->pSprites), jumpDownR, 1, pSdlGame->pGame.gChar.cPosi.direction);
 					}
-				}	
+			}	
 			
 		}*/
 		
 		}
 
-	
+	 if(pSdlGame->flyMode == 0)
+	 {
 			if (pSdlGame->pKey.kCtrlR == 1)
 			{  
 				pSdlGame->pGame.gChar.attack =1;
@@ -966,18 +963,18 @@ void keyManagment(SdlGame *pSdlGame)
 				tempA=1;
 			}
 			
-			if(tempA = 1)
+			if(tempA == 1)
 			{
 				if (pSdlGame->pSprites.direction == 0)
 				{
 					
-					animSprite (&(pSdlGame->pSpritesObject), fireBallR, 0, pSdlGame->pGame.gChar.cPosi.direction);
+					animSprite (&(pSdlGame->pSprites), fireBallR, 0, pSdlGame->pGame.gChar.cPosi.direction);
 					
 				}
 				if (pSdlGame->pSprites.direction == 1)
 				{
 					
-					animSprite (&(pSdlGame->pSpritesObject), fireBallL, 0, pSdlGame->pGame.gChar.cPosi.direction);
+					animSprite (&(pSdlGame->pSprites), fireBallL, 0, pSdlGame->pGame.gChar.cPosi.direction);
 					
 				}
 			}
@@ -1027,14 +1024,25 @@ void keyManagment(SdlGame *pSdlGame)
 			pSdlGame->pGame.gChar.projection=0;
 		}
 	*/	
+	}
 	if (pSdlGame->pKey.kCtrlL == 1)
 	{
-			
+			pSdlGame->flyMode=1;
 			controlKey(&(pSdlGame->pGame), 'o');
+			if (pSdlGame->pGame.gChar.cPosi.direction == 0)
+			{
+				animSprite (&(pSdlGame->pSprites), flyR, 0, pSdlGame->pGame.gChar.cPosi.direction);
+			}
+			if (pSdlGame->pGame.gChar.cPosi.direction == 1)
+			{
+				animSprite (&(pSdlGame->pSprites), flyL, 0, pSdlGame->pGame.gChar.cPosi.direction);
+			}
+			
 			
 	}
 	if (pSdlGame->pKey.kCtrlL == 0)
 	{
+			pSdlGame->flyMode=0;
 			controlKey(&(pSdlGame->pGame), 'n');
 	}
 	if (pSdlGame->pKey.kUp ==1 && pSdlGame->pKey.kCtrlL == 1)
@@ -1319,7 +1327,10 @@ void loopSDL(SdlGame *pSdlGame)
 
 while(continueLoop == 1)
 {	
-	dialogueAction(pSdlGame,continueLoop);	
+	if (pSdlGame->dialogue == 1)
+	{
+		dialogueAction(pSdlGame,continueLoop);	
+	}
 	//printf("LOOP \n");
 	
 	if (pSdlGame ->confirmMenu !=1)
@@ -1674,11 +1685,12 @@ if(pGame -> level != 1)
 			}
 			else if (pSdlGame->choiceSpeech == 2.0 && pSdlGame->dialogue == 1)
 			{
+				
 				dialogueSpeak(pSdlGame,pSdlGame->choiceSpeech);
 				pSdlGame->dialogue = 2;
 				pSdlGame->confirmDialogue = 0;
 			}
-
+printf("DIALOGUE = %d\n",pSdlGame->dialogue);
 			
 			
 			if(collision(&(pChar->cPosi), &(pPnj->cPosi))==1 && pSdlGame->dialogue != 2)

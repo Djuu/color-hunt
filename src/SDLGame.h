@@ -17,15 +17,15 @@
 #define attackL		3
 #define attackFR	4
 #define attackFL	5
-#define jumpUpR 	6
-#define jumpDownR	7
+#define fireBallR	6
+#define fireBallL	7
+#define KOR			8
+#define KOL			9
+#define stayR 		10
+#define stayL 		11
+#define flyR 		12
+#define flyL 		13
 
-#define KOR			12
-#define KOL			13
-#define fireBallR	0
-#define fireBallL	1
-#define stayR 		16
-#define stayL 		17
 
 
 
@@ -51,7 +51,6 @@ typedef struct
 {
 	Game pGame;
 	Sprites pSprites;
-	Sprites pSpritesObject;
 	Sprites *pSpritesEnemy;
 	Sprites pSpritesWorldMap;
 	Key pKey;
@@ -62,6 +61,8 @@ typedef struct
 	int confirmDialogue;
 	int dialogue;
 	float choiceSpeech;
+	int flyMode;
+
 
 /*Menu*/
 	SDL_Surface *surfaceStart;
