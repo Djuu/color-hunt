@@ -55,7 +55,7 @@ void initSDL(SdlGame *pSdlGame)
 /*MENU*/
 
 	/*Background*/
-	SDL_Surface* tempMenu = IMG_Load("data/image/menuBG.jpg");
+	SDL_Surface* tempMenu = IMG_Load("data/image/menuBG.png");
 	pSdlGame ->surfaceMenuBG = SDL_DisplayFormat(tempMenu);
 	assert( pSdlGame->surfaceMenuBG!=NULL);
 	
@@ -63,24 +63,37 @@ void initSDL(SdlGame *pSdlGame)
 	pSdlGame ->surfaceMapBG= SDL_DisplayFormat(tempWMap);
 	assert( pSdlGame->surfaceMapBG!=NULL);
 
-	pSdlGame ->surfaceStart = IMG_Load("data/image/startButton.png");
-	if (pSdlGame ->surfaceStart==NULL)	
-		pSdlGame ->surfaceStart = IMG_Load("../data/image/startButton.png");
-	assert( pSdlGame ->surfaceStart!=NULL);
+	SDL_Surface* tempHelp = IMG_Load("data/image/Help.png");
+	pSdlGame ->surfaceHelp = SDL_DisplayFormat(tempHelp);
+	assert( pSdlGame->surfaceMenuBG!=NULL);
 	
-	pSdlGame ->surfaceExit = IMG_Load("data/image/exitButton.png");
-	if (pSdlGame ->surfaceExit==NULL)	
-		pSdlGame ->surfaceExit = IMG_Load("../data/image/exitButton.png");
-	assert( pSdlGame ->surfaceExit!=NULL);	
+	pSdlGame -> surfaceMenuStart = IMG_Load("data/image/Start Selected.png");
+	if (pSdlGame ->surfaceMenuStart==NULL)	
+		pSdlGame ->surfaceMenuStart = IMG_Load("../data/image/Start Selected.png");
+	assert( pSdlGame ->surfaceMenuStart!=NULL);	
+	
+	pSdlGame -> surfaceMenuHelp = IMG_Load("data/image/Help Selected.png");
+	if (pSdlGame ->surfaceMenuHelp==NULL)	
+		pSdlGame ->surfaceMenuHelp = IMG_Load("../data/image/Help Selected.png");
+	assert( pSdlGame ->surfaceMenuHelp!=NULL);	
+	
+	pSdlGame -> surfaceMenuQuit = IMG_Load("data/image/Quit Selected.png");
+	if (pSdlGame ->surfaceMenuQuit==NULL)	
+		pSdlGame ->surfaceMenuQuit = IMG_Load("../data/image/Quit Selected.png");
+	assert( pSdlGame ->surfaceMenuQuit!=NULL);	
 	
 	
 	
 	
 /*Background*/
   
-SDL_Surface* temp = IMG_Load("data/image/bg1.jpg");
-	pSdlGame->surfaceBG = SDL_DisplayFormat(temp);
-	assert( pSdlGame->surfaceBG!=NULL);
+SDL_Surface* temp = IMG_Load("data/image/castleBG.png");
+	pSdlGame->surfaceBG1 = SDL_DisplayFormat(temp);
+	assert( pSdlGame->surfaceBG1!=NULL);
+	
+SDL_Surface* tempF = IMG_Load("data/image/forestBG.png");
+	pSdlGame->surfaceBG2 = SDL_DisplayFormat(tempF);
+	assert( pSdlGame->surfaceBG2!=NULL);
 
 pSdlGame -> surfaceChar =  IMG_Load("data/image/hero4.png");
 	if (pSdlGame->surfaceChar ==NULL)
@@ -101,15 +114,25 @@ pSdlGame -> surfaceFireBall = IMG_Load("data/image/fireBall.png");
         assert( pSdlGame->surfaceFireBall!=NULL);
         
       	
-pSdlGame -> surfaceEarth = IMG_Load("data/image/grass2.png");
-	if (pSdlGame->surfaceEarth==NULL)	
-		pSdlGame->surfaceEarth = IMG_Load("../data/image/grass2.png");
-	assert( pSdlGame->surfaceEarth!=NULL);
+pSdlGame -> surfaceFloor1 = IMG_Load("data/image/c1.png");
+	if (pSdlGame->surfaceFloor1==NULL)	
+		pSdlGame->surfaceFloor1 = IMG_Load("../data/image/c1.png");
+	assert( pSdlGame->surfaceFloor1!=NULL);
 	
-pSdlGame -> surfaceGrass = IMG_Load("data/image/grass4.png");
-	if (pSdlGame->surfaceGrass==NULL)	
-		pSdlGame->surfaceGrass = IMG_Load("../data/image/grass4.png");
-	assert( pSdlGame->surfaceGrass!=NULL);
+pSdlGame -> surfaceUnderFloor1 = IMG_Load("data/image/c2.png");
+	if (pSdlGame->surfaceUnderFloor1==NULL)	
+		pSdlGame->surfaceUnderFloor1 = IMG_Load("../data/image/c2.png");
+	assert( pSdlGame->surfaceUnderFloor1!=NULL);
+	
+pSdlGame -> surfaceFloor2 = IMG_Load("data/image/f1.png");
+	if (pSdlGame->surfaceFloor2==NULL)	
+		pSdlGame->surfaceFloor2 = IMG_Load("../data/image/f1.png");
+	assert( pSdlGame->surfaceFloor2!=NULL);
+	
+pSdlGame -> surfaceUnderFloor2 = IMG_Load("data/image/f2.png");
+	if (pSdlGame->surfaceUnderFloor2==NULL)	
+		pSdlGame->surfaceUnderFloor2 = IMG_Load("../data/image/f2.png");
+	assert( pSdlGame->surfaceUnderFloor2!=NULL);
 
 pSdlGame -> surfaceLife = IMG_Load("data/image/lifeGauge.png");
 	if (pSdlGame->surfaceLife==NULL)	
@@ -251,6 +274,27 @@ pSdlGame ->surfaceMapWaterCUR = IMG_Load("data/image/WaterCUR.png");
 		pSdlGame->surfaceMapWaterCUR = IMG_Load("../data/image/WaterCUR.png");
 	assert( pSdlGame->surfaceMapWaterCUR!=NULL);
 	
+pSdlGame ->surfaceMapWaterCURI = IMG_Load("data/image/WaterCURI.png");
+	if (pSdlGame->surfaceMapWaterCURI==NULL)	
+		pSdlGame->surfaceMapWaterCURI = IMG_Load("../data/image/WaterCURI.png");
+	assert( pSdlGame->surfaceMapWaterCURI!=NULL);
+	
+pSdlGame ->surfaceMapWaterCDLI = IMG_Load("data/image/WaterCDLI.png");
+	if (pSdlGame->surfaceMapWaterCDLI==NULL)	
+		pSdlGame->surfaceMapWaterCDLI = IMG_Load("../data/image/WaterCDLI.png");
+	assert( pSdlGame->surfaceMapWaterCDLI!=NULL);
+	
+pSdlGame ->surfaceMapWaterCULI = IMG_Load("data/image/WaterCULI.png");
+	if (pSdlGame->surfaceMapWaterCULI==NULL)	
+		pSdlGame->surfaceMapWaterCULI = IMG_Load("../data/image/WaterCULI.png");
+	assert( pSdlGame->surfaceMapWaterCULI!=NULL);
+	
+pSdlGame ->surfaceMapWaterCDRI = IMG_Load("data/image/WaterCDRI.png");
+	if (pSdlGame->surfaceMapWaterCDRI==NULL)	
+		pSdlGame->surfaceMapWaterCDRI = IMG_Load("../data/image/WaterCDRI.png");
+	assert( pSdlGame->surfaceMapWaterCDRI!=NULL);
+	
+	
 pSdlGame ->surfaceMapCDL = IMG_Load("data/image/wgrassEartthCDL.png");
 	if (pSdlGame->surfaceMapCDL==NULL)	
 		pSdlGame->surfaceMapCDL = IMG_Load("../data/image/wgrassEartthCDL.png");
@@ -276,9 +320,9 @@ pSdlGame ->surfaceMapCastle = IMG_Load("data/image/castle.png");
 		pSdlGame->surfaceMapCastle = IMG_Load("../data/image/castle.png");
 	assert( pSdlGame->surfaceMapCastle!=NULL);
 	
-pSdlGame ->surfaceMapTree = IMG_Load("data/image/Tree.png");
+pSdlGame ->surfaceMapTree = IMG_Load("data/image/tree.png");
 	if (pSdlGame->surfaceMapTree==NULL)	
-		pSdlGame->surfaceMapTree = IMG_Load("../data/image/Tree.png");
+		pSdlGame->surfaceMapTree = IMG_Load("../data/image/tree.png");
 	assert( pSdlGame->surfaceMapTree!=NULL);
 
 
@@ -369,6 +413,18 @@ pSdlGame ->surfaceKing = IMG_Load("data/image/king.png");
 	InitSprite (&(pSdlGame->pSpritesWorldMap),2, 17, 24, 3, 0);
 	/*Cour vers la gauche*/
 	InitSprite (&(pSdlGame->pSpritesWorldMap),3, 17, 24, 3, 0);
+	
+	pSdlGame -> pSpritesMenuStart.source = pSdlGame -> surfaceMenuStart;
+	
+	InitSprite(&(pSdlGame->pSpritesMenuStart),0,300,180,12,0);
+	
+	pSdlGame -> pSpritesMenuHelp.source = pSdlGame -> surfaceMenuHelp;
+	
+	InitSprite(&(pSdlGame->pSpritesMenuHelp),0,300,180,12,0);
+	
+	pSdlGame -> pSpritesMenuQuit.source = pSdlGame -> surfaceMenuQuit;
+	
+	InitSprite(&(pSdlGame->pSpritesMenuQuit),0,300,180,12,0);
 }
 
 
@@ -394,8 +450,15 @@ if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
 	if(pGame -> level != 1)
 	{
 	/*Background*/
-	SDL_BlitSurface(pSdlGame->surfaceBG, NULL, pSdlGame->surfaceScreen, NULL);
-
+	if(pGame -> level == 2)
+	{
+		SDL_BlitSurface(pSdlGame->surfaceBG1, NULL, pSdlGame->surfaceScreen, NULL);
+	}
+	
+	if(pGame -> level == 3)
+	{
+		SDL_BlitSurface(pSdlGame->surfaceBG2, NULL, pSdlGame->surfaceScreen, NULL);
+	}
 	
 	posiChar.x = getPosiChar(pChar).x*TAILLE_SPRITE - pSdlGame->scrollX;
 	posiChar.y = getPosiChar(pChar).y*TAILLE_SPRITE - pSdlGame->scrollY;
@@ -445,30 +508,60 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
 	ymin = pSdlGame->scrollY/TAILLE_SPRITE;
 	ymax = (pSdlGame->scrollY + SCREEN_HEIGHT)/TAILLE_SPRITE;
 	
-
-	for (i=xmin;i<xmax;++i)
-	{
-		for (j=ymin;j<ymax;++j)
+	if(pGame -> level == 2)
+	{	
+		
+		for (i=xmin;i<xmax;++i)
 		{
-			
-			
-			switch (pSdlGame->pGame.gMap.tab[j][i])
+			for (j=ymin;j<ymax;++j)
 			{
-				case '#':
-					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
-					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
-					SDL_BlitSurface(pSdlGame->surfaceEarth,NULL, pSdlGame->surfaceScreen, &positionTile);
-					break;
-				case '%':
-					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
-					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
-					SDL_BlitSurface(pSdlGame->surfaceGrass,NULL, pSdlGame->surfaceScreen, &positionTile);
-					break;
-				default:
-					break;
-			}
-		} 
 				
+				
+				switch (pSdlGame->pGame.gMap.tab[j][i])
+				{
+					case '#':
+						positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+						positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+						SDL_BlitSurface(pSdlGame->surfaceFloor1,NULL, pSdlGame->surfaceScreen, &positionTile);
+						break;
+					case '%':
+						positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+						positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+						SDL_BlitSurface(pSdlGame->surfaceUnderFloor1,NULL, pSdlGame->surfaceScreen, &positionTile);
+						break;
+					default:
+						break;
+				}
+			} 
+					
+		}
+	}
+	
+	if(pGame -> level == 3)
+	{	
+		for (i=xmin;i<xmax;++i)
+		{
+			for (j=ymin;j<ymax;++j)
+			{
+				
+				switch (pSdlGame->pGame.gMap.tab[j][i])
+				{
+					case '#':
+						positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+						positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+						SDL_BlitSurface(pSdlGame->surfaceFloor2,NULL, pSdlGame->surfaceScreen, &positionTile);
+						break;
+					case '%':
+						positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+						positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+						SDL_BlitSurface(pSdlGame->surfaceUnderFloor2,NULL, pSdlGame->surfaceScreen, &positionTile);
+						break;
+					default:
+						break;
+				}
+			} 
+					
+		}
 	}
 }
 else
@@ -555,6 +648,18 @@ else
 					break;			
 					
 					case 'o':
+					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+					SDL_BlitSurface(pSdlGame->surfaceMapGrass1,NULL, pSdlGame->surfaceScreen, &positionTile);
+					break;	
+				
+					case '2':
+					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+					SDL_BlitSurface(pSdlGame->surfaceMapGrass1,NULL, pSdlGame->surfaceScreen, &positionTile);
+					break;
+					
+					case '3':
 					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
 					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
 					SDL_BlitSurface(pSdlGame->surfaceMapGrass1,NULL, pSdlGame->surfaceScreen, &positionTile);
@@ -662,6 +767,30 @@ else
 					SDL_BlitSurface(pSdlGame->surfaceMapGrass1,NULL, pSdlGame->surfaceScreen, &positionTile);
 					break;
 					
+					case '-':
+					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+					SDL_BlitSurface(pSdlGame->surfaceMapWaterCDLI,NULL, pSdlGame->surfaceScreen, &positionTile);
+					break;	
+					
+					case '_':
+					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+					SDL_BlitSurface(pSdlGame->surfaceMapWaterCULI,NULL, pSdlGame->surfaceScreen, &positionTile);
+					break;	
+					
+					case '/':
+					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+					SDL_BlitSurface(pSdlGame->surfaceMapWaterCDRI,NULL, pSdlGame->surfaceScreen, &positionTile);
+					break;	
+					
+					case ']':
+					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+					SDL_BlitSurface(pSdlGame->surfaceMapWaterCURI,NULL, pSdlGame->surfaceScreen, &positionTile);
+					break;	
+					
 											
 					
 					
@@ -673,9 +802,9 @@ else
 		posiPnj.x = getPosiChar(pPnj).x*TAILLE_SPRITE - pSdlGame->scrollX;
 		posiPnj.y = getPosiChar(pPnj).y*TAILLE_SPRITE - pSdlGame->scrollY;
 		/*Blit objets*/
-		for (i=xmin;i<xmax;++i)
+		for (i=0;i<pSdlGame->pGame.gMap.dimx;++i)
 		{
-			for (j=ymin;j<ymax;++j)
+			for (j=0;j<pSdlGame->pGame.gMap.dimy;++j)
 			{
 				switch (pSdlGame->pGame.gMap.tab[j][i])
 				{	
@@ -688,6 +817,13 @@ else
 					case 'K':
 					SDL_BlitSurface(pSdlGame->surfaceKing,NULL, pSdlGame->surfaceScreen, &posiPnj);
 					break;
+					
+					case 'T':
+					positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+					SDL_BlitSurface(pSdlGame->surfaceMapTree,NULL, pSdlGame->surfaceScreen, &positionTile);
+					break;
+					
 				}
 			}
 		}
@@ -732,19 +868,34 @@ else
 }
 else
 {
-	SDL_BlitSurface(pSdlGame->surfaceMenuBG,NULL, pSdlGame->surfaceScreen, NULL);
-	
-		SDL_Rect positionStart;
-		positionStart.x = 0;
-		positionStart.y = 0;
-		SDL_BlitSurface(pSdlGame->surfaceStart,NULL, pSdlGame->surfaceScreen, &positionStart);
+	if(pSdlGame->choiceMenu == 3 && pSdlGame->confirmMenu ==1)
+	{
+			SDL_BlitSurface(pSdlGame->surfaceHelp,NULL, pSdlGame->surfaceScreen,NULL);
+	}
+	else
+	{
+		SDL_BlitSurface(pSdlGame->surfaceMenuBG,NULL, pSdlGame->surfaceScreen, NULL);
 		
-		SDL_Rect positionExit;
-		positionExit.x = 0;
-		positionExit.y = 200;
-		SDL_BlitSurface(pSdlGame->surfaceExit,NULL, pSdlGame->surfaceScreen, &positionExit);
+			
+			SDL_Rect positionStart;
+			positionStart.x = 0;
+			positionStart.y = 400;
+			//SDL_BlitSurface(pSdlGame->surfaceStart,NULL, pSdlGame->surfaceScreen, &positionStart);
 		
-		
+			SDL_Rect positionExit;
+			positionExit.x = 250;
+			positionExit.y = 400;
+			//SDL_BlitSurface(pSdlGame->surfaceExit,NULL, pSdlGame->surfaceScreen, &positionExit);
+			
+			SDL_Rect positionHelp;
+			positionHelp.x = 500;
+			positionHelp.y = 400;
+			//SDL_BlitSurface(pSdlGame->surfaceHelp,NULL, pSdlGame->surfaceScreen, &positionHelp);
+			
+			displaySprite(&(pSdlGame->pSpritesMenuHelp), positionHelp, pSdlGame->surfaceScreen);
+			displaySprite(&(pSdlGame->pSpritesMenuStart), positionStart, pSdlGame->surfaceScreen);
+			displaySprite(&(pSdlGame->pSpritesMenuQuit), positionExit, pSdlGame->surfaceScreen);
+	}
 	
 }
 	/*SDL_Rect rFilter;
@@ -1325,7 +1476,7 @@ void loopSDL(SdlGame *pSdlGame)
 	pSdlGame->pKey.kShift = 0;
 	pSdlGame->pKey.kReturn = 0;
 	
-	bgBW(pSdlGame->surfaceBG, 1); /*gestion de la saturation de l'arrière plan*/
+	bgBW(pSdlGame->surfaceBG1, 1); /*gestion de la saturation de l'arrière plan*/
 
 	audioBG();
 	audioWind();
@@ -1338,7 +1489,7 @@ while(continueLoop == 1)
 	}
 	//printf("LOOP \n");
 	
-	if (pSdlGame ->confirmMenu !=1)
+	if (pSdlGame ->confirmMenu !=1 || (pSdlGame ->choiceMenu == 3 && pSdlGame ->confirmMenu == 1))
 	{
 	while (SDL_PollEvent(&event))
 		{
@@ -1347,19 +1498,30 @@ while(continueLoop == 1)
 				case SDL_KEYDOWN:
 					switch (event.key.keysym.sym)
 					{
-						case SDLK_UP:
+						case SDLK_RIGHT:
 							if (pSdlGame -> choiceMenu == 2)
 							{
-								pSdlGame -> choiceMenu =1;
+								pSdlGame -> choiceMenu =3;
+								
+							}
+							if (pSdlGame -> choiceMenu == 1)
+							{
+								pSdlGame -> choiceMenu =2;
 								
 							}
 							break;
-						case SDLK_DOWN:
-							if (pSdlGame -> choiceMenu == 1)
+						case SDLK_LEFT:
+							if (pSdlGame -> choiceMenu == 2)
+							{
+								pSdlGame -> choiceMenu = 1;
+								
+							}	
+							if (pSdlGame -> choiceMenu == 3)
 							{
 								pSdlGame -> choiceMenu = 2;
 								
 							}
+							
 							break;	
 						case SDLK_RETURN:
 							pSdlGame ->confirmMenu = 1;
@@ -1367,7 +1529,14 @@ while(continueLoop == 1)
 							break;
 							
 						case SDLK_ESCAPE:
-							continueLoop = 0;
+							if(pSdlGame -> choiceMenu == 3 && pSdlGame -> confirmMenu ==1)
+							{
+									pSdlGame -> confirmMenu =0;
+							}
+							else
+							{
+								continueLoop = 0;
+							}
 							break;
 						default:
 						break;
@@ -1376,11 +1545,26 @@ while(continueLoop == 1)
 			
 		}
 	}
-	//printf("choice = %d, confirm = %d\n",pSdlGame -> choiceMenu , pSdlGame ->confirmMenu);
+	
+	
 	if(pSdlGame -> choiceMenu == 2 && pSdlGame ->confirmMenu==1)
 	{
 			continueLoop =0;
 	}
+	if(pSdlGame -> choiceMenu == 2)
+	{
+		animSprite(&(pSdlGame->pSpritesMenuQuit), 0, 0, 0);
+	}
+	if(pSdlGame -> choiceMenu == 1)
+	{
+		animSprite(&(pSdlGame->pSpritesMenuStart), 0, 0, 0);
+	}
+	if(pSdlGame -> choiceMenu == 3)
+	{
+			animSprite(&(pSdlGame->pSpritesMenuHelp), 0, 0, 0);
+	}
+
+	
 	if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
 	{
 	//printf("GAME \n");
@@ -1602,13 +1786,12 @@ if(pGame -> level != 1)
 			refreshDirection(&(pSdlGame->pGame.gChar.cPosi));
 			
 			
-			warpMap(pGame);	
-			if (pGame -> level != 1 && pGame -> level != 42)
+			if(warpMap(pGame) ==1)
 			{
 				pSdlGame->scrollX=0;
 				pSdlGame->scrollY=0;
-				pGame -> level =42;
-			}
+			}	
+		
 		/*	printf(" posX : %f \n posY :%f \n\n ", getPosiChar(pChar).x , getPosiChar(pChar).y); 
 		printf(" Vret : %d \n " , pGame -> level);  */
 		        refresh = 1;
@@ -1642,6 +1825,8 @@ if(pGame -> level != 1)
 		temp = (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX);
 		if(temp > SCREEN_WIDTH*1/2-10 && temp < SCREEN_WIDTH*1/2+10 && temp >0 && temp<SCREEN_WIDTH)
 			pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
+			
+		
 		//printf("temp = %d_______SCREEN_WIDTH*1/2= %d\n", temp, SCREEN_WIDTH*1/2);
 	/*	if(temp == SCREEN_WIDTH*1/2 && temp >0 && temp<SCREEN_WIDTH )
 						pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;*/
@@ -1666,15 +1851,17 @@ if(pGame -> level != 1)
 			pSdlGame->pGame.gChar.cPosi.spriteSizeW = 1.2;
 			pSdlGame->pGame.gChar.cPosi.spriteSizeH = 1.2;
 			collisionMap (&(pChar->cPosi), pMap);
-			warpMap(pGame);
 			temp = (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX);
 			temp2 = (int)(getPosiChar(pChar).y*TAILLE_SPRITE-pSdlGame->scrollY);
 			
 			if(((temp > SCREEN_WIDTH*3/4  && pChar->cPosi.v_x >0) || (temp < SCREEN_WIDTH*1/4 && pChar->cPosi.v_x <0)) && temp >0 && temp<SCREEN_WIDTH)
 				pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;
 				
-			if (temp <0)
+			if(warpMap(pGame) ==1)
+			{
 				pSdlGame->scrollX=0;
+				pSdlGame->scrollY=0;
+			}	
 			
 			
 			if(((temp2 > SCREEN_HEIGHT*3/4  && pChar->cPosi.v_y >0) || (temp2 < SCREEN_HEIGHT*1/4 && pChar->cPosi.v_y <0) )&& temp2 >0 && temp2<SCREEN_HEIGHT)
@@ -1736,9 +1923,6 @@ void freeSdl(SdlGame *pSdlGame)
 {
 	SDL_FreeSurface (pSdlGame->surfaceScreen);
 	SDL_FreeSurface (pSdlGame->surfaceChar);
-	SDL_FreeSurface (pSdlGame->surfaceEarth);
-	SDL_FreeSurface (pSdlGame->surfaceGrass);
-	SDL_FreeSurface (pSdlGame->surfaceBG);
 	freeSprite(&(pSdlGame->pSprites));
 	Mix_CloseAudio();
 	SDL_Quit();

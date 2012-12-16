@@ -41,11 +41,6 @@ typedef struct
 	int kReturn;
 }Key;
 
-/*typedef struct
-{
-	int jump;
-}Anim;*/
-
 typedef struct
 {
 	Game pGame;
@@ -53,6 +48,9 @@ typedef struct
 	Sprites pSpritesObject;
 	Sprites *pSpritesEnemy;
 	Sprites pSpritesWorldMap;
+	Sprites pSpritesMenuStart;
+	Sprites pSpritesMenuHelp;
+	Sprites pSpritesMenuQuit;
 	Key pKey;
 	Tree pTree;
 	int choiceMenu;
@@ -65,19 +63,25 @@ typedef struct
 
 
 /*Menu*/
-	SDL_Surface *surfaceStart;
-	SDL_Surface *surfaceExit;
+
 	SDL_Surface *surfaceMenuBG;
+	SDL_Surface *surfaceMenuStart;
+	SDL_Surface *surfaceMenuHelp;
+	SDL_Surface *surfaceMenuQuit;
+	SDL_Surface *surfaceHelp;
 	
 /*	Anim pAnim;*/
 	SDL_Surface *surfaceScreen;
 	SDL_Surface *surfaceChar;
 	SDL_Surface *surfaceFire;
 	SDL_Surface *surfaceFireBall;
-	SDL_Surface *surfaceEarth;
+	SDL_Surface *surfaceFloor1;
+	SDL_Surface *surfaceUnderFloor1;
+	SDL_Surface *surfaceUnderFloor2;
+	SDL_Surface *surfaceFloor2;
 	SDL_Surface *surfaceEnemies;
-	SDL_Surface *surfaceGrass;
-	SDL_Surface *surfaceBG;
+	SDL_Surface *surfaceBG1;
+	SDL_Surface *surfaceBG2;
 	SDL_Surface *surfaceLifeBG;
 	SDL_Surface *surfaceLife;
 	SDL_Surface *surfaceFilter;
@@ -121,6 +125,10 @@ typedef struct
 	SDL_Surface *surfaceMapWaterCUL;
 	SDL_Surface *surfaceMapWaterCDR;
 	SDL_Surface *surfaceMapWaterCUR;
+	SDL_Surface *surfaceMapWaterCDLI;
+	SDL_Surface *surfaceMapWaterCULI;
+	SDL_Surface *surfaceMapWaterCDRI;
+	SDL_Surface *surfaceMapWaterCURI;
 	SDL_Surface *surfaceMapCDL;
 	SDL_Surface *surfaceMapCDR;
 	SDL_Surface *surfaceMapCUL;
