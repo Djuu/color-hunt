@@ -17,7 +17,7 @@ void InitSprite (Sprites *pSprites,int id, int w,int h, int nbFrame, int reFrame
 	pSprites->aSprite[id].reFrame = reFrame;
 	pSprites->aSprite[id].end=1;
 	pSprites->frame = 0;
-	pSprites->position = 10;
+	pSprites->position = 0;
 	pSprites->clockPrevious =0.0;
 
 }
