@@ -51,6 +51,7 @@ typedef struct
 {
 	Game pGame;
 	Sprites pSprites;
+	Sprites pSpritesObjects;
 	Sprites *pSpritesEnemy;
 	Sprites pSpritesWorldMap;
 	Key pKey;
