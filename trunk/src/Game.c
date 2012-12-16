@@ -74,7 +74,7 @@ void flyUp(Game *pGame)
 
 
 
-void warpMap (Game *pGame)
+int warpMap (Game *pGame)
 {
 	Map *pMap=getGameMap(pGame);
 	Character *pChar= getGameChar(pGame);
@@ -87,16 +87,22 @@ void warpMap (Game *pGame)
 					freeMap(pMap);
 					initGame(pGame,"Map/Map1.txt");
 					pGame->level = 2;
+					return 1;
 				break;
 				case'3' :
 					freeMap(pMap);
-					initGame(pGame,"Map/Map2.txt");
+					initGame(pGame,"Map/Map1.txt");
 					pGame->level = 3;
+					return 1;
 				break;
 				case'W' : 
 					freeMap(pMap);
 					initGame(pGame,"Map/WorldMap.txt");
 					pGame->level = 1;
+					return 1;
+				break;
+				default :
+					return 0;
 				break;
 			}
 }
