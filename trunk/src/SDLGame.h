@@ -61,7 +61,6 @@ typedef struct
         float choiceSpeech;
         int flyMode;
         int startWM;
-        int startLv1;
 		int colisionPnj;
 
 /*Menu*/
@@ -81,9 +80,12 @@ typedef struct
         SDL_Surface *surfaceUnderFloor1;
         SDL_Surface *surfaceUnderFloor2;
         SDL_Surface *surfaceFloor2;
+        SDL_Surface *surfaceUnderFloor3;
+        SDL_Surface *surfaceFloor3;
         SDL_Surface *surfaceEnemies;
         SDL_Surface *surfaceBG1;
         SDL_Surface *surfaceBG2;
+         SDL_Surface *surfaceBG3;
         SDL_Surface *surfaceLifeBG;
         SDL_Surface *surfaceLife;
         SDL_Surface *surfaceFilter;
@@ -138,6 +140,9 @@ typedef struct
         SDL_Surface *surfaceMapTree;
         SDL_Surface *surfaceMapCastle;
         
+        SDL_Surface *surfaceMapMountain;
+         SDL_Surface *surfaceMapCave;
+         
         SDL_Rect rcSpPosi;
         SDL_Rect rectScreen;
         float scrollX;
