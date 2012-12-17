@@ -20,7 +20,7 @@ float pathMap (Position *pPosi, Map *pMap);
 Description : application de la collision entre deux position
 
  */
-int path(Position *pPosi1, Position *pPosi2);
+float path(Position *pPosi1, Position *pPosi2);
 
 void stabilizeObject(Object *pObject);
 

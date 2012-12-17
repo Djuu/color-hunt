@@ -10,9 +10,9 @@
 typedef struct
 {
 	float x,y,z;
-	double v_x;
-	double v_grav;
-	double v_y;
+	float v_x;
+	float v_grav;
+	float v_y;
 	float spriteSizeW;
 	float spriteSizeH;
 	int direction;

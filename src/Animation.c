@@ -91,8 +91,8 @@ void animSprite (Sprites* pSprites, int id, int loop, int dir)
 void displayGauge(SDL_Surface *pSurfaceBG, SDL_Surface *pSurfaceLife , SDL_Surface * pSurfaceMana , SDL_Surface *screen, int life , int mana)
 {
 		SDL_Rect posiBG, posiLife, posiLifeN , posiManaN, posiMana;
-		posiBG.x = screen->w/20;
-		posiBG.y = screen->h/20;
+		posiBG.x = ((float)(screen->w))/20.0;
+		posiBG.y = ((float)(screen->h))/20.0;
 		
 		posiLife.x = posiBG.x+8;
 		posiLife.y = posiBG.y+2;
