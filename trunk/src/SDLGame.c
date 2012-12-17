@@ -239,7 +239,6 @@ void sdlDisplay(SdlGame *pSdlGame)
 	int i,j, k;
 	int xmin,xmax,ymin,ymax;
 	SDL_Rect positionTile;
-	printf("POSITION_Sprite = %d\n", pSdlGame -> pSprites.position);
 	Game *pGame = &(pSdlGame->pGame);
 	Character *pChar= getGameChar(pGame);
 	Character *pPnj= getGamePnj(pGame);
@@ -289,7 +288,7 @@ if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
 		displaySprite(&(pSdlGame->pSpritesEnemy[k]), posiEnemy, pSdlGame->surfaceScreen);
 	}
 	
-	displayGauge(pSdlGame->surfaceLifeBG, pSdlGame->surfaceLife , pSdlGame->surfaceMana, pSdlGame->surfaceScreen, pSdlGame->pGame.gChar.life,pSdlGame->pGame.gChar.mana);
+	//displayGauge(pSdlGame->surfaceLifeBG, pSdlGame->surfaceLife , pSdlGame->surfaceMana, pSdlGame->surfaceScreen, pSdlGame->pGame.gChar.life,pSdlGame->pGame.gChar.mana);
 	
 	
 	SDL_Rect positionBall;
@@ -757,17 +756,17 @@ else
                         SDL_Rect positionStart;
                         positionStart.x = 0;
                         positionStart.y = 400;
-                        //SDL_BlitSurface(pSdlGame->surfaceStart,NULL, pSdlGame->surfaceScreen, &positionStart);
+                      
                 
                         SDL_Rect positionExit;
                         positionExit.x = 250;
                         positionExit.y = 400;
-                        //SDL_BlitSurface(pSdlGame->surfaceExit,NULL, pSdlGame->surfaceScreen, &positionExit);
+                    
                         
                         SDL_Rect positionHelp;
                         positionHelp.x = 500;
                         positionHelp.y = 400;
-                        //SDL_BlitSurface(pSdlGame->surfaceHelp,NULL, pSdlGame->surfaceScreen, &positionHelp);
+                    
                         
                         displaySprite(&(pSdlGame->pSpritesMenuHelp), positionHelp, pSdlGame->surfaceScreen);
                         displaySprite(&(pSdlGame->pSpritesMenuStart), positionStart, pSdlGame->surfaceScreen);
@@ -1747,8 +1746,8 @@ while(continueLoop == 1)
 {	
 	if(pSdlGame->startWM == 1)
 	{
-				initSurfaceWM(pSdlGame);
-				pSdlGame->startWM=2;
+		initSurfaceWM(pSdlGame);
+		pSdlGame->startWM=2;
 	}
 	if (pSdlGame->dialogue == 1)
 	{
@@ -1827,7 +1826,7 @@ while(continueLoop == 1)
 	}
 	if(pSdlGame -> choiceMenu == 3)
 	{
-			animSprite(&(pSdlGame->pSpritesMenuHelp), 0, 0, 0);
+		animSprite(&(pSdlGame->pSpritesMenuHelp), 0, 0, 0);
 	}
 	if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
 	{
@@ -1992,7 +1991,6 @@ while(continueLoop == 1)
 		 /* Si suffisamment de temps s'est écoulé depuis la dernière prise d'horloge */
 		if (currentClock-previousClock>=clockInterval)
 		{
-				printf("POSIX === %f , POSIY === %f",pChar->cPosi.x,pChar->cPosi.y);
 /* Application de la gravite et des collisions */
 
 if(pGame -> level != 1)
@@ -2142,7 +2140,7 @@ if(pGame -> level != 1)
 		//printf("temp = %d_______SCREEN_WIDTH*1/2= %d\n", temp, SCREEN_WIDTH*1/2);
 	/*	if(temp == SCREEN_WIDTH*1/2 && temp >0 && temp<SCREEN_WIDTH )
 						pSdlGame->scrollX+=pChar->cPosi.v_x*TAILLE_SPRITE;*/
-						printf("x : %f  y : %f \n",pSdlGame->pGame.gChar.cPosi.x,pSdlGame->pGame.gChar.cPosi.y);
+						
 		
 		}
 		else
@@ -2218,7 +2216,7 @@ if(pGame -> level != 1)
 				pSdlGame->dialogue = 2;
 				pSdlGame->confirmDialogue = 0;
 			}
-	printf("DIALOGUE = %d\n",pSdlGame->dialogue);
+	
 			
 
 			if(detectPnj(pGame)==1 && pSdlGame->dialogue != 2)
@@ -2257,7 +2255,7 @@ if(pGame -> level != 1)
 
 void freeSdl(SdlGame *pSdlGame)
 {
-
+	free(pSdlGame -> pSpritesEnemy);
 	Mix_CloseAudio();
 	SDL_Quit();
 }

@@ -361,9 +361,8 @@ void collisionObjects (Position *pPosi, Objects *pObjects)
 	int i=3;
 	//for (i=0 ; i< pObjects->number;i++)
 	//{
-	printf("Object 3 : %d\n",pObjects->oObject[3].oPosi.floor);
-		printf("Object 2 : %d\n",pObjects->oObject[2].oPosi.floor);
-		if(path(pPosi, &(pObjects->oObject[i].oPosi)) != 1)
+
+		if(path(pPosi, &(pObjects->oObject[i].oPosi)) != 1.0)
 		{
 			pPosi->floor = 1;
 		}
@@ -375,7 +374,7 @@ void collisionObjects (Position *pPosi, Objects *pObjects)
 
 int collision(Position *pPosi1, Position *pPosi2)
 {
-	if(path(pPosi1,pPosi2) != 1)
+	if(path(pPosi1,pPosi2) != 1.0)
 	{
 			return 1;
 	}
@@ -591,7 +590,6 @@ void detect(Game *pGame)
 	helpEnemy(pGame);
 	for(nearestE = 0; nearestE < pGame->gEnemies.number; nearestE++)
 	{
-		printf ("Panic = %d\n",pGame->gEnemies.eEnemy[nearestE].panic);
 		if (nearestE!=idPanic)
 		{
 			if (((pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.y+pGame->gEnemies.eEnemy[nearestE].eChar.cPosi.spriteSizeH) - (pGame->gChar.cPosi.y))>0 
@@ -666,59 +664,44 @@ void enemyAttack(Game *pGame)
 
 	int nearest = distanceEnemies(pGame);
 	srand(time(NULL)); 
-			/*printf("stateAttack = %d\n",pGame->gEnemies.eEnemy[nearest].stateAttack );
-			printf("attack = %d\n",pGame->gEnemies.eEnemy[nearest].eChar.attack);
-			printf("\n");
-			printf("\n");
-	*/
-	
-
-	
-	/*if (fabs (pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x - pGame -> gChar.cPosi.x) < 3 && pGame -> gChar.attack !=1 && pGame -> gChar.superAttack != 1)
+	if(nearest != -1)
 	{
-		
-		pGame->gEnemies.eEnemy[nearest].stateAttack = 1;
-		
-	}*/
-	
-	
-		//printf("position = %f  ___attackState = %d  _____ attack =%d _______ Collision = %d\n",pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.x, pGame->gEnemies.eEnemy[nearest].stateAttack, pGame->gEnemies.eEnemy[nearest].eChar.attack, collision(&(pGame->gChar.cPosi),&(pGame->gEnemies.eEnemy[nearest].eChar.cPosi)));
-	if (pGame -> gEnemies.eEnemy[nearest].eChar.attack == 1)
-	{
-			pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.v_x =0;
-	}
-	
-
-
-	if (pGame -> gEnemies.eEnemy[nearest].stateAttack  == 1)
-	{			
-		pGame -> gEnemies.eEnemy[nearest].eChar.domage = 1;
-	}
-	if (pGame->gEnemies.eEnemy[nearest].stateAttack == 1 && pGame->gChar.attack !=1)
-	{
-		int rd;
-		rd = rand()%2;
-		if (rd == 0)
+		if (pGame -> gEnemies.eEnemy[nearest].eChar.attack == 1)
 		{
-			pGame -> gEnemies.eEnemy[nearest].eChar.attack = 1;
-			pGame->gEnemies.eEnemy[nearest].stateAttack = 0; 
-		}
-	}
-	if (pGame->gEnemies.eEnemy[nearest].eChar.domage != 0)
-	{
-
-		if(collision(&(pGame->gChar.cPosi),&(pGame->gEnemies.eEnemy[nearest].eChar.cPosi))==1 && pGame -> gEnemies.eEnemy[nearest].eChar.attack == 1)
-		{
-
-			pGame -> gChar.life -= 20;
-			pGame->gChar.projection = 1;
-			pGame -> gEnemies.eEnemy[nearest].eChar.domage = 0;
+				pGame -> gEnemies.eEnemy[nearest].eChar.cPosi.v_x =0.0;
 		}
 		
-	}
-	
-	projectionChar(pGame,nearest);
-	
+
+
+		if (pGame -> gEnemies.eEnemy[nearest].stateAttack  == 1)
+		{			
+			pGame -> gEnemies.eEnemy[nearest].eChar.domage = 1;
+		}
+		if (pGame->gEnemies.eEnemy[nearest].stateAttack == 1 && pGame->gChar.attack !=1)
+		{
+			int rd;
+			rd = rand()%2;
+			if (rd == 0)
+			{
+				pGame -> gEnemies.eEnemy[nearest].eChar.attack = 1;
+				pGame->gEnemies.eEnemy[nearest].stateAttack = 0; 
+			}
+		}
+		if (pGame->gEnemies.eEnemy[nearest].eChar.domage != 0)
+		{
+
+			if(collision(&(pGame->gChar.cPosi),&(pGame->gEnemies.eEnemy[nearest].eChar.cPosi))==1 && pGame -> gEnemies.eEnemy[nearest].eChar.attack == 1)
+			{
+
+				pGame -> gChar.life -= 20;
+				pGame->gChar.projection = 1;
+				pGame -> gEnemies.eEnemy[nearest].eChar.domage = 0;
+			}
+			
+		}
+		
+		projectionChar(pGame,nearest);
+	}	
 }
 
 

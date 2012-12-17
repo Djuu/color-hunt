@@ -74,16 +74,16 @@ float pathMap (Position *pPosi, Map *pMap)
 		}
 		
 	} 
-	return 1;
+	return 1.0;
 }
 
 
-int path(Position *pPosi1, Position *pPosi2)
+float path(Position *pPosi1, Position *pPosi2)
 {
 	float i;
-	float k, l, m ;
-	float posX, posY, posYd, posXd, posYr, posXr, posYl, posXl;
-	float oPosX, oPosY, oPosYd, oPosXd, oPosYr, oPosXr, oPosYl, oPosXl;
+	float k;
+	float posX, posY, posYd, posXr;
+	float oPosX, oPosY, oPosYd, oPosXr;
 	
 		for (i=0.001; i<=1.0; i+=0.001) 
 		{
@@ -94,7 +94,6 @@ int path(Position *pPosi1, Position *pPosi2)
 				posY = pPosi1->y + i*pPosi1->v_y;
 
 				posYd = pPosi1->y + i*pPosi1->v_y+pPosi1->spriteSizeH;
-
 				posXr = pPosi1->x + i*pPosi1->v_x+pPosi1->spriteSizeH;
 
 						
@@ -104,10 +103,7 @@ int path(Position *pPosi1, Position *pPosi2)
 				oPosX = pPosi2->x + i*pPosi2->v_x;
 				oPosY = pPosi2->y + i*pPosi2->v_y;
 
-				oPosYd = pPosi2->y + i*pPosi2->v_y+pPosi2->spriteSizeH;
-				
-
-				oPosYr = pPosi2->y + i*pPosi2->v_y;
+				oPosYd = pPosi2->y + i*pPosi2->v_y+pPosi2->spriteSizeH;	
 				oPosXr = pPosi2->x + i*pPosi2->v_x+pPosi2->spriteSizeW;
 
 				
@@ -120,7 +116,7 @@ int path(Position *pPosi1, Position *pPosi2)
 
 		} 
 	
-	return 1;
+	return 1.0;
 }
 
 
