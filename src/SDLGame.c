@@ -29,7 +29,6 @@ void initSDL(SdlGame *pSdlGame)
 	initDialogue(&(pSdlGame->pTree)); /*Initialisation de l'arbre de dialogue*/
 	pSdlGame->startWM =1;
 	pSdlGame->flyMode =0;
-	pSdlGame -> startLv1 = 0;
 	
 	
 	SDL_Init(SDL_INIT_VIDEO);
@@ -107,9 +106,6 @@ pSdlGame -> surfaceMenuQuit = IMG_Load("data/image/QuitSelected.png");
 /*Background*/
 
         
-SDL_Surface* tempF = IMG_Load("data/image/forestBG.png");
-        pSdlGame->surfaceBG2 = SDL_DisplayFormat(tempF);
-        assert( pSdlGame->surfaceBG2!=NULL);
 
 pSdlGame -> surfaceChar =  IMG_Load("data/image/hero4.png");
 	if (pSdlGame->surfaceChar ==NULL)
@@ -123,15 +119,7 @@ pSdlGame -> surfaceChar =  IMG_Load("data/image/hero4.png");
 	pSdlGame ->surfaceMapBG= SDL_DisplayFormat(tempWMap);
 	assert( pSdlGame->surfaceMapBG!=NULL);
         
-pSdlGame -> surfaceFloor2 = IMG_Load("data/image/f1.png");
-        if (pSdlGame->surfaceFloor2==NULL)      
-                pSdlGame->surfaceFloor2 = IMG_Load("../data/image/f1.png");
-        assert( pSdlGame->surfaceFloor2!=NULL);
-        
-pSdlGame -> surfaceUnderFloor2 = IMG_Load("data/image/f2.png");
-        if (pSdlGame->surfaceUnderFloor2==NULL) 
-                pSdlGame->surfaceUnderFloor2 = IMG_Load("../data/image/f2.png");
-        assert( pSdlGame->surfaceUnderFloor2!=NULL);      	
+
 
 	
 	pSdlGame -> surfaceCharMap =  IMG_Load("data/image/charMap.png");
@@ -274,6 +262,10 @@ if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
         {
                 SDL_BlitSurface(pSdlGame->surfaceBG2, NULL, pSdlGame->surfaceScreen, NULL);
         }
+        if(pGame -> level == 4)
+        {
+                SDL_BlitSurface(pSdlGame->surfaceBG3, NULL, pSdlGame->surfaceScreen, NULL);
+        }
 
 	
 	posiChar.x = getPosiChar(pChar).x*TAILLE_SPRITE - pSdlGame->scrollX;
@@ -293,7 +285,7 @@ if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
 		displaySprite(&(pSdlGame->pSpritesEnemy[k]), posiEnemy, pSdlGame->surfaceScreen);
 	}
 	
-	//displayGauge(pSdlGame->surfaceLifeBG, pSdlGame->surfaceLife , pSdlGame->surfaceMana, pSdlGame->surfaceScreen, pSdlGame->pGame.gChar.life,pSdlGame->pGame.gChar.mana);
+	displayGauge(pSdlGame->surfaceLifeBG, pSdlGame->surfaceLife , pSdlGame->surfaceMana, pSdlGame->surfaceScreen, pSdlGame->pGame.gChar.life,pSdlGame->pGame.gChar.mana);
 	
 	
 	SDL_Rect positionBall;
@@ -371,6 +363,32 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
                                                 positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
                                                 positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
                                                 SDL_BlitSurface(pSdlGame->surfaceUnderFloor2,NULL, pSdlGame->surfaceScreen, &positionTile);
+                                                break;
+                                        default:
+                                                break;
+                                }
+                        } 
+                                        
+                }
+        }
+        else if(pGame -> level == 4)
+        {       
+                for (i=xmin;i<xmax;++i)
+                {
+                        for (j=ymin;j<ymax;++j)
+                        {
+                                
+                                switch (pSdlGame->pGame.gMap.tab[j][i])
+                                {
+                                        case '#':
+                                                positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+                                                positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+                                                SDL_BlitSurface(pSdlGame->surfaceFloor3,NULL, pSdlGame->surfaceScreen, &positionTile);
+                                                break;
+                                        case '%':
+                                                positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+                                                positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+                                                SDL_BlitSurface(pSdlGame->surfaceUnderFloor3,NULL, pSdlGame->surfaceScreen, &positionTile);
                                                 break;
                                         default:
                                                 break;
@@ -605,6 +623,7 @@ else
 					positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
 					SDL_BlitSurface(pSdlGame->surfaceMapWaterCURI,NULL, pSdlGame->surfaceScreen, &positionTile);
 					break;  
+					
 					default:
 					break;
 											
@@ -636,6 +655,18 @@ else
                                         positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
                                         positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
                                         SDL_BlitSurface(pSdlGame->surfaceMapTree,NULL, pSdlGame->surfaceScreen, &positionTile);
+                                        break;
+                                        
+                                        case 'V':
+                                        positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+                                        positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+                                        SDL_BlitSurface(pSdlGame->surfaceMapCave,NULL, pSdlGame->surfaceScreen, &positionTile);
+                                        break;
+                                        
+                                        case 'M':
+                                        positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+                                        positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+                                        SDL_BlitSurface(pSdlGame->surfaceMapMountain,NULL, pSdlGame->surfaceScreen, &positionTile);
                                         break;
                                         
                                 }
@@ -723,6 +754,56 @@ else
 	/*SDL_BlitSurface(pSdlGame->surfaceChar,NULL, pSdlGame->surfaceScreen, &posiChar);*/
 	
 	
+	
+}
+
+void initSurfaceLv3(SdlGame *pSdlGame)
+{
+		pSdlGame -> surfaceFloor3 = IMG_Load("data/image/ca1.png");
+        if (pSdlGame->surfaceFloor3==NULL)      
+                pSdlGame->surfaceFloor3 = IMG_Load("../data/image/ca1.png");
+        assert( pSdlGame->surfaceFloor3!=NULL);
+        
+		pSdlGame -> surfaceUnderFloor3 = IMG_Load("data/image/ca2.png");
+        if (pSdlGame->surfaceUnderFloor3==NULL) 
+                pSdlGame->surfaceUnderFloor3 = IMG_Load("../data/image/ca2.png");
+        assert( pSdlGame->surfaceUnderFloor3!=NULL);    
+        
+		SDL_Surface* tempC = IMG_Load("data/image/CaveBG.png");
+        pSdlGame->surfaceBG3 = SDL_DisplayFormat(tempC);
+        assert( pSdlGame->surfaceBG3!=NULL);
+}
+void freeLv3(SdlGame *pSdlGame)
+{
+	SDL_FreeSurface (pSdlGame->surfaceFloor3);
+        
+		SDL_FreeSurface ( pSdlGame->surfaceUnderFloor3);    
+        
+		SDL_FreeSurface (pSdlGame->surfaceBG3);	
+}
+void initSurfaceLv2(SdlGame *pSdlGame)
+{
+	pSdlGame -> surfaceFloor2 = IMG_Load("data/image/f1.png");
+        if (pSdlGame->surfaceFloor2==NULL)      
+                pSdlGame->surfaceFloor2 = IMG_Load("../data/image/f1.png");
+        assert( pSdlGame->surfaceFloor2!=NULL);
+        
+pSdlGame -> surfaceUnderFloor2 = IMG_Load("data/image/f2.png");
+        if (pSdlGame->surfaceUnderFloor2==NULL) 
+                pSdlGame->surfaceUnderFloor2 = IMG_Load("../data/image/f2.png");
+        assert( pSdlGame->surfaceUnderFloor2!=NULL);    
+        
+SDL_Surface* tempF = IMG_Load("data/image/forestBG.png");
+        pSdlGame->surfaceBG2 = SDL_DisplayFormat(tempF);
+        assert( pSdlGame->surfaceBG2!=NULL);
+  	
+}
+void freeLv2(SdlGame *pSdlGame)
+{
+	SDL_FreeSurface (pSdlGame->surfaceFloor2);
+        
+SDL_FreeSurface (pSdlGame->surfaceUnderFloor2);    
+SDL_FreeSurface (pSdlGame->surfaceBG2);
 	
 }
 void initSurfaceLv1(SdlGame *pSdlGame)
@@ -932,6 +1013,17 @@ pSdlGame ->surfaceKing = IMG_Load("data/image/king.png");
 	if (pSdlGame->surfaceKing==NULL)	
 		pSdlGame->surfaceKing = IMG_Load("../data/image/king.png");
 	assert( pSdlGame->surfaceKing!=NULL);
+	
+pSdlGame ->surfaceMapMountain = IMG_Load("data/image/mountains.png");
+	if (pSdlGame->surfaceMapMountain==NULL)	
+		pSdlGame->surfaceMapMountain = IMG_Load("../data/image/mountains.png");
+	assert( pSdlGame->surfaceMapMountain!=NULL);
+	
+pSdlGame ->surfaceMapCave = IMG_Load("data/image/cave.png");
+	if (pSdlGame->surfaceMapCave==NULL)	
+		pSdlGame->surfaceMapCave = IMG_Load("../data/image/cave.png");
+	assert( pSdlGame->surfaceMapCave!=NULL);
+
 }
 
 void freeWM(SdlGame *pSdlGame)
@@ -1011,6 +1103,9 @@ void freeWM(SdlGame *pSdlGame)
 
 	SDL_FreeSurface (pSdlGame->surfaceDialNo);	
 		
+	SDL_FreeSurface (pSdlGame->surfaceMapMountain);
+	
+	SDL_FreeSurface (pSdlGame->surfaceMapCave);
 }
 
 void freeLv1(SdlGame *pSdlGame)
@@ -1602,13 +1697,6 @@ while(continueLoop == 1)
 				initSurfaceWM(pSdlGame);
 				pSdlGame->startWM=2;
 	}
-	if(pSdlGame -> startLv1 == 1)
-	{
-		freeWM(pSdlGame);
-		pSdlGame->startWM =0;
-		initSurfaceLv1(pSdlGame);
-		pSdlGame -> startLv1 =2;
-	}
 	if (pSdlGame->dialogue == 1)
 	{
 		dialogueAction(pSdlGame,continueLoop);	
@@ -1916,9 +2004,37 @@ if(pGame -> level != 1)
 					pSdlGame->scrollY=0;
 					if(pGame -> level == 1)
 					{
-						pSdlGame -> startLv1 = 0;
 						freeLv1(pSdlGame);
-						pSdlGame->startWM = 1;
+						initSurfaceWM(pSdlGame);
+					}
+					
+				}
+			}
+			
+			if(pGame -> level == 3)
+			{
+				if(warpMap(pGame) ==1)
+				{
+					pSdlGame->scrollX=0;
+					pSdlGame->scrollY=0;
+					if(pGame -> level == 1)
+					{
+						freeLv2(pSdlGame);
+						initSurfaceWM(pSdlGame);
+					}
+					
+				}
+			}
+			if(pGame -> level == 4)
+			{
+				if(warpMap(pGame) ==1)
+				{
+					pSdlGame->scrollX=0;
+					pSdlGame->scrollY=0;
+					if(pGame -> level == 1)
+					{
+						freeLv3(pSdlGame);
+						initSurfaceWM(pSdlGame);
 					}
 					
 				}
@@ -1965,7 +2081,6 @@ if(pGame -> level != 1)
 		else
 		{
 		
-		printf("StartWM == %d  StartLV1 == %d\n",pSdlGame->startWM,pSdlGame->startLv1);
 			
 			if (pSdlGame->scrollX<0)
 				pSdlGame->scrollX=0;
@@ -1987,8 +2102,21 @@ if(pGame -> level != 1)
 				pSdlGame->scrollY=0;
 				if(pSdlGame ->pGame.level == 2)
 				{
-					pSdlGame -> startLv1 =1;
+					freeWM(pSdlGame);
+					initSurfaceLv1(pSdlGame);
+
 				}
+				if(pSdlGame -> pGame.level == 3)
+				{
+					freeWM(pSdlGame);
+					initSurfaceLv2(pSdlGame);	
+				}
+				if(pSdlGame -> pGame.level == 4)
+				{
+					freeWM(pSdlGame);
+					initSurfaceLv3(pSdlGame);	
+				}
+				
 				
 			}
 			temp = (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX);
