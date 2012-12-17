@@ -24,6 +24,14 @@ void mapInit(Map *pMap,const char * Name)
 	{
 		for(x=0;x<pMap->dimx;++x)
 		{
+			pMap->tab[y][x] = 0;
+		}
+	}	
+	
+	for(y=0;y<pMap->dimy;++y)
+	{
+		for(x=0;x<pMap->dimx;++x)
+		{
 			fscanf(f,"%c",&(pMap->tab[y][x]));
 		}
 	}	
@@ -56,4 +64,7 @@ void freeMap(Map* pMap)
 	int y;
 		for (y=0; y<pMap->dimy; y++)
 			free(pMap->tab[y]);	
+			
+	free(pMap->tab);
+		
 }

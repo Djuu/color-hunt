@@ -19,9 +19,12 @@ void initGame (Game *pGame, const char* pMap)
 	pGame->gObjects.oObject[3].oPosi.spriteSizeW = 5;
 	pGame->gObjects.oObject[3].oPosi.spriteSizeH=2.5;
 	pGame->gObjects.oObject[3].angle = 40;
+
 	
-	pGame->gPnj.cPosi.spriteSizeW = 1;
-	pGame->gPnj.cPosi.spriteSizeH = 1;
+	
+
+	
+
 	k=0;
 	int l = 2;
 	pGame->level = 1;
@@ -32,7 +35,7 @@ void initGame (Game *pGame, const char* pMap)
 			switch(pGame->gMap.tab[j][i])
 			{
 				case 'C':
-					pGame->gChar.cPosi.x = i;
+					pGame->gChar.cPosi.x =  i;
 					pGame->gChar.cPosi.y = j;
 				break;
 				case 'K':
@@ -91,7 +94,7 @@ int warpMap (Game *pGame)
 				break;
 				case'3' :
 					freeMap(pMap);
-					initGame(pGame,"Map/Map1.txt");
+					initGame(pGame,"Map/Map2.txt");
 					pGame->level = 3;
 					return 1;
 				break;
@@ -101,11 +104,30 @@ int warpMap (Game *pGame)
 					pGame->level = 1;
 					return 1;
 				break;
-				default :
+				
+				default:
 					return 0;
 				break;
 			}
 }
+
+int detectPnj(Game *pGame)
+{
+	Map *pMap=getGameMap(pGame);
+	Character *pChar= getGameChar(pGame);
+	int i,j;
+	for (j=0;j<pMap->dimy;j++)
+		for(i=0;i<pMap->dimx;i++)
+			if(getMapXY(pMap, (int)(pChar->cPosi.x), (int)(pChar->cPosi.y)) == 'K')
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+}
+
 void initSpeedX(Game *pGame)
 {
 	Character *pChar = getGameChar(pGame);

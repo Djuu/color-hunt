@@ -2,9 +2,9 @@
 
 void initChar (Character *pChar)
 {
-	pChar->cPosi.v_x = 0;
+	pChar->cPosi.v_x = 0;/*0.2*/
 	pChar->cPosi.v_y=0;
-	pChar->cPosi.x = 10;
+	pChar->cPosi.x = 10;/*0.2*/
 	pChar->cPosi.y=-10;
 	pChar->cPosi.v_grav = 0.08;/*0.02*/
 	pChar-> cPosi.floor = 0;
