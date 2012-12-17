@@ -230,7 +230,7 @@ void rotationObject(SDL_Surface *pSurface, SDL_Rect positionBall, double *angle,
 	tempRect.x -= (rotationBall->w -  pSurface->w);
 	tempRect.y -= (rotationBall->h -  pSurface->h);
 	SDL_BlitSurface(rotationBall,NULL, screen, &tempRect);	
-	SDL_FreeSurface(rotationBall);
+	//SDL_FreeSurface(rotationBall);
 }
 
 void audioBG()

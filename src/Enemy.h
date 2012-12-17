@@ -28,6 +28,7 @@ void setManaEnemy (Enemies *pEnemies,int id, int nbMana);
 void moveEnemyLeft (Enemies *pEnemies,int id);
 void moveEnemyRight (Enemies *pEnemies,int id);
 void deadEnemy(Enemies *pEnemies,int id);
+void freeEnemies(Enemies *pEnemies);
 
 
 #endif 

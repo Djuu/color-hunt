@@ -94,13 +94,9 @@ int path(Position *pPosi1, Position *pPosi2)
 				posY = pPosi1->y + i*pPosi1->v_y;
 
 				posYd = pPosi1->y + i*pPosi1->v_y+pPosi1->spriteSizeH;
-				posXd = pPosi1->x + i*pPosi1->v_x+pPosi1->spriteSizeW;
 
-				posYr = pPosi1->y + i*pPosi1->v_y;
 				posXr = pPosi1->x + i*pPosi1->v_x+pPosi1->spriteSizeH;
 
-				posYl = pPosi1->y + i*pPosi1->v_y+pPosi1->spriteSizeH;
-				posXl = pPosi1->x + i*pPosi1->v_x;
 						
 						
 						
@@ -109,14 +105,11 @@ int path(Position *pPosi1, Position *pPosi2)
 				oPosY = pPosi2->y + i*pPosi2->v_y;
 
 				oPosYd = pPosi2->y + i*pPosi2->v_y+pPosi2->spriteSizeH;
-				oPosXd = pPosi2->x + i*pPosi2->v_x+pPosi2->spriteSizeW;
+				
 
 				oPosYr = pPosi2->y + i*pPosi2->v_y;
 				oPosXr = pPosi2->x + i*pPosi2->v_x+pPosi2->spriteSizeW;
 
-				oPosYl = pPosi2->y + i*pPosi2->v_y+pPosi2->spriteSizeH;
-				oPosXl = pPosi2->x + i*pPosi2->v_x;
-				
 				
 				if((oPosX < posXr && posX < oPosXr) && (posY<oPosYd && oPosY<posYd))
 				{

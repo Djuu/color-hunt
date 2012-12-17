@@ -54,5 +54,7 @@ void collisionObjects (Position *pPosi, Objects *pObjects);
 void flyMod(Game *pGame);
 
 void detect(Game *pGame);
+
+int detectPnj(Game *pGame);
 #endif
 

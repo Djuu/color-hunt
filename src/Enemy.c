@@ -84,3 +84,8 @@ void deadEnemy(Enemies *pEnemies,int id)
 		pEnemies -> eEnemy[id].eChar.cPosi.v_x =0;
 	}
 }
+
+void freeEnemies(Enemies *pEnemies)
+{
+		free(pEnemies->eEnemy);
+}

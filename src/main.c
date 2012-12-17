@@ -10,8 +10,9 @@ int main(int argc, char *argv[])
 
 
 	SdlGame pSdlGame;
+	
 	initSDL(&pSdlGame);
 	loopSDL(&pSdlGame);
-	/*freeSdl(&pSdlGame);*/
+	freeSdl(&pSdlGame);
 	return 0;
 }
