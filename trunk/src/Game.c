@@ -104,9 +104,27 @@ int warpMap (Game *pGame)
 					pGame->level = 4;
 					return 1;
 				break;
+				case'5' :
+					freeMap(pMap);
+					initGame(pGame,"Map/Map4.txt");
+					pGame->level = 5;
+					return 1;
+				break;
 				case'W' : 
 					freeMap(pMap);
-					initGame(pGame,"Map/WorldMap.txt");
+					initGame(pGame,"Map/WorldMap2.txt");
+					pGame->level = 1;
+					return 1;
+				break;
+				case'X' : 
+					freeMap(pMap);
+					initGame(pGame,"Map/WorldMap3.txt");
+					pGame->level = 1;
+					return 1;
+				break;
+				case'Y' : 
+					freeMap(pMap);
+					initGame(pGame,"Map/WorldMap4.txt");
 					pGame->level = 1;
 					return 1;
 				break;

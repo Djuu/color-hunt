@@ -82,10 +82,13 @@ typedef struct
         SDL_Surface *surfaceFloor2;
         SDL_Surface *surfaceUnderFloor3;
         SDL_Surface *surfaceFloor3;
+        SDL_Surface *surfaceUnderFloor4;
+        SDL_Surface *surfaceFloor4;
         SDL_Surface *surfaceEnemies;
         SDL_Surface *surfaceBG1;
         SDL_Surface *surfaceBG2;
-         SDL_Surface *surfaceBG3;
+        SDL_Surface *surfaceBG3;
+        SDL_Surface *surfaceBG4;
         SDL_Surface *surfaceLifeBG;
         SDL_Surface *surfaceLife;
         SDL_Surface *surfaceFilter;
