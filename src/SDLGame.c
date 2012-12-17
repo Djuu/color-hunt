@@ -44,7 +44,7 @@ void initSDL(SdlGame *pSdlGame)
 	{
 	  printf("%s", Mix_GetError());
 	}
-	initGame(pGame,"Map/WorldMap.txt");
+	initGame(pGame,"Map/WorldMap1.txt");
 	
 		pSdlGame ->font = TTF_OpenFont("data/fonts/times.ttf", 20);
 	if (pSdlGame ->font == NULL)
@@ -266,6 +266,10 @@ if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
         {
                 SDL_BlitSurface(pSdlGame->surfaceBG3, NULL, pSdlGame->surfaceScreen, NULL);
         }
+        if(pGame -> level == 5)
+        {
+                SDL_BlitSurface(pSdlGame->surfaceBG4, NULL, pSdlGame->surfaceScreen, NULL);
+        }
 
 	
 	posiChar.x = getPosiChar(pChar).x*TAILLE_SPRITE - pSdlGame->scrollX;
@@ -389,6 +393,32 @@ Recadrage de la fenetre sur une partie de la map et affichage de la map au fur e
                                                 positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
                                                 positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
                                                 SDL_BlitSurface(pSdlGame->surfaceUnderFloor3,NULL, pSdlGame->surfaceScreen, &positionTile);
+                                                break;
+                                        default:
+                                                break;
+                                }
+                        } 
+                                        
+                }
+        }
+        else if(pGame -> level == 5)
+        {       
+                for (i=xmin;i<xmax;++i)
+                {
+                        for (j=ymin;j<ymax;++j)
+                        {
+                                
+                                switch (pSdlGame->pGame.gMap.tab[j][i])
+                                {
+                                        case '#':
+                                                positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+                                                positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+                                                SDL_BlitSurface(pSdlGame->surfaceFloor4,NULL, pSdlGame->surfaceScreen, &positionTile);
+                                                break;
+                                        case '%':
+                                                positionTile.x=i*TAILLE_SPRITE - pSdlGame->scrollX;
+                                                positionTile.y=j*TAILLE_SPRITE - pSdlGame->scrollY;
+                                                SDL_BlitSurface(pSdlGame->surfaceUnderFloor4,NULL, pSdlGame->surfaceScreen, &positionTile);
                                                 break;
                                         default:
                                                 break;
@@ -756,7 +786,30 @@ else
 	
 	
 }
-
+void freeLv4(SdlGame *pSdlGame)
+{
+		SDL_FreeSurface (pSdlGame->surfaceFloor4);
+        
+		SDL_FreeSurface ( pSdlGame->surfaceUnderFloor4);    
+        
+		SDL_FreeSurface (pSdlGame->surfaceBG4);	
+}
+void initSurfaceLv4(SdlGame *pSdlGame)
+{
+	pSdlGame -> surfaceFloor4 = IMG_Load("data/image/sn1.png");
+        if (pSdlGame->surfaceFloor4==NULL)      
+                pSdlGame->surfaceFloor4 = IMG_Load("../data/image/sn1.png");
+        assert( pSdlGame->surfaceFloor4!=NULL);
+        
+		pSdlGame -> surfaceUnderFloor4 = IMG_Load("data/image/sn2.png");
+        if (pSdlGame->surfaceUnderFloor4==NULL) 
+                pSdlGame->surfaceUnderFloor4 = IMG_Load("../data/image/sn2.png");
+        assert( pSdlGame->surfaceUnderFloor4!=NULL);    
+        
+		SDL_Surface* tempM = IMG_Load("data/image/bg1.jpg");
+        pSdlGame->surfaceBG4 = SDL_DisplayFormat(tempM);
+        assert( pSdlGame->surfaceBG4!=NULL);	
+}
 void initSurfaceLv3(SdlGame *pSdlGame)
 {
 		pSdlGame -> surfaceFloor3 = IMG_Load("data/image/ca1.png");
@@ -2039,6 +2092,20 @@ if(pGame -> level != 1)
 					
 				}
 			}
+			if(pGame -> level == 5)
+			{
+				if(warpMap(pGame) ==1)
+				{
+					pSdlGame->scrollX=0;
+					pSdlGame->scrollY=0;
+					if(pGame -> level == 1)
+					{
+						freeLv4(pSdlGame);
+						initSurfaceWM(pSdlGame);
+					}
+					
+				}
+			}
 		/*	printf(" posX : %f \n posY :%f \n\n ", getPosiChar(pChar).x , getPosiChar(pChar).y); 
 		printf(" Vret : %d \n " , pGame -> level);  */
 		        refresh = 1;
@@ -2115,6 +2182,11 @@ if(pGame -> level != 1)
 				{
 					freeWM(pSdlGame);
 					initSurfaceLv3(pSdlGame);	
+				}
+				if(pSdlGame -> pGame.level == 5)
+				{
+					freeWM(pSdlGame);
+					initSurfaceLv4(pSdlGame);	
 				}
 				
 				
