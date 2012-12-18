@@ -223,7 +223,7 @@ void jump(Game *pGame)
 	Character *pChar = getGameChar(pGame);
 	for (i=0 ; i<pGame->gObjects.number;i++)
 	{
-		if((pGame->gChar.cPosi.floor == 1 && pChar->cPosi.v_grav != 0.01) || collision(&(pGame->gChar.cPosi), &(pGame->gObjects.oObject[i]))==1)
+		if((pGame->gChar.cPosi.floor == 1 && pChar->cPosi.v_grav != 0.01) || collision(&(pGame->gChar.cPosi), &(pGame->gObjects.oObject[i].oPosi))==1)
 		pGame->gChar.cPosi.v_y = -1;
 	}
 }
@@ -703,6 +703,8 @@ void enemyAttack(Game *pGame)
 		projectionChar(pGame,nearest);
 	}	
 }
+
+
 
 
 
