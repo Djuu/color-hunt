@@ -17,8 +17,8 @@
 #define attackL         3
 #define attackFR        4
 #define attackFL        5
-#define KOR                     8
-#define KOL                     9
+#define KOR             8
+#define KOL             9
 #define stayR           10
 #define stayL           11
 #define flyR            12
@@ -51,6 +51,9 @@ typedef struct
         Sprites pSpritesMenuStart;
         Sprites pSpritesMenuHelp;
         Sprites pSpritesMenuQuit;
+        Sprites pSpritesDialYes;
+        Sprites pSpritesDialNo;
+        char dialTab[300];
         Key pKey;
         Tree pTree;
         int choiceMenu;

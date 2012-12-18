@@ -141,7 +141,8 @@ char *discutionDialogue(Tree *pTree, float choice)
 
 	float get;
 	char tmp;
-	char dialTab[200];
+	char *dialTab;
+	dialTab = (char*)malloc(200*sizeof(char));
 	int k=0;
 	
 	fscanf(f ,"%f",&(get));
@@ -150,20 +151,19 @@ char *discutionDialogue(Tree *pTree, float choice)
 			fscanf(f ,"%c",&(tmp));
 			fscanf(f ,"%f",&(get));
 	}
-	
+	printf("LA1\n");
 	fscanf(f ,"%c",&(tmp));
+	fscanf(f ,"%c",&(tmp));
+
 	while (tmp != '#' && tmp != '$')
 	{
-			
 			dialTab[k]=tmp;
 			fscanf(f ,"%c",&(tmp));
-			printf("%c\n", tmp);
 			k++;
 	}
 
-printf("%c\n", tmp);
 	dialTab[k]='\0';
-		printf("%s\n", dialTab);
+		
 	return dialTab; 
 	
 }
