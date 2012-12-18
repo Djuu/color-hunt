@@ -43,6 +43,6 @@ Description : donner une valeur à la taille verticale de la map
 */
 void setDimY(Map* , int);
 
-
+/** Libère la mémoire de la Map */
 void freeMap(Map* pMap);
 #endif

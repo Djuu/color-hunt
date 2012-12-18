@@ -56,7 +56,7 @@ int getPosiZint(const Position *pPosi);
 Fixer une position 
 */
 void setPosi (Position *pPosi, const float x, const float y, const float z); 
-
+/** Rafraichis la direction d'une position passé en paramètre */
 void refreshDirection(Position *pPosi);
 
 #endif 
