@@ -74,7 +74,7 @@ typedef struct
         SDL_Surface *surfaceMenuQuit;
         SDL_Surface *surfaceHelp;
         
-/*      Anim pAnim;*/
+/* Niveaux */
         SDL_Surface *surfaceScreen;
         SDL_Surface *surfaceChar;
         SDL_Surface *surfaceFire;
@@ -109,7 +109,7 @@ typedef struct
         SDL_Surface *surfaceDialYes;
         SDL_Surface *surfaceDialNo;
         TTF_Font *font;
-        
+      /* World map*/  
         SDL_Surface *surfaceMapBG;
         SDL_Surface *surfaceCharMap;
         SDL_Surface *surfaceBorder;
@@ -170,6 +170,7 @@ Paramétre : sdlJeu :DR
 Variables locales : continueBoucle, rafraichissement,tempGauche,tempDroite : entier
 */
 void loopSDL(SdlGame*);
+/** Libère la mémoire de SDL */
 void freeSdl(SdlGame *pSdlGame);
 
 #endif
