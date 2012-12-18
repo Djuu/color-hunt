@@ -259,7 +259,12 @@ if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
 	 SDL_FillRect( pSdlGame->surfaceScreen, NULL, SDL_MapRGB( pSdlGame->surfaceScreen->format, 0xFF, 0xFF, 0xFF ));
 		if(pGame -> level == 2)
         {
-                SDL_BlitSurface(pSdlGame->surfaceBG1, NULL, pSdlGame->surfaceScreen, NULL);
+			
+			SDL_BlitSurface(pSdlGame->surfaceBG1, NULL, pSdlGame->surfaceScreen, NULL);
+			
+			/*Exemple de saturation en fonction de la progression du personnage*/
+			/*initBG(pSdlGame);
+			bgBW(pSdlGame->surfaceBG1, pSdlGame->pGame.gChar.cPosi.x/pSdlGame->pGame.gMap.dimx);*/
         }
         
         if(pGame -> level == 3)
@@ -293,7 +298,7 @@ if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
 		displaySprite(&(pSdlGame->pSpritesEnemy[k]), posiEnemy, pSdlGame->surfaceScreen);
 	}
 	
-	//displayGauge(pSdlGame->surfaceLifeBG, pSdlGame->surfaceLife , pSdlGame->surfaceMana, pSdlGame->surfaceScreen, pSdlGame->pGame.gChar.life,pSdlGame->pGame.gChar.mana);
+	displayGauge(pSdlGame->surfaceLifeBG, pSdlGame->surfaceLife , pSdlGame->surfaceMana, pSdlGame->surfaceScreen, pSdlGame->pGame.gChar.life,pSdlGame->pGame.gChar.mana);
 	
 	
 	SDL_Rect positionBall;
@@ -880,6 +885,12 @@ void initSurfaceLv1(SdlGame *pSdlGame)
 					pSdlGame->surfaceUnderFloor1 = IMG_Load("../data/image/c2.png");
 			assert( pSdlGame->surfaceUnderFloor1!=NULL);	
 }
+void initBG(SdlGame *pSdlGame)
+{
+		SDL_Surface* temp = IMG_Load("data/image/castleBG.png");
+			pSdlGame->surfaceBG1 = SDL_DisplayFormat(temp);
+			assert( pSdlGame->surfaceBG1!=NULL);
+}
 void initSurfaceWM(SdlGame *pSdlGame)
 {
 	pSdlGame ->surfaceBorder = IMG_Load("data/image/border2.png");
@@ -1165,6 +1176,48 @@ void freeLv1(SdlGame *pSdlGame)
 			
 	SDL_FreeSurface(pSdlGame->surfaceUnderFloor1);
        
+}
+void DeadChar(SdlGame* pSdlGame)
+{
+	if(pSdlGame -> pGame.gChar .life <= 0)
+	{
+		if(pSdlGame -> pGame . level == 2)
+		{
+			freeLv1(pSdlGame);
+			initSurfaceWM(pSdlGame);
+			pSdlGame->scrollX=0;
+			pSdlGame->scrollY=0;
+			initGame(&(pSdlGame -> pGame),"Map/WorldMap1.txt");
+		}
+		if(pSdlGame -> pGame . level == 3)
+		{
+			freeLv2(pSdlGame);
+			initSurfaceWM(pSdlGame);
+			pSdlGame->scrollX=0;
+			pSdlGame->scrollY=0;
+			initGame(&(pSdlGame -> pGame),"Map/WorldMap2.txt");
+		}
+		if(pSdlGame -> pGame . level == 4)
+		{
+			freeLv3(pSdlGame);
+			initSurfaceWM(pSdlGame);
+			pSdlGame->scrollX=0;
+			pSdlGame->scrollY=0;
+			initGame(&(pSdlGame -> pGame),"Map/WorldMap3.txt");
+		}
+		if(pSdlGame -> pGame . level == 5)
+		{
+			freeLv4(pSdlGame);
+			initSurfaceWM(pSdlGame);
+			pSdlGame->scrollX=0;
+			pSdlGame->scrollY=0;
+			initGame(&(pSdlGame -> pGame),"Map/WorldMap4.txt");
+		}
+					
+				
+			
+	}
+	
 }
 void colisionSprite(SdlGame *pSdlGame)
 {
@@ -1584,7 +1637,7 @@ void dialogueSpeak(SdlGame *pSdlGame, float choice)
 	}
 	pSdlGame->dialTab[k] = '\0';
 	
-	printf("AAA = %s",pSdlGame->dialTab);
+
 
 	int i=0;
 	int j=0;
@@ -1823,10 +1876,9 @@ while(continueLoop == 1)
 	}
 	if(pSdlGame -> choiceMenu == 1 && pSdlGame ->confirmMenu==1)
 	{
-	//printf("GAME \n");
+
 	refresh = 0;
-		/*pSdlGame->rcSprite.x=getPosiX(&(pSdlGame->Game.perso));
-		pSdlGame->rcSprite.y=getPosiY(&(pSdlGame->Game.perso));*/
+
 		/*Position du sprite*/
 		
 		
@@ -1995,11 +2047,11 @@ if(pGame -> level != 1)
 			/*collisionEnemies(&(pSdlGame->pGame.gChar),&(pSdlGame->pGame.gEnemies));*/
 			applySpeedObject(&(pSdlGame->pGame.gObjects.oObject[1]));
 			superAttackDmg(&(pSdlGame -> pGame));
-	/*		printf("OBJET .X : %f\n",pSdlGame->pGame.gObjects.oObject[1].oPosi.x);*/
+
 			
 		
 			
-			
+			//DeadChar(pSdlGame); Ne fonctionne pas correctement
 
 
 	 		attack(&(pSdlGame -> pGame));
@@ -2097,8 +2149,7 @@ if(pGame -> level != 1)
 					
 				}
 			}
-		/*	printf(" posX : %f \n posY :%f \n\n ", getPosiChar(pChar).x , getPosiChar(pChar).y); 
-		printf(" Vret : %d \n " , pGame -> level);  */
+
 		        refresh = 1;
 		        previousClock = currentClock;
 			
@@ -2110,7 +2161,6 @@ if(pGame -> level != 1)
 		
 			keyManagment(pSdlGame);	
 		
-/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! A METTRE A L EXTERIEUR DE SDLGAME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/			
 /*Projection apres impacte*/
 
 		
@@ -2124,7 +2174,6 @@ if(pGame -> level != 1)
 				animSprite (&(pSdlGame->pSprites), KOR, 1, pSdlGame->pGame.gChar.cPosi.direction);
 				
 			}
-/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/					
 			
 	/*Deplacement de l'ecran*/
 		temp = (int)(getPosiChar(pChar).x*TAILLE_SPRITE-pSdlGame->scrollX);
@@ -2225,8 +2274,7 @@ if(pGame -> level != 1)
 			
 		    /* on affiche le Game sur le buffer caché */
 		    sdlDisplay(pSdlGame);
-	//printf("DISPLAY \n");
-		    /* on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle) */
+
 		    SDL_Flip( pSdlGame->surfaceScreen);
 		} 
 				
@@ -2238,7 +2286,7 @@ if(pGame -> level != 1)
 		
 		    /* on affiche le Game sur le buffer caché */
 		    sdlDisplay(pSdlGame);
-	//printf("DISPLAY \n");
+
 		    /* on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle) */
 		    SDL_Flip( pSdlGame->surfaceScreen);
 		   
@@ -2250,7 +2298,39 @@ if(pGame -> level != 1)
 
 void freeSdl(SdlGame *pSdlGame)
 {
+	if(pSdlGame->pGame.level == 1)
+	{
+		freeWM(pSdlGame);
+	}
+	if(pSdlGame->pGame.level == 2)
+	{
+		freeLv1(pSdlGame);
+	}
+	if(pSdlGame->pGame.level == 3)
+	{
+		freeLv2(pSdlGame);
+	}
+	if(pSdlGame->pGame.level == 4)
+	{
+		freeLv3(pSdlGame);
+	}
+	if(pSdlGame->pGame.level == 5)
+	{
+		freeLv4(pSdlGame);
+	}
+	/*SDL_FreeSurface (pSdlGame->surfaceMenuBG);
+	SDL_FreeSurface (pSdlGame->surfaceMenuStart);
+	SDL_FreeSurface (pSdlGame->surfaceMenuHelp);
+	SDL_FreeSurface (pSdlGame->surfaceMenuQuit);
+	SDL_FreeSurface (pSdlGame->surfaceHelp);
+	SDL_FreeSurface (pSdlGame->surfaceScreen);
+    SDL_FreeSurface (pSdlGame->surfaceChar);
+    SDL_FreeSurface (pSdlGame->surfaceFire);
+    SDL_FreeSurface (pSdlGame->surfaceFireBall);*/
+	
+	
 	free(pSdlGame -> pSpritesEnemy);
+	
 	Mix_CloseAudio();
 	SDL_Quit();
 }

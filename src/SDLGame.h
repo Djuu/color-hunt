@@ -173,4 +173,7 @@ void loopSDL(SdlGame*);
 /** Libère la mémoire de SDL */
 void freeSdl(SdlGame *pSdlGame);
 
+/**Initialisation de BG*/
+void initBG(SdlGame *pSdlGame);
+
 #endif
