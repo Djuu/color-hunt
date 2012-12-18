@@ -181,6 +181,11 @@ pSdlGame ->surfaceLifeBG = IMG_Load("data/image/lifeBg.png");
 	InitSprite (&(pSdlGame->pSpritesObject),1, 30, 56, 5, 0);
 	
 	
+	/*Sprite dialogue*/
+	pSdlGame->pSpritesDialYes.source = pSdlGame -> surfaceDialYes;
+	InitSprite (&(pSdlGame->pSpritesDialYes),0, 92, 42, 2, 0);
+	pSdlGame->pSpritesDialNo.source = pSdlGame -> surfaceDialNo;
+	InitSprite (&(pSdlGame->pSpritesDialNo),0, 92, 42, 2, 0);
 
 	for(k=0; k<pSdlGame -> pGame.gEnemies.number; k++)
 	{
@@ -732,11 +737,13 @@ else
 		positionDialYes.x = (pSdlGame->surfaceDial->w-100)/4;
 		positionDialYes.y = positionDial.y+(pSdlGame->surfaceDial->h - (pSdlGame->surfaceDial->h)/4);
 		SDL_BlitSurface(pSdlGame->surfaceDialYes, NULL, pSdlGame->surfaceScreen, &positionDialYes);
+		//displaySprite(&(pSdlGame->pSpritesDialYes), positionDialYes, pSdlGame->surfaceScreen);
 		
 		SDL_Rect positionDialNo;
 		positionDialNo.x = (pSdlGame->surfaceDial->w-100) - (pSdlGame->surfaceDial->w-100)/4;
 		positionDialNo.y = positionDial.y+(pSdlGame->surfaceDial->h - (pSdlGame->surfaceDial->h)/4);
 		SDL_BlitSurface(pSdlGame->surfaceDialNo, NULL, pSdlGame->surfaceScreen, &positionDialNo);
+		//displaySprite(&(pSdlGame->pSpritesDialNo), positionDialNo, pSdlGame->surfaceScreen);
 	}
 	}
 }
@@ -829,252 +836,246 @@ void freeLv3(SdlGame *pSdlGame)
 {
 	SDL_FreeSurface (pSdlGame->surfaceFloor3);
         
-		SDL_FreeSurface ( pSdlGame->surfaceUnderFloor3);    
-        
-		SDL_FreeSurface (pSdlGame->surfaceBG3);	
+	SDL_FreeSurface ( pSdlGame->surfaceUnderFloor3);    
+	
+	SDL_FreeSurface (pSdlGame->surfaceBG3);	
 }
 void initSurfaceLv2(SdlGame *pSdlGame)
 {
 	pSdlGame -> surfaceFloor2 = IMG_Load("data/image/f1.png");
-        if (pSdlGame->surfaceFloor2==NULL)      
-                pSdlGame->surfaceFloor2 = IMG_Load("../data/image/f1.png");
-        assert( pSdlGame->surfaceFloor2!=NULL);
-        
-pSdlGame -> surfaceUnderFloor2 = IMG_Load("data/image/f2.png");
-        if (pSdlGame->surfaceUnderFloor2==NULL) 
-                pSdlGame->surfaceUnderFloor2 = IMG_Load("../data/image/f2.png");
-        assert( pSdlGame->surfaceUnderFloor2!=NULL);    
-        
-SDL_Surface* tempF = IMG_Load("data/image/forestBG.png");
-        pSdlGame->surfaceBG2 = SDL_DisplayFormat(tempF);
-        assert( pSdlGame->surfaceBG2!=NULL);
+			if (pSdlGame->surfaceFloor2==NULL)      
+					pSdlGame->surfaceFloor2 = IMG_Load("../data/image/f1.png");
+			assert( pSdlGame->surfaceFloor2!=NULL);
+			
+	pSdlGame -> surfaceUnderFloor2 = IMG_Load("data/image/f2.png");
+			if (pSdlGame->surfaceUnderFloor2==NULL) 
+					pSdlGame->surfaceUnderFloor2 = IMG_Load("../data/image/f2.png");
+			assert( pSdlGame->surfaceUnderFloor2!=NULL);    
+			
+	SDL_Surface* tempF = IMG_Load("data/image/forestBG.png");
+			pSdlGame->surfaceBG2 = SDL_DisplayFormat(tempF);
+			assert( pSdlGame->surfaceBG2!=NULL);
   	
 }
 void freeLv2(SdlGame *pSdlGame)
 {
-	SDL_FreeSurface (pSdlGame->surfaceFloor2);
-        
-SDL_FreeSurface (pSdlGame->surfaceUnderFloor2);    
-SDL_FreeSurface (pSdlGame->surfaceBG2);
+	SDL_FreeSurface (pSdlGame->surfaceFloor2);        
+	SDL_FreeSurface (pSdlGame->surfaceUnderFloor2);    
+	SDL_FreeSurface (pSdlGame->surfaceBG2);
 	
 }
 void initSurfaceLv1(SdlGame *pSdlGame)
 {
 	SDL_Surface* temp = IMG_Load("data/image/castleBG.png");
-        pSdlGame->surfaceBG1 = SDL_DisplayFormat(temp);
-        assert( pSdlGame->surfaceBG1!=NULL);
-        
-pSdlGame -> surfaceFloor1 = IMG_Load("data/image/c1.png");
-        if (pSdlGame->surfaceFloor1==NULL)      
-                pSdlGame->surfaceFloor1 = IMG_Load("../data/image/c1.png");
-        assert( pSdlGame->surfaceFloor1!=NULL);
-        
-pSdlGame -> surfaceUnderFloor1 = IMG_Load("data/image/c2.png");
-        if (pSdlGame->surfaceUnderFloor1==NULL) 
-                pSdlGame->surfaceUnderFloor1 = IMG_Load("../data/image/c2.png");
-        assert( pSdlGame->surfaceUnderFloor1!=NULL);
-
-	
+			pSdlGame->surfaceBG1 = SDL_DisplayFormat(temp);
+			assert( pSdlGame->surfaceBG1!=NULL);
+			
+	pSdlGame -> surfaceFloor1 = IMG_Load("data/image/c1.png");
+			if (pSdlGame->surfaceFloor1==NULL)      
+					pSdlGame->surfaceFloor1 = IMG_Load("../data/image/c1.png");
+			assert( pSdlGame->surfaceFloor1!=NULL);
+			
+	pSdlGame -> surfaceUnderFloor1 = IMG_Load("data/image/c2.png");
+			if (pSdlGame->surfaceUnderFloor1==NULL) 
+					pSdlGame->surfaceUnderFloor1 = IMG_Load("../data/image/c2.png");
+			assert( pSdlGame->surfaceUnderFloor1!=NULL);	
 }
 void initSurfaceWM(SdlGame *pSdlGame)
 {
+	pSdlGame ->surfaceBorder = IMG_Load("data/image/border2.png");
+		if (pSdlGame->surfaceBorder==NULL)	
+			pSdlGame->surfaceBorder = IMG_Load("../data/image/border2.png");
+		assert( pSdlGame->surfaceBorder!=NULL);
+		
+	pSdlGame ->surfaceMapEarth1 = IMG_Load("data/image/wearth1.png");
+		if (pSdlGame->surfaceMapEarth1==NULL)	
+			pSdlGame->surfaceMapEarth1 = IMG_Load("../data/image/wearth1.png");
+		assert( pSdlGame->surfaceMapEarth1!=NULL);
+		
+	pSdlGame ->surfaceMapEarth2 = IMG_Load("data/image/wearth2.png");
+		if (pSdlGame->surfaceMapEarth2==NULL)	
+			pSdlGame->surfaceMapEarth2 = IMG_Load("../data/image/wearth2.png");
+		assert( pSdlGame->surfaceMapEarth2!=NULL);
+		
+	pSdlGame ->surfaceMapGrass1 = IMG_Load("data/image/wgrass.png");
+		if (pSdlGame->surfaceMapGrass1==NULL)	
+			pSdlGame->surfaceMapGrass1 = IMG_Load("../data/image/wgrass.png");
+		assert( pSdlGame->surfaceMapGrass1!=NULL);
+		
+	pSdlGame ->surfaceMapGrass2 = IMG_Load("data/image/wgrass2.png");
+		if (pSdlGame->surfaceMapGrass2==NULL)	
+			pSdlGame->surfaceMapGrass2 = IMG_Load("../data/image/wgrass2.png");
+		assert( pSdlGame->surfaceMapGrass2!=NULL);
+		
+	pSdlGame ->surfaceMapGED = IMG_Load("data/image/wgrassEartthD.png");
+		if (pSdlGame->surfaceMapGED==NULL)	
+			pSdlGame->surfaceMapGED = IMG_Load("../data/image/wgrassEartthD.png");
+		assert( pSdlGame->surfaceMapGED!=NULL);
+		
+	pSdlGame ->surfaceMapGEDL = IMG_Load("data/image/wgrassEartthDL.png");
+		if (pSdlGame->surfaceMapGEDL==NULL)	
+			pSdlGame->surfaceMapGEDL = IMG_Load("../data/image/wgrassEartthDL.png");
+		assert( pSdlGame->surfaceMapGEDL!=NULL);
+		
+	pSdlGame ->surfaceMapGEDR = IMG_Load("data/image/wgrassEartthDR.png");
+		if (pSdlGame->surfaceMapGEDR==NULL)	
+			pSdlGame->surfaceMapGEDR = IMG_Load("../data/image/wgrassEartthDR.png");
+		assert( pSdlGame->surfaceMapGEDR!=NULL);
+		
+	pSdlGame ->surfaceMapGEL = IMG_Load("data/image/wgrassEartthL.png");
+		if (pSdlGame->surfaceMapGEL==NULL)	
+			pSdlGame->surfaceMapGEL = IMG_Load("../data/image/wgrassEartthL.png");
+		assert( pSdlGame->surfaceMapGEL!=NULL);
+		
+	pSdlGame ->surfaceMapGER = IMG_Load("data/image/wgrassEartthR.png");
+		if (pSdlGame->surfaceMapGER==NULL)	
+			pSdlGame->surfaceMapGER = IMG_Load("../data/image/wgrassEartthR.png");
+		assert( pSdlGame->surfaceMapGER!=NULL);
+		
+	pSdlGame ->surfaceMapGEU = IMG_Load("data/image/wgrassEartthU.png");
+		if (pSdlGame->surfaceMapGEU==NULL)	
+			pSdlGame->surfaceMapGEU = IMG_Load("../data/image/wgrassEartthU.png");
+		assert( pSdlGame->surfaceMapGEU!=NULL);
+		
+	pSdlGame ->surfaceMapGEUL = IMG_Load("data/image/wgrassEartthUL.png");
+		if (pSdlGame->surfaceMapGEUL==NULL)	
+			pSdlGame->surfaceMapGEUL = IMG_Load("../data/image/wgrassEartthUL.png");
+		assert( pSdlGame->surfaceMapGEUL!=NULL);
+		
+	pSdlGame ->surfaceMapGEUR = IMG_Load("data/image/wgrassEartthUR.png");
+		if (pSdlGame->surfaceMapGEUR==NULL)	
+			pSdlGame->surfaceMapGEUR = IMG_Load("../data/image/wgrassEartthUR.png");
+		assert( pSdlGame->surfaceMapGEUR!=NULL);
+		
+	pSdlGame ->surfaceMapWater = IMG_Load("data/image/Water.png");
+		if (pSdlGame->surfaceMapWater==NULL)	
+			pSdlGame->surfaceMapWater = IMG_Load("../data/image/Water.png");
+		assert( pSdlGame->surfaceMapWater!=NULL);
+		
+	pSdlGame ->surfaceMapWaterD = IMG_Load("data/image/WaterD.png");
+		if (pSdlGame->surfaceMapWaterD==NULL)	
+			pSdlGame->surfaceMapWaterD = IMG_Load("../data/image/WaterD.png");
+		assert( pSdlGame->surfaceMapWaterD!=NULL);
+		
+	pSdlGame ->surfaceMapWaterU = IMG_Load("data/image/WaterU.png");
+		if (pSdlGame->surfaceMapWaterU==NULL)	
+			pSdlGame->surfaceMapWaterU = IMG_Load("../data/image/WaterU.png");
+		assert( pSdlGame->surfaceMapWaterU!=NULL);
+		
+	pSdlGame ->surfaceMapWaterR = IMG_Load("data/image/WaterR.png");
+		if (pSdlGame->surfaceMapWaterR==NULL)	
+			pSdlGame->surfaceMapWaterR = IMG_Load("../data/image/WaterR.png");
+		assert( pSdlGame->surfaceMapWaterR!=NULL);
+		
+	pSdlGame ->surfaceMapWaterL = IMG_Load("data/image/WaterL.png");
+		if (pSdlGame->surfaceMapWaterL==NULL)	
+			pSdlGame->surfaceMapWaterL = IMG_Load("../data/image/WaterL.png");
+		assert( pSdlGame->surfaceMapWaterL!=NULL);
+
+	pSdlGame ->surfaceMapWaterCDL = IMG_Load("data/image/WaterCDL.png");
+		if (pSdlGame->surfaceMapWaterCDL==NULL)	
+			pSdlGame->surfaceMapWaterCDL = IMG_Load("../data/image/WaterCDL.png");
+		assert( pSdlGame->surfaceMapWaterCDL!=NULL);
+		
+	pSdlGame ->surfaceMapWaterCUL = IMG_Load("data/image/WaterCUL.png");
+		if (pSdlGame->surfaceMapWaterCUL==NULL)	
+			pSdlGame->surfaceMapWaterCUL = IMG_Load("../data/image/WaterCUL.png");
+		assert( pSdlGame->surfaceMapWaterCUL!=NULL);
+		
+	pSdlGame ->surfaceMapWaterCDR = IMG_Load("data/image/WaterCDR.png");
+		if (pSdlGame->surfaceMapWaterCDR==NULL)	
+			pSdlGame->surfaceMapWaterCDR = IMG_Load("../data/image/WaterCDR.png");
+		assert( pSdlGame->surfaceMapWaterCDR!=NULL);
+		
+	pSdlGame ->surfaceMapWaterCUR = IMG_Load("data/image/WaterCUR.png");
+		if (pSdlGame->surfaceMapWaterCUR==NULL)	
+			pSdlGame->surfaceMapWaterCUR = IMG_Load("../data/image/WaterCUR.png");
+		assert( pSdlGame->surfaceMapWaterCUR!=NULL);
 
 
-	
-pSdlGame ->surfaceBorder = IMG_Load("data/image/border2.png");
-	if (pSdlGame->surfaceBorder==NULL)	
-		pSdlGame->surfaceBorder = IMG_Load("../data/image/border2.png");
-	assert( pSdlGame->surfaceBorder!=NULL);
-	
-pSdlGame ->surfaceMapEarth1 = IMG_Load("data/image/wearth1.png");
-	if (pSdlGame->surfaceMapEarth1==NULL)	
-		pSdlGame->surfaceMapEarth1 = IMG_Load("../data/image/wearth1.png");
-	assert( pSdlGame->surfaceMapEarth1!=NULL);
-	
-pSdlGame ->surfaceMapEarth2 = IMG_Load("data/image/wearth2.png");
-	if (pSdlGame->surfaceMapEarth2==NULL)	
-		pSdlGame->surfaceMapEarth2 = IMG_Load("../data/image/wearth2.png");
-	assert( pSdlGame->surfaceMapEarth2!=NULL);
-	
-pSdlGame ->surfaceMapGrass1 = IMG_Load("data/image/wgrass.png");
-	if (pSdlGame->surfaceMapGrass1==NULL)	
-		pSdlGame->surfaceMapGrass1 = IMG_Load("../data/image/wgrass.png");
-	assert( pSdlGame->surfaceMapGrass1!=NULL);
-	
-pSdlGame ->surfaceMapGrass2 = IMG_Load("data/image/wgrass2.png");
-	if (pSdlGame->surfaceMapGrass2==NULL)	
-		pSdlGame->surfaceMapGrass2 = IMG_Load("../data/image/wgrass2.png");
-	assert( pSdlGame->surfaceMapGrass2!=NULL);
-	
-pSdlGame ->surfaceMapGED = IMG_Load("data/image/wgrassEartthD.png");
-	if (pSdlGame->surfaceMapGED==NULL)	
-		pSdlGame->surfaceMapGED = IMG_Load("../data/image/wgrassEartthD.png");
-	assert( pSdlGame->surfaceMapGED!=NULL);
-	
-pSdlGame ->surfaceMapGEDL = IMG_Load("data/image/wgrassEartthDL.png");
-	if (pSdlGame->surfaceMapGEDL==NULL)	
-		pSdlGame->surfaceMapGEDL = IMG_Load("../data/image/wgrassEartthDL.png");
-	assert( pSdlGame->surfaceMapGEDL!=NULL);
-	
-pSdlGame ->surfaceMapGEDR = IMG_Load("data/image/wgrassEartthDR.png");
-	if (pSdlGame->surfaceMapGEDR==NULL)	
-		pSdlGame->surfaceMapGEDR = IMG_Load("../data/image/wgrassEartthDR.png");
-	assert( pSdlGame->surfaceMapGEDR!=NULL);
-	
-pSdlGame ->surfaceMapGEL = IMG_Load("data/image/wgrassEartthL.png");
-	if (pSdlGame->surfaceMapGEL==NULL)	
-		pSdlGame->surfaceMapGEL = IMG_Load("../data/image/wgrassEartthL.png");
-	assert( pSdlGame->surfaceMapGEL!=NULL);
-	
-pSdlGame ->surfaceMapGER = IMG_Load("data/image/wgrassEartthR.png");
-	if (pSdlGame->surfaceMapGER==NULL)	
-		pSdlGame->surfaceMapGER = IMG_Load("../data/image/wgrassEartthR.png");
-	assert( pSdlGame->surfaceMapGER!=NULL);
-	
-pSdlGame ->surfaceMapGEU = IMG_Load("data/image/wgrassEartthU.png");
-	if (pSdlGame->surfaceMapGEU==NULL)	
-		pSdlGame->surfaceMapGEU = IMG_Load("../data/image/wgrassEartthU.png");
-	assert( pSdlGame->surfaceMapGEU!=NULL);
-	
-pSdlGame ->surfaceMapGEUL = IMG_Load("data/image/wgrassEartthUL.png");
-	if (pSdlGame->surfaceMapGEUL==NULL)	
-		pSdlGame->surfaceMapGEUL = IMG_Load("../data/image/wgrassEartthUL.png");
-	assert( pSdlGame->surfaceMapGEUL!=NULL);
-	
-pSdlGame ->surfaceMapGEUR = IMG_Load("data/image/wgrassEartthUR.png");
-	if (pSdlGame->surfaceMapGEUR==NULL)	
-		pSdlGame->surfaceMapGEUR = IMG_Load("../data/image/wgrassEartthUR.png");
-	assert( pSdlGame->surfaceMapGEUR!=NULL);
-	
-pSdlGame ->surfaceMapWater = IMG_Load("data/image/Water.png");
-	if (pSdlGame->surfaceMapWater==NULL)	
-		pSdlGame->surfaceMapWater = IMG_Load("../data/image/Water.png");
-	assert( pSdlGame->surfaceMapWater!=NULL);
-	
-pSdlGame ->surfaceMapWaterD = IMG_Load("data/image/WaterD.png");
-	if (pSdlGame->surfaceMapWaterD==NULL)	
-		pSdlGame->surfaceMapWaterD = IMG_Load("../data/image/WaterD.png");
-	assert( pSdlGame->surfaceMapWaterD!=NULL);
-	
-pSdlGame ->surfaceMapWaterU = IMG_Load("data/image/WaterU.png");
-	if (pSdlGame->surfaceMapWaterU==NULL)	
-		pSdlGame->surfaceMapWaterU = IMG_Load("../data/image/WaterU.png");
-	assert( pSdlGame->surfaceMapWaterU!=NULL);
-	
-pSdlGame ->surfaceMapWaterR = IMG_Load("data/image/WaterR.png");
-	if (pSdlGame->surfaceMapWaterR==NULL)	
-		pSdlGame->surfaceMapWaterR = IMG_Load("../data/image/WaterR.png");
-	assert( pSdlGame->surfaceMapWaterR!=NULL);
-	
-pSdlGame ->surfaceMapWaterL = IMG_Load("data/image/WaterL.png");
-	if (pSdlGame->surfaceMapWaterL==NULL)	
-		pSdlGame->surfaceMapWaterL = IMG_Load("../data/image/WaterL.png");
-	assert( pSdlGame->surfaceMapWaterL!=NULL);
-
-pSdlGame ->surfaceMapWaterCDL = IMG_Load("data/image/WaterCDL.png");
-	if (pSdlGame->surfaceMapWaterCDL==NULL)	
-		pSdlGame->surfaceMapWaterCDL = IMG_Load("../data/image/WaterCDL.png");
-	assert( pSdlGame->surfaceMapWaterCDL!=NULL);
-	
-pSdlGame ->surfaceMapWaterCUL = IMG_Load("data/image/WaterCUL.png");
-	if (pSdlGame->surfaceMapWaterCUL==NULL)	
-		pSdlGame->surfaceMapWaterCUL = IMG_Load("../data/image/WaterCUL.png");
-	assert( pSdlGame->surfaceMapWaterCUL!=NULL);
-	
-pSdlGame ->surfaceMapWaterCDR = IMG_Load("data/image/WaterCDR.png");
-	if (pSdlGame->surfaceMapWaterCDR==NULL)	
-		pSdlGame->surfaceMapWaterCDR = IMG_Load("../data/image/WaterCDR.png");
-	assert( pSdlGame->surfaceMapWaterCDR!=NULL);
-	
-pSdlGame ->surfaceMapWaterCUR = IMG_Load("data/image/WaterCUR.png");
-	if (pSdlGame->surfaceMapWaterCUR==NULL)	
-		pSdlGame->surfaceMapWaterCUR = IMG_Load("../data/image/WaterCUR.png");
-	assert( pSdlGame->surfaceMapWaterCUR!=NULL);
+	pSdlGame ->surfaceMapWaterCURI = IMG_Load("data/image/WaterCURI.png");
+			if (pSdlGame->surfaceMapWaterCURI==NULL)        
+					pSdlGame->surfaceMapWaterCURI = IMG_Load("../data/image/WaterCURI.png");
+			assert( pSdlGame->surfaceMapWaterCURI!=NULL);
+			
+	pSdlGame ->surfaceMapWaterCDLI = IMG_Load("data/image/WaterCDLI.png");
+			if (pSdlGame->surfaceMapWaterCDLI==NULL)        
+					pSdlGame->surfaceMapWaterCDLI = IMG_Load("../data/image/WaterCDLI.png");
+			assert( pSdlGame->surfaceMapWaterCDLI!=NULL);
+			
+	pSdlGame ->surfaceMapWaterCULI = IMG_Load("data/image/WaterCULI.png");
+			if (pSdlGame->surfaceMapWaterCULI==NULL)        
+					pSdlGame->surfaceMapWaterCULI = IMG_Load("../data/image/WaterCULI.png");
+			assert( pSdlGame->surfaceMapWaterCULI!=NULL);
+			
+	pSdlGame ->surfaceMapWaterCDRI = IMG_Load("data/image/WaterCDRI.png");
+			if (pSdlGame->surfaceMapWaterCDRI==NULL)        
+					pSdlGame->surfaceMapWaterCDRI = IMG_Load("../data/image/WaterCDRI.png");
+			assert( pSdlGame->surfaceMapWaterCDRI!=NULL);
+			
+			
+			
+				
+	pSdlGame ->surfaceMapCDL = IMG_Load("data/image/wgrassEartthCDL.png");
+		if (pSdlGame->surfaceMapCDL==NULL)	
+			pSdlGame->surfaceMapCDL = IMG_Load("../data/image/wgrassEartthCDL.png");
+		assert( pSdlGame->surfaceMapCDL!=NULL);
+		
+	pSdlGame ->surfaceMapCDR = IMG_Load("data/image/wgrassEartthCDR.png");
+		if (pSdlGame->surfaceMapCDR==NULL)	
+			pSdlGame->surfaceMapCDR = IMG_Load("../data/image/wgrassEartthCDR.png");
+		assert( pSdlGame->surfaceMapCDR!=NULL);
+		
+	pSdlGame ->surfaceMapCUL = IMG_Load("data/image/wgrassEartthCUL.png");
+		if (pSdlGame->surfaceMapCUL==NULL)	
+			pSdlGame->surfaceMapCUL = IMG_Load("../data/image/wgrassEartthCUL.png");
+		assert( pSdlGame->surfaceMapCUL!=NULL);
+		
+	pSdlGame ->surfaceMapCUR = IMG_Load("data/image/wgrassEartthCUR.png");
+		if (pSdlGame->surfaceMapCUR==NULL)	
+			pSdlGame->surfaceMapCUR = IMG_Load("../data/image/wgrassEartthCUR.png");
+		assert( pSdlGame->surfaceMapCUR!=NULL);
+		
+	pSdlGame ->surfaceMapCastle = IMG_Load("data/image/castle.png");
+		if (pSdlGame->surfaceMapCastle==NULL)	
+			pSdlGame->surfaceMapCastle = IMG_Load("../data/image/castle.png");
+		assert( pSdlGame->surfaceMapCastle!=NULL);
+		
+	pSdlGame ->surfaceMapTree = IMG_Load("data/image/tree.png");
+		if (pSdlGame->surfaceMapTree==NULL)	
+			pSdlGame->surfaceMapTree = IMG_Load("../data/image/tree.png");
+		assert( pSdlGame->surfaceMapTree!=NULL);
 
 
-pSdlGame ->surfaceMapWaterCURI = IMG_Load("data/image/WaterCURI.png");
-        if (pSdlGame->surfaceMapWaterCURI==NULL)        
-                pSdlGame->surfaceMapWaterCURI = IMG_Load("../data/image/WaterCURI.png");
-        assert( pSdlGame->surfaceMapWaterCURI!=NULL);
-        
-pSdlGame ->surfaceMapWaterCDLI = IMG_Load("data/image/WaterCDLI.png");
-        if (pSdlGame->surfaceMapWaterCDLI==NULL)        
-                pSdlGame->surfaceMapWaterCDLI = IMG_Load("../data/image/WaterCDLI.png");
-        assert( pSdlGame->surfaceMapWaterCDLI!=NULL);
-        
-pSdlGame ->surfaceMapWaterCULI = IMG_Load("data/image/WaterCULI.png");
-        if (pSdlGame->surfaceMapWaterCULI==NULL)        
-                pSdlGame->surfaceMapWaterCULI = IMG_Load("../data/image/WaterCULI.png");
-        assert( pSdlGame->surfaceMapWaterCULI!=NULL);
-        
-pSdlGame ->surfaceMapWaterCDRI = IMG_Load("data/image/WaterCDRI.png");
-        if (pSdlGame->surfaceMapWaterCDRI==NULL)        
-                pSdlGame->surfaceMapWaterCDRI = IMG_Load("../data/image/WaterCDRI.png");
-        assert( pSdlGame->surfaceMapWaterCDRI!=NULL);
-        
-        
-        
-        	
-pSdlGame ->surfaceMapCDL = IMG_Load("data/image/wgrassEartthCDL.png");
-	if (pSdlGame->surfaceMapCDL==NULL)	
-		pSdlGame->surfaceMapCDL = IMG_Load("../data/image/wgrassEartthCDL.png");
-	assert( pSdlGame->surfaceMapCDL!=NULL);
-	
-pSdlGame ->surfaceMapCDR = IMG_Load("data/image/wgrassEartthCDR.png");
-	if (pSdlGame->surfaceMapCDR==NULL)	
-		pSdlGame->surfaceMapCDR = IMG_Load("../data/image/wgrassEartthCDR.png");
-	assert( pSdlGame->surfaceMapCDR!=NULL);
-	
-pSdlGame ->surfaceMapCUL = IMG_Load("data/image/wgrassEartthCUL.png");
-	if (pSdlGame->surfaceMapCUL==NULL)	
-		pSdlGame->surfaceMapCUL = IMG_Load("../data/image/wgrassEartthCUL.png");
-	assert( pSdlGame->surfaceMapCUL!=NULL);
-	
-pSdlGame ->surfaceMapCUR = IMG_Load("data/image/wgrassEartthCUR.png");
-	if (pSdlGame->surfaceMapCUR==NULL)	
-		pSdlGame->surfaceMapCUR = IMG_Load("../data/image/wgrassEartthCUR.png");
-	assert( pSdlGame->surfaceMapCUR!=NULL);
-	
-pSdlGame ->surfaceMapCastle = IMG_Load("data/image/castle.png");
-	if (pSdlGame->surfaceMapCastle==NULL)	
-		pSdlGame->surfaceMapCastle = IMG_Load("../data/image/castle.png");
-	assert( pSdlGame->surfaceMapCastle!=NULL);
-	
-pSdlGame ->surfaceMapTree = IMG_Load("data/image/tree.png");
-	if (pSdlGame->surfaceMapTree==NULL)	
-		pSdlGame->surfaceMapTree = IMG_Load("../data/image/tree.png");
-	assert( pSdlGame->surfaceMapTree!=NULL);
+	pSdlGame ->surfaceDial = IMG_Load("data/image/dialogue.png");
+		if (pSdlGame->surfaceDial==NULL)	
+			pSdlGame->surfaceDial = IMG_Load("../data/image/dialogue.png");
+		assert( pSdlGame->surfaceDial!=NULL);
+		
+	pSdlGame ->surfaceDialYes = IMG_Load("data/image/yes.png");
+		if (pSdlGame->surfaceDialYes==NULL)	
+			pSdlGame->surfaceDialYes = IMG_Load("../data/image/yes.png");
+		assert( pSdlGame->surfaceDialYes!=NULL);
 
-
-pSdlGame ->surfaceDial = IMG_Load("data/image/dialogue.png");
-	if (pSdlGame->surfaceDial==NULL)	
-		pSdlGame->surfaceDial = IMG_Load("../data/image/dialogue.png");
-	assert( pSdlGame->surfaceDial!=NULL);
-	
-pSdlGame ->surfaceDialYes = IMG_Load("data/image/grass2.png");
-	if (pSdlGame->surfaceDialYes==NULL)	
-		pSdlGame->surfaceDialYes = IMG_Load("../data/image/grass2.png");
-	assert( pSdlGame->surfaceDialYes!=NULL);
-
-pSdlGame ->surfaceDialNo = IMG_Load("data/image/grass4.png");
-	if (pSdlGame->surfaceDialNo==NULL)	
-		pSdlGame->surfaceDialNo = IMG_Load("../data/image/grass4.png");
-	assert( pSdlGame->surfaceDialNo!=NULL);	
-	
-pSdlGame ->surfaceKing = IMG_Load("data/image/king.png");
-	if (pSdlGame->surfaceKing==NULL)	
-		pSdlGame->surfaceKing = IMG_Load("../data/image/king.png");
-	assert( pSdlGame->surfaceKing!=NULL);
-	
-pSdlGame ->surfaceMapMountain = IMG_Load("data/image/mountains.png");
-	if (pSdlGame->surfaceMapMountain==NULL)	
-		pSdlGame->surfaceMapMountain = IMG_Load("../data/image/mountains.png");
-	assert( pSdlGame->surfaceMapMountain!=NULL);
-	
-pSdlGame ->surfaceMapCave = IMG_Load("data/image/cave.png");
-	if (pSdlGame->surfaceMapCave==NULL)	
-		pSdlGame->surfaceMapCave = IMG_Load("../data/image/cave.png");
-	assert( pSdlGame->surfaceMapCave!=NULL);
+	pSdlGame ->surfaceDialNo = IMG_Load("data/image/no.png");
+		if (pSdlGame->surfaceDialNo==NULL)	
+			pSdlGame->surfaceDialNo = IMG_Load("../data/image/no.png");
+		assert( pSdlGame->surfaceDialNo!=NULL);	
+		
+	pSdlGame ->surfaceKing = IMG_Load("data/image/king.png");
+		if (pSdlGame->surfaceKing==NULL)	
+			pSdlGame->surfaceKing = IMG_Load("../data/image/king.png");
+		assert( pSdlGame->surfaceKing!=NULL);
+		
+	pSdlGame ->surfaceMapMountain = IMG_Load("data/image/mountains.png");
+		if (pSdlGame->surfaceMapMountain==NULL)	
+			pSdlGame->surfaceMapMountain = IMG_Load("../data/image/mountains.png");
+		assert( pSdlGame->surfaceMapMountain!=NULL);
+		
+	pSdlGame ->surfaceMapCave = IMG_Load("data/image/cave.png");
+		if (pSdlGame->surfaceMapCave==NULL)	
+			pSdlGame->surfaceMapCave = IMG_Load("../data/image/cave.png");
+		assert( pSdlGame->surfaceMapCave!=NULL);
 
 }
 
@@ -1151,10 +1152,6 @@ void freeWM(SdlGame *pSdlGame)
 
 	SDL_FreeSurface (pSdlGame->surfaceDial);
 		
-	SDL_FreeSurface (pSdlGame->surfaceDialYes);
-
-	SDL_FreeSurface (pSdlGame->surfaceDialNo);	
-		
 	SDL_FreeSurface (pSdlGame->surfaceMapMountain);
 	
 	SDL_FreeSurface (pSdlGame->surfaceMapCave);
@@ -1162,14 +1159,11 @@ void freeWM(SdlGame *pSdlGame)
 
 void freeLv1(SdlGame *pSdlGame)
 {
-
-		
 	SDL_FreeSurface(pSdlGame->surfaceBG1);
 
-        
-SDL_FreeSurface(pSdlGame->surfaceFloor1);
-        
-SDL_FreeSurface(pSdlGame->surfaceUnderFloor1);
+	SDL_FreeSurface(pSdlGame->surfaceFloor1);
+			
+	SDL_FreeSurface(pSdlGame->surfaceUnderFloor1);
        
 }
 void colisionSprite(SdlGame *pSdlGame)
@@ -1238,6 +1232,7 @@ void keyManagment2(SdlGame *pSdlGame)
 		{
 			if (pSdlGame -> choiceDialogue == 2)
 			{
+				animSprite (&(pSdlGame->pSpritesDialYes), 0, 0, 0);
 				pSdlGame -> choiceDialogue = 1;
 				
 			}
@@ -1246,6 +1241,7 @@ void keyManagment2(SdlGame *pSdlGame)
 		{
 			if (pSdlGame -> choiceDialogue == 1)
 			{
+				animSprite (&(pSdlGame->pSpritesDialNo), 0, 0, 0);
 				pSdlGame -> choiceDialogue = 2;
 				
 			}
@@ -1562,13 +1558,13 @@ void animEnemies(SdlGame *pSdlGame)
 }
 void dialogueAction(SdlGame *pSdlGame, int loop)
 {
-	printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-		if (strcmp(discutionDialogue(&(pSdlGame->pTree), pSdlGame->choiceSpeech), "&exit&")==1)
+		printf("APAPAPPA = %s\n", pSdlGame->dialTab);
+		if (strcmp((pSdlGame->dialTab), "&exit&")==0)
 		{
 			exit(1);
 			loop=0;
 		}
-		if(strcmp(discutionDialogue(&(pSdlGame->pTree), pSdlGame->choiceSpeech), "&ok&")==0)
+		if(strcmp((pSdlGame->dialTab), "&ok&")==0)
 		{
 				pSdlGame->dialogue = 0;
 		}
@@ -1578,17 +1574,17 @@ void dialogueSpeak(SdlGame *pSdlGame, float choice)
 {
 
 	SDL_Color color = {0, 0, 0};
-	char dialTab[300];
+	
+	char *tempTab = discutionDialogue(&(pSdlGame->pTree), choice);
 	int k=0;
-	while(discutionDialogue(&(pSdlGame->pTree), choice)[k]!='\0')
+	while(tempTab[k]!='\0')
 	{
-		dialTab[k]=discutionDialogue(&(pSdlGame->pTree), choice)[k];
+		pSdlGame->dialTab[k]=tempTab[k];
 		k++;
 	}
-	dialTab[k] = '\0';
-	printf("%s\n",dialTab);
-	printf("%d\n",k);
-	//printf("%s",discutionDialogue(&(pSdlGame->pTree), 0.0));
+	pSdlGame->dialTab[k] = '\0';
+	
+	printf("AAA = %s",pSdlGame->dialTab);
 
 	int i=0;
 	int j=0;
@@ -1597,14 +1593,14 @@ void dialogueSpeak(SdlGame *pSdlGame, float choice)
 	int q=0;
 	int r=0;
 	int s=0;
-	while (dialTab[p]!='\0')
+	while (pSdlGame->dialTab[p]!='\0')
 	{
 		if (k<79)
 		{
 			char dialTab1[k];
 			if(i<=k)
 			{
-					dialTab1[i] = dialTab[i];
+					dialTab1[i] = pSdlGame->dialTab[i];
 					i++;
 				
 			}
@@ -1623,7 +1619,7 @@ void dialogueSpeak(SdlGame *pSdlGame, float choice)
 			char dialTab2[k-79];
 			if(j<=78)
 			{
-					dialTab1[j] = dialTab[j];
+					dialTab1[j] = pSdlGame->dialTab[j];
 					j++;
 			}
 			if(j==79)
@@ -1633,7 +1629,7 @@ void dialogueSpeak(SdlGame *pSdlGame, float choice)
 			}
 			if(j>78 && j<=k)
 			{
-					dialTab2[q] = dialTab[j];
+					dialTab2[q] = pSdlGame->dialTab[j];
 					q++;
 			}
 			if(j==k+1)
@@ -1650,7 +1646,7 @@ void dialogueSpeak(SdlGame *pSdlGame, float choice)
 			char dialTab3[k-155];
 			if(l<=78)
 			{
-					dialTab1[l] = dialTab[l];
+					dialTab1[l] = pSdlGame->dialTab[l];
 					l++;
 
 			}
@@ -1662,7 +1658,7 @@ void dialogueSpeak(SdlGame *pSdlGame, float choice)
 			}
 			if(l>78 && l<=156)
 			{
-					dialTab2[r] = dialTab[l];
+					dialTab2[r] = pSdlGame->dialTab[l];
 					l++;
 					r++;
 					
@@ -1676,7 +1672,7 @@ void dialogueSpeak(SdlGame *pSdlGame, float choice)
 			
 			if(l>156 && l<=k)
 			{
-					dialTab3[s] = dialTab[l];
+					dialTab3[s] = pSdlGame->dialTab[l];
 					l++;
 					s++;
 				
@@ -1749,10 +1745,7 @@ while(continueLoop == 1)
 		initSurfaceWM(pSdlGame);
 		pSdlGame->startWM=2;
 	}
-	if (pSdlGame->dialogue == 1)
-	{
-		dialogueAction(pSdlGame,continueLoop);	
-	}
+
 	//printf("LOOP \n");
 	
 	 if (pSdlGame ->confirmMenu !=1 || (pSdlGame ->choiceMenu == 3 && pSdlGame ->confirmMenu == 1))
@@ -2208,10 +2201,10 @@ if(pGame -> level != 1)
 				pSdlGame->dialogue = 2;
 				pSdlGame->confirmDialogue =0;
 				pSdlGame->choiceDialogue = 0;
+				
 			}
 			else if (pSdlGame->choiceSpeech == 2.0 && pSdlGame->dialogue == 1)
 			{
-				
 				dialogueSpeak(pSdlGame,pSdlGame->choiceSpeech);
 				pSdlGame->dialogue = 2;
 				pSdlGame->confirmDialogue = 0;
@@ -2224,6 +2217,8 @@ if(pGame -> level != 1)
 					pSdlGame->dialogue = 1;
 
 			}
+			
+			dialogueAction(pSdlGame,continueLoop);
 		}
 		if (refresh==1)
 		{

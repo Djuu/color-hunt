@@ -105,7 +105,6 @@ float path(Position *pPosi1, Position *pPosi2)
 
 				oPosYd = pPosi2->y + i*pPosi2->v_y+pPosi2->spriteSizeH;	
 				oPosXr = pPosi2->x + i*pPosi2->v_x+pPosi2->spriteSizeW;
-
 				
 				if((oPosX < posXr && posX < oPosXr) && (posY<oPosYd && oPosY<posYd))
 				{
